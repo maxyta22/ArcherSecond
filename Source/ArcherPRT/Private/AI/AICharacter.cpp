@@ -1,0 +1,119 @@
+// Archer Prototype. All rights reserved
+
+#include "AI/AICharacter.h"
+#include "AI/PRTAIController.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "BrainComponent.h"
+#include "Components/CapsuleComponent.h"
+#include "Components/StatsComponent.h"
+#include "Components/CustomAction.h"
+#include "BehaviorTree/BlackboardComponent.h"
+#include "BehaviorTree/BehaviorTree.h"
+#include "TimerManager.h"
+
+
+AAICharacter::AAICharacter()
+{
+	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
+	AIControllerClass = APRTAIController::StaticClass();
+
+	//Init Components
+	//HeadCollider = CreateDefaultSubobject<UCapsuleComponent>("Colliders");
+	//HeadCollider->SetupAttachment(GetMesh(), "bind_head");
+	
+
+	// Setup Smooth Rotation
+	bUseControllerRotationYaw = false;
+	if (GetCharacterMovement())
+	{
+		GetCharacterMovement()->bUseControllerDesiredRotation = true;
+		GetCharacterMovement()->RotationRate = FRotator(0.0f, 200.0f, 0.0f);
+	}
+}
+
+//Accumulate To Aiming 
+
+
+void AAICharacter::StartAccumulateToAiming()
+{
+	if (!GetWorld()) return;
+	if (GetWorld()->GetTimerManager().IsTimerActive(AccumulateToAiminHandleTimer)) return;
+	GetWorld()->GetTimerManager().SetTimer(AccumulateToAiminHandleTimer, this, &AAICharacter::ReactionToAiming, TimeToReactionToAiming);
+}
+
+void AAICharacter::FinishAccumulateToAiming()
+{
+	if (!GetWorld()) return;
+	GetWorld()->GetTimerManager().ClearTimer(AccumulateToAiminHandleTimer);
+}
+
+void AAICharacter::ReactionToAiming()
+{
+	AfterReactionToAiming();
+}
+
+// Take Damage
+
+float AAICharacter::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+	Super::TakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
+
+	const auto AIController = Cast<APRTAIController>(Controller);
+	if (AIController)
+	{
+		AIController->SetEnemy(EventInstigator->GetPawn());
+	}
+		
+	return Damage;
+}
+
+void AAICharacter::OnDeath()
+{
+	Super::OnDeath();
+
+	const auto AIController = Cast<AAIController>(Controller);
+	if (AIController && AIController->BrainComponent)
+	{
+		AIController->GetBlackboardComponent()->SetValueAsBool("LockBehavior", true);
+		AIController->BrainComponent->Cleanup();
+	}
+
+	if (DeathAnimMontage)
+	{
+		CustomAction->TryPerformPlayAnimMontage(DeathAnimMontage, true);
+	}
+
+	GetCharacterMovement()->DisableMovement();
+	GetCapsuleComponent()->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
+
+}
+
+void AAICharacter::OnHitReaction()
+{
+	Super::OnHitReaction();
+
+	if (StatsComponent->IsDead()) return;
+
+	const auto AIController = Cast<APRTAIController>(Controller);
+	if (!AIController) return;
+	
+	// If No Enemy
+	if (!AIController->GetEnemy())
+	{
+		if (!HitReaction) return;
+		CustomAction->TryPerformPlayAnimMontage(HitReaction, false);
+		return;
+	}
+
+	// If Have Close Attack After Hit Reaction
+	if ((CloseAttackAfterHitReaction) && (GetDistanceTo(AIController->GetEnemy()) <= MinDistanceForAttackAfterHitReaction))
+	{
+		CustomAction->TryPerformPlayAnimMontage(CloseAttackAfterHitReaction, false);
+		return;
+	}
+
+	if (!HitReaction) return;
+	CustomAction->TryPerformPlayAnimMontage(HitReaction, false);
+
+	
+}

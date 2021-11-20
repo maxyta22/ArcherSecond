@@ -1,0 +1,51 @@
+// Archer Prototype. All rights reserved
+
+#pragma once
+
+#include "CoreMinimal.h"
+#include "Components/ActorComponent.h"
+#include "CustomAction.generated.h"
+
+class AGameCharacter;
+
+
+UCLASS( ClassGroup=(Custom), blueprinttype, blueprintable, meta=(BlueprintSpawnableComponent) )
+class ARCHERPRT_API UCustomAction : public UActorComponent
+{
+	GENERATED_BODY()
+
+public:	
+	
+	UCustomAction();
+
+	UFUNCTION(BlueprintCallable,Category = "Custom Action")
+		void TryPerformPlayAnimMontage(UAnimMontage* Montage, bool CanAbortCurrentCustomAction);
+
+	UFUNCTION(BlueprintPure)
+		bool CustomActionInProgress() {  return  bCustomActionInProgress; }
+
+	UFUNCTION(BlueprintPure)
+		UAnimMontage* GetLastAnimMontage() { return  LastAnimMontage; }
+
+	void FinishCustomAction();
+
+
+protected:
+	
+	virtual void BeginPlay() override;
+
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+
+private:
+
+
+	FTimerHandle FinishCustomActionTimer;
+
+	bool bCustomActionInProgress;
+
+	UAnimMontage* LastAnimMontage;
+	
+	
+
+		
+};

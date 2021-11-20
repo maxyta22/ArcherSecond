@@ -1,0 +1,47 @@
+// Archer Prototype. All rights reserved
+
+#pragma once
+
+#include "CoreMinimal.h"
+#include "GameFramework/Actor.h"
+#include "Enum/AmmoTypeEnum.h"
+#include "WeaponBase.generated.h"
+
+class USkeletalMeshComponent;
+class AArcherPRTProjectile;
+class APlayerCharacter;
+
+UCLASS(ClassGroup = (Custom), blueprinttype, blueprintable, meta = (BlueprintSpawnableComponent))
+class ARCHERPRT_API UWeaponBase: public UObject
+{
+	GENERATED_BODY()
+	
+public:	
+	
+	UWeaponBase();
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Gameplay)
+		FText WeaponName;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Gameplay)
+		TMap<EAmmoType, TSubclassOf<AArcherPRTProjectile>> ProjectileAmmoMap;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
+		USoundBase* FireSound;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
+		UAnimMontage* FireAnimation;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
+		FName MuzzleSocketName = "Muzzle";
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
+		int Damage = 10;
+
+	
+
+
+
+
+
+};

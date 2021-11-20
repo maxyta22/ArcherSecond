@@ -1,0 +1,89 @@
+// Archer Prototype. All rights reserved.
+
+#pragma once
+
+#include "CoreMinimal.h"
+#include "GameFramework/Character.h"
+#include "GameCharacter.generated.h"
+
+class UInputComponent;
+class USkeletalMeshComponent;
+class USceneComponent;
+class UCameraComponent;
+class UMotionControllerComponent;
+class UAnimMontage;
+class USoundBase;
+class UInventoryComponent;
+class UStatsComponent;
+class UWeaponComponent;
+class UCustomAction;
+class UBoxComponent;
+
+UCLASS(config = Game)
+class AGameCharacter : public ACharacter
+{
+	GENERATED_BODY()
+
+public:
+
+	AGameCharacter();
+
+	//Components
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
+		UStatsComponent* StatsComponent;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
+		UWeaponComponent* WeaponComponent;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
+		UCustomAction* CustomAction;
+
+
+	//Animation
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Animation")
+		UAnimMontage* DeathAnimMontage;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Animation")
+		UAnimMontage* HitReaction;
+
+
+	virtual void BeginPlay() override;
+
+	virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
+
+	
+	//Hit Reaction
+
+	virtual void OnHitReaction();
+
+
+	//Make Strike
+
+	void MakeStrike(float StrikeDistance, float MinAngle, float MaxAngle);
+
+	void ClearIgnoreActorsDamageStrike();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Strike")
+		float StrikeDamage = 10;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Strike")
+		TSubclassOf<UDamageType> StrikeDamageType;
+
+protected:
+
+	virtual void OnDeath();
+
+private:
+
+	void OnHealChanged(float Health);
+
+	TArray<AActor*> IgnoreActorsDamage;
+
+	
+	
+	
+
+
+};
