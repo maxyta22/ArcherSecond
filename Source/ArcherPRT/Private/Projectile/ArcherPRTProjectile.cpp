@@ -35,15 +35,24 @@ AArcherPRTProjectile::AArcherPRTProjectile()
 	InitialLifeSpan = 3.0f;
 }
 
-void AArcherPRTProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
+void AArcherPRTProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult &Hit)
 {
 	if (!GetWorld())  return;
 
 	ProjectileMovement->StopMovementImmediately();
 
+	FHitResult HitResult = Hit;
+
+	if (HitResult.GetComponent()->ComponentHasTag("Head"))
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Red, TEXT("HEAD SHOT"));
+	}
+	
+
 	if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr))
 	{
 		const auto Pawn = Cast<AGameCharacter>(OtherActor);
+		
 		if (Pawn)
 		{
 			Pawn->TakeDamage(DamageWeapon+DamageProjectile, FDamageEvent(), Instigator, this);
