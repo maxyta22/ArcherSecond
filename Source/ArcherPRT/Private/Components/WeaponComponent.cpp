@@ -30,7 +30,7 @@ void UWeaponComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 	TraceAim();
 }
 
-void UWeaponComponent::EquipWeapon(TSubclassOf<UWeaponBase> Weapon)
+void UWeaponComponent::EquipWeapon(TSubclassOf<UWeaponBase> Weapon) 
 {
 	CurrentEquipWeapon = Weapon;	
 }
@@ -59,12 +59,11 @@ void UWeaponComponent::TraceAim()
 	
 	if (TraceResult.bBlockingHit)
 	{
-		const auto Result = Cast<AAICharacter>(TraceResult.Actor);
+		const auto Result = Cast<AAICharacter>(TraceResult.GetActor());
 		if (Result)
 		{
 			Result->StartAccumulateToAiming();
 			CurrentAimingEnemy = Result;
-			//result->ReactionToAiming();
 		}
 		else
 		{

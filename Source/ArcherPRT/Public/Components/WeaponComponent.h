@@ -39,8 +39,6 @@ public:
 	UFUNCTION(BlueprintCallable)
 		 int GetAmountAmmo() const;
 
-	
-
 	UFUNCTION(BlueprintPure, Category = "Check")
 		bool AimingInProgress() const { return bAimingInProgress; };
 
@@ -58,7 +56,6 @@ public:
 
 	bool CanMakeShot() const;
 
-	
 	
 protected:
 	
