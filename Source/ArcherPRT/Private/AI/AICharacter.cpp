@@ -17,10 +17,14 @@ AAICharacter::AAICharacter()
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 	AIControllerClass = APRTAIController::StaticClass();
 
-	//Init Components
-	//HeadCollider = CreateDefaultSubobject<UCapsuleComponent>("Colliders");
-	//HeadCollider->SetupAttachment(GetMesh(), "bind_head");
+	//Setup Capsule Collision
+	GetCapsuleComponent()->SetCollisionObjectType(ECollisionChannel::ECC_Pawn);
+	GetCapsuleComponent()->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
+	GetCapsuleComponent()->SetCollisionResponseToChannel(ECollisionChannel::ECC_WorldStatic, ECollisionResponse::ECR_Block);
+	GetCapsuleComponent()->SetCollisionResponseToChannel(ECollisionChannel::ECC_WorldDynamic, ECollisionResponse::ECR_Block);
 	
+	
+
 
 	// Setup Smooth Rotation
 	bUseControllerRotationYaw = false;
@@ -32,7 +36,6 @@ AAICharacter::AAICharacter()
 }
 
 //Accumulate To Aiming 
-
 
 void AAICharacter::StartAccumulateToAiming()
 {

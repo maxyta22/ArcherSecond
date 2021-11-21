@@ -19,11 +19,6 @@ class ARCHERPRT_API AAICharacter : public AGameCharacter
 public:
 	AAICharacter();
 
-	//Colliders
-
-	//UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Colliders")
-		//UCapsuleComponent* HeadCollider;
-
 	//AI
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Behavior")
