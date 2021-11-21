@@ -11,7 +11,6 @@
 #include "DrawDebugHelpers.h"
 #include "Camera/CameraComponent.h"
 
-
 UWeaponComponent::UWeaponComponent()
 
 {	
@@ -36,7 +35,7 @@ void UWeaponComponent::EquipWeapon(TSubclassOf<UWeaponBase> Weapon)
 	CurrentEquipWeapon = Weapon;	
 }
 
-void UWeaponComponent::TraceAim()
+void UWeaponComponent::TraceAim() 
 {
 	if (!GetWorld()) return;
 	if (!GetOwner()) return;
@@ -85,7 +84,7 @@ void UWeaponComponent::TraceAim()
 
 }
 
-void UWeaponComponent::OnAiming()
+void UWeaponComponent::OnAiming() 
 {
 	//Check Have Ammo
 	if (!CanMakeShot()) return;
@@ -124,9 +123,9 @@ void UWeaponComponent::OnFire()
 	{
 		CurrentProjectile->DamageWeapon = CurrentEquipWeapon.GetDefaultObject()->Damage;
 		CurrentProjectile->Instigator = GetOwner()->GetInstigatorController();
+		int AmountAmmo;
 		//Spend Ammo
-		bool CheckHaveAmmo;
-		LoopByAmmo(true, CheckHaveAmmo);
+		LoopByAmmo(true, AmountAmmo);
 		bAimingInProgress = false;
 	}
 
@@ -148,7 +147,7 @@ void UWeaponComponent::OnFire()
 
 }
 
-void UWeaponComponent::LoopByAmmo(bool SpendAmmo, bool &HaveAmmo)
+void UWeaponComponent::LoopByAmmo(bool SpendAmmo, int& AmountAmmo) const
 {
 	if (!GetOwner()) return;
 
@@ -158,13 +157,11 @@ void UWeaponComponent::LoopByAmmo(bool SpendAmmo, bool &HaveAmmo)
 	TArray<EAmmoType> KeysFromMap;
 	CurrentEquipWeapon.GetDefaultObject()->ProjectileAmmoMap.GetKeys(KeysFromMap);
 
-	HaveAmmo = false;
-
 	switch (KeysFromMap[SelectedUseAmmoIndex])
 	{
 	case EAmmoType::WoodArrow:
 		
-		if (Owner->InventoryComponent->GetWoodArrow() > 0) HaveAmmo = true; 
+		AmountAmmo = Owner->InventoryComponent->GetWoodArrow();
 		
 		if (SpendAmmo)
 		{
@@ -174,7 +171,7 @@ void UWeaponComponent::LoopByAmmo(bool SpendAmmo, bool &HaveAmmo)
 
 	case EAmmoType::RockArrow:
 
-		if (Owner->InventoryComponent->GetRockArrow() > 0) HaveAmmo = true;
+		AmountAmmo = Owner->InventoryComponent->GetRockArrow();
 		
 		if (SpendAmmo)
 		{
@@ -184,7 +181,7 @@ void UWeaponComponent::LoopByAmmo(bool SpendAmmo, bool &HaveAmmo)
 
 	case EAmmoType::MetalArrow:
 
-		if (Owner->InventoryComponent->GetMetalArrow() > 0) HaveAmmo = true;
+		AmountAmmo = Owner->InventoryComponent->GetMetalArrow();
 
 		if (SpendAmmo)
 		{
@@ -194,43 +191,26 @@ void UWeaponComponent::LoopByAmmo(bool SpendAmmo, bool &HaveAmmo)
 	}		
 }
 
-bool UWeaponComponent::CanMakeShot() 
+bool UWeaponComponent::CanMakeShot() const 
 {
-	bool CheckHaveAmmo;
+	int AmountAmmo;
 
-	LoopByAmmo(false, CheckHaveAmmo);
+	LoopByAmmo(false, AmountAmmo);
 
-	return CheckHaveAmmo;
+	return AmountAmmo>0;
 }
 
-int UWeaponComponent::GetAmountAmmo()
+int UWeaponComponent::GetAmountAmmo() const
 {
 	if (!GetOwner()) return 0;
 
 	const auto Owner = Cast<APlayerCharacter>(GetOwner());
 	if (!Owner) return 0;
 
-	TArray<EAmmoType> KeysFromMap;
-	CurrentEquipWeapon.GetDefaultObject()->ProjectileAmmoMap.GetKeys(KeysFromMap);
+	int AmountAmmo;
 
-	switch (KeysFromMap[SelectedUseAmmoIndex])
-	{
-	case EAmmoType::WoodArrow:
-
-		return Owner->InventoryComponent->GetWoodArrow();
-		break;
-
-	case EAmmoType::RockArrow:
-
-		return Owner->InventoryComponent->GetRockArrow();
-		break;
-
-	case EAmmoType::MetalArrow:
-
-		return Owner->InventoryComponent->GetMetalArrow();
-		break;
-	}
-	return 0;
+	LoopByAmmo(false, AmountAmmo);
+	return AmountAmmo;
 }
 
 void UWeaponComponent::SwitchAmmoInCurrentEquipWeapon()

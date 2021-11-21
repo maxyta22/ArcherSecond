@@ -37,12 +37,12 @@ public:
 		float SpreadShot;
 
 	UFUNCTION(BlueprintCallable)
-		 int GetAmountAmmo();
+		 int GetAmountAmmo() const;
 
 	
 
 	UFUNCTION(BlueprintPure, Category = "Check")
-		bool AimingInProgress() { return bAimingInProgress; };
+		bool AimingInProgress() const { return bAimingInProgress; };
 
 	void OnAiming();
 
@@ -54,9 +54,9 @@ public:
 
 	void EquipWeapon(TSubclassOf<UWeaponBase> Weapon);
 
-	void LoopByAmmo(bool SpendAmmo, bool &HaveAmmo);
+	void LoopByAmmo(bool SpendAmmo, int &AmountAmmo) const;
 
-	bool CanMakeShot();
+	bool CanMakeShot() const;
 
 	
 	
