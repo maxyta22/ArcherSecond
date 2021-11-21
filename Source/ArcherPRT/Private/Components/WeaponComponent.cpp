@@ -88,7 +88,6 @@ void UWeaponComponent::TraceAim()
 void UWeaponComponent::OnAiming()
 {
 	//Check Have Ammo
-	LoopByAmmo(true, false);
 	if (!CanMakeShot()) return;
 	bAimingInProgress = true;
 }
@@ -107,12 +106,9 @@ void UWeaponComponent::OnFire()
 	if (CurrentEquipWeapon.GetDefaultObject()->ProjectileAmmoMap.Num() == 0) return;
 
 	//Check Have Ammo
-	LoopByAmmo(true, false);
-
 	if (!CanMakeShot()) return;
 
 	//Init Local Var
-	
 	FActorSpawnParameters ActorSpawnParams;
 	ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
 	const FVector SpawnLocation = Owner->HandMesh->GetSocketLocation(CurrentEquipWeapon.GetDefaultObject()->MuzzleSocketName);
@@ -129,7 +125,8 @@ void UWeaponComponent::OnFire()
 		CurrentProjectile->DamageWeapon = CurrentEquipWeapon.GetDefaultObject()->Damage;
 		CurrentProjectile->Instigator = GetOwner()->GetInstigatorController();
 		//Spend Ammo
-		LoopByAmmo(false, true);
+		bool CheckHaveAmmo;
+		LoopByAmmo(true, CheckHaveAmmo);
 		bAimingInProgress = false;
 	}
 
@@ -151,7 +148,7 @@ void UWeaponComponent::OnFire()
 
 }
 
-void UWeaponComponent::LoopByAmmo(bool CheckAmmo, bool SpendAmmo)
+void UWeaponComponent::LoopByAmmo(bool SpendAmmo, bool &HaveAmmo)
 {
 	if (!GetOwner()) return;
 
@@ -166,11 +163,9 @@ void UWeaponComponent::LoopByAmmo(bool CheckAmmo, bool SpendAmmo)
 	switch (KeysFromMap[SelectedUseAmmoIndex])
 	{
 	case EAmmoType::WoodArrow:
-
-		if (CheckAmmo) 
-		{ 
-			if (Owner->InventoryComponent->GetWoodArrow() > 0) HaveAmmo = true; 
-		}
+		
+		if (Owner->InventoryComponent->GetWoodArrow() > 0) HaveAmmo = true; 
+		
 		if (SpendAmmo)
 		{
 			Owner->InventoryComponent->AddWoodArrow(-1);
@@ -179,10 +174,8 @@ void UWeaponComponent::LoopByAmmo(bool CheckAmmo, bool SpendAmmo)
 
 	case EAmmoType::RockArrow:
 
-		if (CheckAmmo)
-		{
-			if (Owner->InventoryComponent->GetRockArrow() > 0) HaveAmmo = true;
-		}
+		if (Owner->InventoryComponent->GetRockArrow() > 0) HaveAmmo = true;
+		
 		if (SpendAmmo)
 		{
 			Owner->InventoryComponent->AddRockArrow(-1);
@@ -191,10 +184,8 @@ void UWeaponComponent::LoopByAmmo(bool CheckAmmo, bool SpendAmmo)
 
 	case EAmmoType::MetalArrow:
 
-		if (CheckAmmo)
-		{
-			if (Owner->InventoryComponent->GetMetalArrow() > 0) HaveAmmo = true;
-		}
+		if (Owner->InventoryComponent->GetMetalArrow() > 0) HaveAmmo = true;
+
 		if (SpendAmmo)
 		{
 			Owner->InventoryComponent->AddMetalArrow(-1);
@@ -203,10 +194,13 @@ void UWeaponComponent::LoopByAmmo(bool CheckAmmo, bool SpendAmmo)
 	}		
 }
 
-bool UWeaponComponent::CanMakeShot() const
+bool UWeaponComponent::CanMakeShot() 
 {
+	bool CheckHaveAmmo;
 
-	return HaveAmmo;
+	LoopByAmmo(false, CheckHaveAmmo);
+
+	return CheckHaveAmmo;
 }
 
 int UWeaponComponent::GetAmountAmmo()

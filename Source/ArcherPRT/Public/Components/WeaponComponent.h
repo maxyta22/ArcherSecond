@@ -54,9 +54,9 @@ public:
 
 	void EquipWeapon(TSubclassOf<UWeaponBase> Weapon);
 
-	void LoopByAmmo(bool CheckAmmo, bool SpendAmmo);
+	void LoopByAmmo(bool SpendAmmo, bool &HaveAmmo);
 
-	bool CanMakeShot() const;
+	bool CanMakeShot();
 
 	
 	
@@ -69,8 +69,6 @@ protected:
 private:
 
 	bool bAimingInProgress;
-
-	bool HaveAmmo;	
 
 	AAICharacter* CurrentAimingEnemy;
 
