@@ -14,6 +14,7 @@
 #include "GameFramework/InputSettings.h"
 #include "HeadMountedDisplayFunctionLibrary.h"
 #include "Kismet/GameplayStatics.h"
+#include "MathUtils.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
 
@@ -88,17 +89,7 @@ void AGameCharacter::MakeStrike(float StrikeDistance, float MinAngle, float MaxA
 			&& (!IgnoreActorsDamage.Contains(DamagedActor))
 			)
 		{
-			const auto OneVector = GetActorForwardVector();
-			const auto TwoVector = DamagedActor->GetActorLocation() - GetActorLocation();
-			const auto AngleBetween = FMath::Acos(FVector::DotProduct(OneVector.GetSafeNormal(), TwoVector.GetSafeNormal()));
-			const auto CrossProduct = FVector::CrossProduct(OneVector, TwoVector);
-			const auto Degrees = FMath::RadiansToDegrees(AngleBetween);
-			const auto Angle = FMath::RadiansToDegrees(AngleBetween) * FMath::Sign(CrossProduct.Z);
-
-
-			FString AngleStr = "Angle = " + FString::SanitizeFloat(Angle);
-			UE_LOG(LogGameCharacter, Display, TEXT("%s"), *AngleStr);
-
+			const auto Angle = UMathUtils::FindAngleBetweenForwardVectorAndTarget(GetActorLocation(), GetActorForwardVector(), DamagedActor->GetActorLocation());
 
 			if ((Angle >= MinAngle) && (Angle <= MaxAngle))
 			{
