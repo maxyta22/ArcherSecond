@@ -64,6 +64,14 @@ public:
 	UFUNCTION()
 		void OnOverlapEndInteractCapsule(UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
+	//Blueprint Event for BP 
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Attack")
+		void PressedAttackButon();
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Attack")
+		void ReleasedAttackButton();
+
 protected:
 
 	virtual void BeginPlay() override;

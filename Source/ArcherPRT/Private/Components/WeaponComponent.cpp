@@ -40,6 +40,7 @@ void UWeaponComponent::TraceAim()
 	if (!GetWorld()) return;
 	if (!GetOwner()) return;
 	if (!CurrentEquipWeapon) return;
+	if (!AimingInProgress()) return;
 
 	const auto Owner = Cast<APlayerCharacter>(GetOwner());
 	if (!Owner) return;
