@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "Net/UnrealNetwork.h"
 #include "StatsComponent.generated.h"
 
 DECLARE_MULTICAST_DELEGATE(FOnDeath)
@@ -53,9 +54,13 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Heal", meta = (EditCondition = "AutoHeal"))
 		float HealModifire = 1.0f;
 
+	
+
 private:
 
-	float  Health = 0.0f;
+	UPROPERTY(Replicated)
+		float  Health = 0.0f;
+	
 	FTimerHandle HealTimerHandle;
 
 	UFUNCTION()

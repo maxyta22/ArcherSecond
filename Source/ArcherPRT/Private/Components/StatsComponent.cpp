@@ -64,3 +64,10 @@ void UStatsComponent::SetHealth(float NewHealth)
 	OnHealthChanged.Broadcast(Health);
 }
 
+void UStatsComponent::GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	DOREPLIFETIME(UStatsComponent, Health);
+	
+}
+
