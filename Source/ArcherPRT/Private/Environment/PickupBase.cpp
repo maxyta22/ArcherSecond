@@ -4,6 +4,7 @@
 #include "Environment/PickupBase.h"
 #include "Components/SphereComponent.h"
 #include "Player/PlayerCharacter.h"
+#include "Net/UnrealNetwork.h"
 #include "Components/InventoryComponent.h"
 
 DEFINE_LOG_CATEGORY_STATIC(PickupBase, All, All);
@@ -18,6 +19,8 @@ APickupBase::APickupBase()
 
 	StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>("StaticMesh");
 	StaticMeshComponent->SetupAttachment(SphereCollision);
+
+	bReplicates = true;
 
 }
 
@@ -39,11 +42,17 @@ void APickupBase::TryTakePickup(APlayerCharacter* Pawn)
 	 
 }
 
-void APickupBase::TakePickup()
+
+
+void APickupBase::TakePickup_Implementation()
 {
 	AfterWasTaken();
-	Destroy();	
+	Destroy();
 }
+
+
+
+
 
 
 

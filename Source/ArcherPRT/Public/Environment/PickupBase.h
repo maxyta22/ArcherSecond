@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Net/UnrealNetwork.h"
 #include "PickupBase.generated.h"
 
 
@@ -53,7 +54,14 @@ public:
 protected:
 
 	virtual void BeginPlay() override;	
+
+	UFUNCTION(NetMulticast, Reliable)
 	void TakePickup();
+
+	//UFUNCTION(NetMulticast, Reliable)
+	//void TakePickupMulticast();
+	//void TakePickupMulticast_Implementation();
+
 
 	
 	
