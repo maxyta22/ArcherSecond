@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "Net/UnrealNetwork.h"
 #include "WeaponComponent.generated.h"
 
 
@@ -33,7 +34,7 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 		bool bDrawDebug;
 
-	UPROPERTY(BlueprintReadWrite, Category = "Internal")
+	UPROPERTY(BlueprintReadWrite, Replicated, Category = "Internal")
 		float SpreadShot;
 
 	UFUNCTION(BlueprintCallable)
@@ -44,7 +45,12 @@ public:
 
 	void OnAiming();
 
+	//UFUNCTION(NetMulticast, Reliable)
+	UFUNCTION(Server, Reliable)
 	void OnFire();
+
+	UFUNCTION(NetMulticast, Reliable)
+	void SpawnBullet();
 
 	void SwitchAmmoInCurrentEquipWeapon();
 

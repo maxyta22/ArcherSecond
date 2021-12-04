@@ -9,6 +9,7 @@
 #include "Player/PlayerCharacter.h"
 #include "AI/AICharacter.h"
 #include "DrawDebugHelpers.h"
+#include "Net/UnrealNetwork.h"
 #include "Camera/CameraComponent.h"
 
 UWeaponComponent::UWeaponComponent()
@@ -91,7 +92,7 @@ void UWeaponComponent::OnAiming()
 	bAimingInProgress = true;
 }
 
-void UWeaponComponent::OnFire()
+void UWeaponComponent::OnFire_Implementation()
 {
 	if (!CurrentEquipWeapon) return;
 	if (!GetWorld()) return;
@@ -106,6 +107,27 @@ void UWeaponComponent::OnFire()
 
 	//Check Have Ammo
 	if (!CanMakeShot()) return;
+
+	SpawnBullet();
+
+
+	// try and play a firing animation if specified
+	if (CurrentEquipWeapon.GetDefaultObject()->FireAnimation != nullptr)
+	{
+		UAnimInstance* AnimInstance = Owner->GetHandMesh()->GetAnimInstance();
+		if (AnimInstance != nullptr)
+		{
+			AnimInstance->Montage_Play(CurrentEquipWeapon.GetDefaultObject()->FireAnimation, 1.f);
+		}
+	}
+}
+
+void UWeaponComponent::SpawnBullet_Implementation()
+{
+	UWorld* const World = GetWorld();
+	if (!World) return;
+	const auto Owner = Cast<APlayerCharacter>(GetOwner());
+	if (!Owner) return;
 
 	//Init Local Var
 	FActorSpawnParameters ActorSpawnParams;
@@ -134,17 +156,6 @@ void UWeaponComponent::OnFire()
 	{
 		UGameplayStatics::PlaySoundAtLocation(this, CurrentEquipWeapon.GetDefaultObject()->FireSound, Owner->GetActorLocation());
 	}
-
-	// try and play a firing animation if specified
-	if (CurrentEquipWeapon.GetDefaultObject()->FireAnimation != nullptr)
-	{
-		UAnimInstance* AnimInstance = Owner->GetHandMesh()->GetAnimInstance();
-		if (AnimInstance != nullptr)
-		{
-			AnimInstance->Montage_Play(CurrentEquipWeapon.GetDefaultObject()->FireAnimation, 1.f);
-		}
-	}
-
 }
 
 void UWeaponComponent::LoopByAmmo(bool SpendAmmo, int& AmountAmmo) const
@@ -222,6 +233,13 @@ void UWeaponComponent::SwitchAmmoInCurrentEquipWeapon()
 	}
 	else
 		SelectedUseAmmoIndex = FMath::Clamp(SelectedUseAmmoIndex + 1, 0, CurrentEquipWeapon.GetDefaultObject()->ProjectileAmmoMap.Num()-1);
+
+}
+
+void UWeaponComponent::GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	DOREPLIFETIME(UWeaponComponent, SpreadShot);
 
 }
 
