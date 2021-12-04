@@ -22,6 +22,10 @@ void APRTAIController::Tick(float DeltaTime)
 		const auto TargetActor = GetFocusOnActor();
 		SetFocus(TargetActor);
 	}
+	else
+	{
+		SetFocus(nullptr);
+	}
 	
 }
 
