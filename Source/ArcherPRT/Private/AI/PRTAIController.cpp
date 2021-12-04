@@ -16,8 +16,13 @@ APRTAIController::APRTAIController()
 void APRTAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	const auto TargetActor = GetFocusOnActor();
-	SetFocus(TargetActor);
+
+	if (FocusActive)
+	{
+		const auto TargetActor = GetFocusOnActor();
+		SetFocus(TargetActor);
+	}
+	
 }
 
 void APRTAIController::OnPossess(APawn* InPawn)

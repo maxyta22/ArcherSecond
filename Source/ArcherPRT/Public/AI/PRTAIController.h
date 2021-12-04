@@ -22,6 +22,8 @@ public:
 
 	UFUNCTION(BlueprintPure)
 	AActor* GetEnemy();
+
+	bool FocusActive = true;
 	
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
