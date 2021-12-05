@@ -12,6 +12,7 @@ DEFINE_LOG_CATEGORY_STATIC(LogHealthComponent, All, All)
 UStatsComponent::UStatsComponent()
 {
 	PrimaryComponentTick.bCanEverTick = false;
+	SetIsReplicated(true);
 }
 
 void UStatsComponent::BeginPlay()
