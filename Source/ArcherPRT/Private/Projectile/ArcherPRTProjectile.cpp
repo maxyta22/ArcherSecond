@@ -42,11 +42,6 @@ void AArcherPRTProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActo
 	ProjectileMovement->StopMovementImmediately();
 
 	FHitResult HitResult = Hit;
-
-	if (HitResult.GetComponent()->ComponentHasTag("Head"))
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Red, TEXT("HEAD SHOT"));
-	}
 	
 
 	if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr))
@@ -55,8 +50,19 @@ void AArcherPRTProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActo
 		
 		if (Pawn)
 		{
-			Pawn->TakeDamage(DamageWeapon+DamageProjectile, FDamageEvent(), GetInstigatorController(), this);
-			Pawn->OnHitReaction();	
+			if (HitResult.GetComponent()->ComponentHasTag("Head"))
+			{
+				Pawn->TakeDamage(DamageWeapon + DamageProjectile, FDamageEvent(), GetInstigatorController(), this);
+				Pawn->OnHitReaction();
+
+				GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Red, TEXT("HEAD SHOT"));
+			}
+			else 
+			{
+				Pawn->TakeDamage(0, FDamageEvent(), GetInstigatorController(), this);
+			}
+			
+				
 		}
 		Destroy();
 	}
