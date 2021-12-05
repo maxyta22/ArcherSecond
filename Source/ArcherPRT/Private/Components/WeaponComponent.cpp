@@ -140,13 +140,17 @@ void UWeaponComponent::SpawnBullet_Implementation()
 	//SpawnProjectile
 	TArray<TSubclassOf<AArcherPRTProjectile>> ValueFromMap;
 	CurrentEquipWeapon.GetDefaultObject()->ProjectileAmmoMap.GenerateValueArray(ValueFromMap);
-	AArcherPRTProjectile* CurrentProjectile = World->SpawnActor<AArcherPRTProjectile>(ValueFromMap[SelectedUseAmmoIndex], SpawnLocation, SpawnRotation, ActorSpawnParams);
+	//AArcherPRTProjectile* CurrentProjectile = World->SpawnActor<AArcherPRTProjectile>(ValueFromMap[SelectedUseAmmoIndex], SpawnLocation, SpawnRotation, ActorSpawnParams);
+	AArcherPRTProjectile* CurrentProjectile = World->SpawnActorDeferred<AArcherPRTProjectile>(ValueFromMap[SelectedUseAmmoIndex], FTransform(SpawnRotation, SpawnLocation));
 	if (CurrentProjectile)
 	{
 		CurrentProjectile->DamageWeapon = CurrentEquipWeapon.GetDefaultObject()->Damage;
-		CurrentProjectile->Instigator = GetOwner()->GetInstigatorController();
-		int AmountAmmo;
+		CurrentProjectile->SetInstigator(Owner);
+		
+		CurrentProjectile->FinishSpawning(FTransform(SpawnRotation, SpawnLocation));
+
 		//Spend Ammo
+		int AmountAmmo;
 		LoopByAmmo(true, AmountAmmo);
 		bAimingInProgress = false;
 	}

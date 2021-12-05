@@ -19,8 +19,6 @@ void ULockFocusANS::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequenceB
 	if (!AIController) return;
 
 	AIController->FocusActive = false;
-
-	GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Green, TEXT("False"));
 	
 }
 
@@ -42,7 +40,5 @@ void ULockFocusANS::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequenceBas
 	if (!AIController) return;
 
 	AIController->FocusActive = true;
-
-	GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Green, TEXT("True"));
 
 }

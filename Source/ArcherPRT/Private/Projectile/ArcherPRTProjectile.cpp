@@ -55,7 +55,7 @@ void AArcherPRTProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActo
 		
 		if (Pawn)
 		{
-			Pawn->TakeDamage(DamageWeapon+DamageProjectile, FDamageEvent(), Instigator, this);
+			Pawn->TakeDamage(DamageWeapon+DamageProjectile, FDamageEvent(), GetInstigatorController(), this);
 			Pawn->OnHitReaction();	
 		}
 		Destroy();

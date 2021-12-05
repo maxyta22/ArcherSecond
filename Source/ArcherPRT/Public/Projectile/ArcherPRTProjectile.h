@@ -29,17 +29,17 @@ public:
 
 	/** Returns CollisionComp subobject **/
 	USphereComponent* GetCollisionComp() const { return CollisionComp; }
+
 	/** Returns ProjectileMovement subobject **/
 	UProjectileMovementComponent* GetProjectileMovement() const { return ProjectileMovement; }
 
-	void SetInstigator(AController* Controller) { Instigator = Controller; }
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 		int DamageProjectile = 0;
 
 		int DamageWeapon;
 
-		AController* Instigator;
+		
 
 
 	
