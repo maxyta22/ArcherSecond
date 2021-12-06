@@ -51,9 +51,13 @@ public:
 
 	virtual void BeginPlay() override;
 
+	//Take Damage
+
 	virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 
-	
+	UFUNCTION(BlueprintImplementableEvent, Category = "TakeDamage")
+		void AfterTakeDamage();
+
 	//Hit Reaction
 
 	virtual void OnHitReaction();
@@ -70,6 +74,8 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Strike")
 		TSubclassOf<UDamageType> StrikeDamageType;
+
+	
 
 protected:
 
