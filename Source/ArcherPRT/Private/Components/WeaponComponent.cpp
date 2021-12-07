@@ -111,19 +111,9 @@ void UWeaponComponent::OnFire_Implementation()
 
 	SpawnBullet();
 
-
-	// try and play a firing animation if specified
-	if (CurrentEquipWeapon.GetDefaultObject()->FireAnimation != nullptr)
-	{
-		UAnimInstance* AnimInstance = Owner->GetHandMesh()->GetAnimInstance();
-		if (AnimInstance != nullptr)
-		{
-			AnimInstance->Montage_Play(CurrentEquipWeapon.GetDefaultObject()->FireAnimation, 1.f);
-		}
-	}
 }
 
-void UWeaponComponent::SpawnBullet_Implementation()
+void UWeaponComponent::SpawnBullet()
 {
 	UWorld* const World = GetWorld();
 	if (!World) return;
@@ -134,7 +124,8 @@ void UWeaponComponent::SpawnBullet_Implementation()
 	FActorSpawnParameters ActorSpawnParams;
 	ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
 	const FVector SpawnLocation = Owner->HandMesh->GetSocketLocation(CurrentEquipWeapon.GetDefaultObject()->MuzzleSocketName);
-	const FVector ShootDirection = FMath::VRandCone(Owner->GetFirstPersonCameraComponent()->GetForwardVector(), SpreadShot);
+	//const FVector ShootDirection = FMath::VRandCone(Owner->GetFirstPersonCameraComponent()->GetForwardVector(), SpreadShot);
+	const FVector ShootDirection = FMath::VRandCone(Owner->GetControlRotation().Vector(), SpreadShot);
 	const FRotator SpawnRotation = ShootDirection.Rotation();
 
 
@@ -160,6 +151,16 @@ void UWeaponComponent::SpawnBullet_Implementation()
 	if (CurrentEquipWeapon.GetDefaultObject()->FireSound != nullptr)
 	{
 		UGameplayStatics::PlaySoundAtLocation(this, CurrentEquipWeapon.GetDefaultObject()->FireSound, Owner->GetActorLocation());
+	}
+
+	// try and play a firing animation if specified
+	if (CurrentEquipWeapon.GetDefaultObject()->FireAnimation != nullptr)
+	{
+		UAnimInstance* AnimInstance = Owner->GetHandMesh()->GetAnimInstance();
+		if (AnimInstance != nullptr)
+		{
+			AnimInstance->Montage_Play(CurrentEquipWeapon.GetDefaultObject()->FireAnimation, 1.f);
+		}
 	}
 }
 

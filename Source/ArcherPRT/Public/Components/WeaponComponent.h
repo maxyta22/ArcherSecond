@@ -45,11 +45,10 @@ public:
 
 	void OnAiming();
 
-	//UFUNCTION(NetMulticast, Reliable)
 	UFUNCTION(Server, Reliable)
 	void OnFire();
 
-	UFUNCTION(NetMulticast, Reliable)
+	//UFUNCTION(NetMulticast, Reliable)
 	void SpawnBullet();
 
 	void SwitchAmmoInCurrentEquipWeapon();
