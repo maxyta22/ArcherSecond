@@ -50,6 +50,17 @@ void AAICharacter::FinishAccumulateToAiming()
 	GetWorld()->GetTimerManager().ClearTimer(AccumulateToAiminHandleTimer);
 }
 
+void AAICharacter::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+	
+	// Custom Root Motion When Play Montage
+	if (GetMesh()->GetAnimInstance()->GetCurrentActiveMontage())
+	{
+		AddActorWorldOffset(GetActorForwardVector() * GetMesh()->GetAnimInstance()->GetCurveValue("ForwardRootMotion"), true);	
+	}
+}
+
 void AAICharacter::ReactionToAiming()
 {
 	AfterReactionToAiming();
@@ -83,6 +94,7 @@ void AAICharacter::OnDeath()
 
 	if (DeathAnimMontage)
 	{
+		TArray<UAnimMontage*> EmptyArr;
 		CustomAction->TryPerformPlayAnimMontage(DeathAnimMontage, true);
 	}
 
@@ -104,19 +116,22 @@ void AAICharacter::OnHitReaction()
 	if (!AIController->GetEnemy())
 	{
 		if (!HitReaction) return;
-		CustomAction->TryPerformPlayAnimMontage(HitReaction, false);
+		CustomAction->TryPerformPlayAnimMontage(HitReaction, true);
 		return;
 	}
 
 	// If Have Close Attack After Hit Reaction
 	if ((CloseAttackAfterHitReaction) && (GetDistanceTo(AIController->GetEnemy()) <= MinDistanceForAttackAfterHitReaction))
 	{
-		CustomAction->TryPerformPlayAnimMontage(CloseAttackAfterHitReaction, false);
+		CustomAction->TryPerformPlayAnimMontage(CloseAttackAfterHitReaction, true);
 		return;
 	}
 
 	if (!HitReaction) return;
-	CustomAction->TryPerformPlayAnimMontage(HitReaction, false);
+
+	CustomAction->TryPerformPlayAnimMontage(HitReaction, true);
+	
+	
 
 	
 }

@@ -19,7 +19,7 @@ public:
 	UCustomAction();
 
 	UFUNCTION(BlueprintCallable,Category = "Custom Action")
-		void TryPerformPlayAnimMontage(UAnimMontage* Montage, bool CanAbortCurrentCustomAction);
+		void TryPerformPlayAnimMontage(UAnimMontage* Montage, bool CanInterruptCurrentMontage);
 
 	UFUNCTION(BlueprintPure)
 		bool CustomActionInProgress() {  return  bCustomActionInProgress; }

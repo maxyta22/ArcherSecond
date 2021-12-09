@@ -17,7 +17,10 @@ class ARCHERPRT_API AAICharacter : public AGameCharacter
 	GENERATED_BODY()
 
 public:
+
 	AAICharacter();
+
+	virtual void Tick(float DeltaTime) override;
 
 	//AI
 

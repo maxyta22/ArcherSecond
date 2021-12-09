@@ -28,6 +28,8 @@ public:
 
 	AGameCharacter();
 
+	virtual void BeginPlay() override;
+
 	//Components
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
@@ -48,8 +50,6 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Animation")
 		UAnimMontage* HitReaction;
 
-
-	virtual void BeginPlay() override;
 
 	//Take Damage
 
@@ -76,7 +76,6 @@ public:
 		TSubclassOf<UDamageType> StrikeDamageType;
 
 	
-
 protected:
 
 	virtual void OnDeath();

@@ -24,9 +24,9 @@ void UCustomAction::TickComponent(float DeltaTime, ELevelTick TickType, FActorCo
 
 }
 
-void UCustomAction::TryPerformPlayAnimMontage(UAnimMontage* Montage , bool CanAbortCurrentCustomAction)
+void UCustomAction::TryPerformPlayAnimMontage(UAnimMontage* Montage , bool CanInterruptCurrentMontage)
 {
-	if (!CanAbortCurrentCustomAction && bCustomActionInProgress) return;
+	if (!CanInterruptCurrentMontage && bCustomActionInProgress) return;
 
 	if (!Montage) return;
 
@@ -37,7 +37,7 @@ void UCustomAction::TryPerformPlayAnimMontage(UAnimMontage* Montage , bool CanAb
 	if (!AIController) return;
 
 	//Abort Current Custom Action
-	if (CanAbortCurrentCustomAction)
+	if (CanInterruptCurrentMontage)
 	{
 		FinishCustomActionTimer.Invalidate();
 		FinishCustomAction();

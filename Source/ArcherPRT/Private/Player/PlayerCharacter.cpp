@@ -165,7 +165,6 @@ void APlayerCharacter::OnOverlapEndInteractCapsule(UPrimitiveComponent* Overlapp
 
 void APlayerCharacter::TryPerformInteract()
 {
-	//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("Interact"));
 	APickupBase* PickupBase;
 
 	if (CurrentInteractTarget.Num() == 0) return;
