@@ -28,7 +28,6 @@ void UWeaponComponent::BeginPlay()
 
 void UWeaponComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
-	
 	TraceAim();
 }
 
@@ -47,7 +46,7 @@ void UWeaponComponent::TraceAim()
 	const auto Owner = Cast<APlayerCharacter>(GetOwner());
 	if (!Owner) return;
 	
-	FVector StartTraceAim = Owner->GetFirstPersonCameraComponent()->GetComponentLocation() + Owner->GetFirstPersonCameraComponent()->GetForwardVector() * 10;
+	FVector StartTraceAim = Owner->GetFirstPersonCameraComponent()->GetComponentLocation() + Owner->GetFirstPersonCameraComponent()->GetForwardVector() * 50;
 	FVector EndTraceAim = StartTraceAim + Owner->GetFirstPersonCameraComponent()->GetForwardVector() * 1000;
 	FHitResult TraceResult;
 
@@ -93,7 +92,7 @@ void UWeaponComponent::OnAiming()
 	bAimingInProgress = true;
 }
 
-void UWeaponComponent::OnFire_Implementation()
+void UWeaponComponent::OnFire_Server_Implementation()
 {
 	if (!CurrentEquipWeapon) return;
 	if (!GetWorld()) return;
@@ -109,11 +108,11 @@ void UWeaponComponent::OnFire_Implementation()
 	//Check Have Ammo
 	if (!CanMakeShot()) return;
 
-	SpawnBullet();
+	MakeShot();
 
 }
 
-void UWeaponComponent::SpawnBullet()
+void UWeaponComponent::MakeShot()
 {
 	UWorld* const World = GetWorld();
 	if (!World) return;
