@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Net/UnrealNetwork.h"
 #include "ArcherPRTProjectile.generated.h"
 
 class USphereComponent;
@@ -24,7 +25,7 @@ public:
 	AArcherPRTProjectile();
 
 	/** called when projectile hits something */
-	UFUNCTION()
+	UFUNCTION(Server, Reliable)
 	void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 
 	/** Returns CollisionComp subobject **/

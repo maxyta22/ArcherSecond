@@ -5,6 +5,7 @@
 #include "Components/SphereComponent.h"
 #include "Player/GameCharacter.h"
 #include "Components/StatsComponent.h"
+#include "Net/UnrealNetwork.h"
 #include "Kismet/GameplayStatics.h"
 
 AArcherPRTProjectile::AArcherPRTProjectile() 
@@ -35,7 +36,7 @@ AArcherPRTProjectile::AArcherPRTProjectile()
 	InitialLifeSpan = 3.0f;
 }
 
-void AArcherPRTProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult &Hit)
+void AArcherPRTProjectile::OnHit_Implementation(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult &Hit)
 {
 	if (!GetWorld())  return;
 
