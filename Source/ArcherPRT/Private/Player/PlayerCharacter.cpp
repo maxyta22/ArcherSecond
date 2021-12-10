@@ -18,6 +18,7 @@
 #include "Components/CraftComponent.h"
 #include "Components/InventoryComponent.h"
 #include "Components/WeaponComponent.h"
+#include "Net/UnrealNetwork.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogPlayerCharacter, Warning, All);
@@ -149,8 +150,6 @@ void APlayerCharacter::OnOverlapEndInteractCapsule(UPrimitiveComponent* Overlapp
 {
 	APickupBase* PickupBase;
 
-	
-
 	if (GEngine)
 	{
 		CurrentInteractTarget.Remove(OtherActor);
@@ -172,7 +171,7 @@ void APlayerCharacter::TryPerformInteract()
 	PickupBase = Cast<APickupBase>(CurrentInteractTarget[0]);
 	if (PickupBase)
 		{
-			PickupBase->TryTakePickup(this);
+			PickupBase->TryTakePickup_Server(this);
 		}
 }
 

@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Player/GameCharacter.h"
 #include "Components/InventoryComponent.h"
+#include "Net/UnrealNetwork.h"
 #include "PlayerCharacter.generated.h"
 
 
@@ -86,6 +87,7 @@ protected:
 
 	void LookUpAtRate(float Rate);
 
+	
 	void TryPerformInteract();
 	
 	virtual void SetupPlayerInputComponent(UInputComponent* InputComponent) override;

@@ -48,7 +48,8 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "Take")
 		void AfterWasTaken();
 
-		virtual void TryTakePickup(APlayerCharacter* Pawn);
+	UFUNCTION(Server, Reliable)
+		virtual void TryTakePickup_Server(APlayerCharacter* Pawn);
 
 
 protected:
@@ -56,7 +57,7 @@ protected:
 	virtual void BeginPlay() override;	
 
 	UFUNCTION(NetMulticast, Reliable)
-	void TakePickup();
+	void TakePickup_Multicast();
 
 	//UFUNCTION(NetMulticast, Reliable)
 	//void TakePickupMulticast();

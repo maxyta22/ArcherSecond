@@ -4,9 +4,9 @@
 #include "Environment/PickupResourcesBase.h"
 #include "Player/PlayerCharacter.h"
 
- void APickupResourcesBase::TryTakePickup(APlayerCharacter* Pawn)
+ void APickupResourcesBase::TryTakePickup_Server(APlayerCharacter* Pawn)
 {
-	 Super::TryTakePickup(Pawn);
+	 Super::TryTakePickup_Server(Pawn);
 	 switch (ResourcesType)
 	 {
 	 case EResourcesType::Wood:  Pawn->InventoryComponent->AddWood(Value);
@@ -22,6 +22,6 @@
 	 default:
 		 break;
 	 }
-	 TakePickup();
+	 TakePickup_Multicast();
 }
 

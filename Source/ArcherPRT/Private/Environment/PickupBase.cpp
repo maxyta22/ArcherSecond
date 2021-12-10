@@ -37,14 +37,14 @@ void APickupBase::BeginPlay()
 	Super::BeginPlay();
 }
 
-void APickupBase::TryTakePickup(APlayerCharacter* Pawn)
+void APickupBase::TryTakePickup_Server_Implementation(APlayerCharacter* Pawn)
 {
 	 
 }
 
 
 
-void APickupBase::TakePickup_Implementation()
+void APickupBase::TakePickup_Multicast_Implementation()
 {
 	AfterWasTaken();
 	Destroy();
