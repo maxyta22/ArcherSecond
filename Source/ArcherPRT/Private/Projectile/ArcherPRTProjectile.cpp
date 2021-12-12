@@ -53,14 +53,14 @@ void AArcherPRTProjectile::OnHit_Implementation(UPrimitiveComponent* HitComp, AA
 		{
 			if (HitResult.GetComponent()->ComponentHasTag("Head"))
 			{
-				Pawn->TakeDamage(DamageWeapon + DamageProjectile, FDamageEvent(), GetInstigatorController(), this);
+				Pawn->TakeDamage_Server(DamageWeapon + DamageProjectile, FDamageEvent(), GetInstigatorController(), this);
 				Pawn->OnHitReaction();
 
 				GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Red, TEXT("HEAD SHOT"));
 			}
 			else 
 			{
-				Pawn->TakeDamage(0, FDamageEvent(), GetInstigatorController(), this);
+				Pawn->TakeDamage_Server(0, FDamageEvent(), GetInstigatorController(), this);
 			}
 			
 				

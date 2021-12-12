@@ -43,13 +43,19 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Check")
 		bool AimingInProgress() const { return bAimingInProgress; };
 
+	UFUNCTION(Server, Reliable)
 	void OnAiming();
+
+	UFUNCTION(Server, Reliable)
+	void OffAiming();
 
 	UFUNCTION(Server, Reliable)
 	void OnFire_Server();
 
-	//UFUNCTION(NetMulticast, Reliable)
 	void MakeShot();
+
+	UFUNCTION(NetMulticast, Unreliable)
+	void SuccessMakeShot();
 
 	void SwitchAmmoInCurrentEquipWeapon();
 
@@ -70,6 +76,7 @@ protected:
 
 private:
 
+	UPROPERTY(Replicated)
 	bool bAimingInProgress;
 
 	AAICharacter* CurrentAimingEnemy;

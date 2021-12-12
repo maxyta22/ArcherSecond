@@ -12,6 +12,7 @@
 #include "Components/WeaponComponent.h"
 #include "Components/CustomAction.h"
 #include "GameFramework/InputSettings.h"
+#include "Net/UnrealNetwork.h"
 #include "HeadMountedDisplayFunctionLibrary.h"
 #include "Kismet/GameplayStatics.h"
 #include "MathUtils.h"
@@ -42,6 +43,13 @@ void AGameCharacter::BeginPlay()
 	StatsComponent->OnHealthChanged.AddUObject(this, &AGameCharacter::OnHealChanged);
 	StatsComponent->OnDeath.AddUObject(this, &AGameCharacter::OnDeath);
 }
+
+void AGameCharacter::TakeDamage_Server_Implementation(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+	TakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
+	
+}
+
 
 float AGameCharacter::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {

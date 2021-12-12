@@ -85,11 +85,16 @@ void UWeaponComponent::TraceAim()
 
 }
 
-void UWeaponComponent::OnAiming() 
+void UWeaponComponent::OnAiming_Implementation() 
 {
 	//Check Have Ammo
 	if (!CanMakeShot()) return;
 	bAimingInProgress = true;
+}
+
+void UWeaponComponent::OffAiming_Implementation()
+{
+	bAimingInProgress = false;
 }
 
 void UWeaponComponent::OnFire_Server_Implementation()
@@ -143,8 +148,18 @@ void UWeaponComponent::MakeShot()
 		//Spend Ammo
 		int AmountAmmo;
 		LoopByAmmo(true, AmountAmmo);
-		bAimingInProgress = false;
+		
 	}
+
+	SuccessMakeShot();
+}
+
+void UWeaponComponent::SuccessMakeShot_Implementation()
+{
+	UWorld* const World = GetWorld();
+	if (!World) return;
+	const auto Owner = Cast<APlayerCharacter>(GetOwner());
+	if (!Owner) return;
 
 	// try and play the sound if specified
 	if (CurrentEquipWeapon.GetDefaultObject()->FireSound != nullptr)
@@ -245,6 +260,7 @@ void UWeaponComponent::GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& O
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME(UWeaponComponent, SpreadShot);
+	DOREPLIFETIME(UWeaponComponent, bAimingInProgress);
 
 }
 

@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "Net/UnrealNetwork.h"
 #include "GameCharacter.generated.h"
 
 class UInputComponent;
@@ -52,6 +53,9 @@ public:
 
 
 	//Take Damage
+	
+	UFUNCTION(Server, Reliable)
+	void TakeDamage_Server(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser);
 
 	virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 
