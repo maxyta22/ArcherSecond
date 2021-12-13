@@ -22,6 +22,6 @@
 	 default:
 		 break;
 	 }
-	 TakePickup_Multicast();
+	 TakePickup_Server();
 }
 

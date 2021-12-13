@@ -56,8 +56,8 @@ protected:
 
 	virtual void BeginPlay() override;	
 
-	UFUNCTION(NetMulticast, Reliable)
-	void TakePickup_Multicast();
+	UFUNCTION(Server, Reliable)
+	void TakePickup_Server();
 
 	//UFUNCTION(NetMulticast, Reliable)
 	//void TakePickupMulticast();
