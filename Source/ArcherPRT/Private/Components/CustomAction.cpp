@@ -6,6 +6,7 @@
 #include "AI/AICharacter.h"
 #include "AI/PRTAIController.h"
 #include "Kismet/GameplayStatics.h"
+#include "Net/UnrealNetwork.h"
 #include "Components/StatsComponent.h"
 
 UCustomAction::UCustomAction()
@@ -24,28 +25,31 @@ void UCustomAction::TickComponent(float DeltaTime, ELevelTick TickType, FActorCo
 
 }
 
-void UCustomAction::TryPerformPlayAnimMontage(UAnimMontage* Montage , bool CanInterruptCurrentMontage)
+void UCustomAction::TryPerformPlayAnimMontage_Server_Implementation(UAnimMontage* Montage , bool CanInterruptCurrentMontage)
+{
+	TryPerformPlayAnimMontage_Multicast(Montage, CanInterruptCurrentMontage);
+}
+
+void UCustomAction::TryPerformPlayAnimMontage_Multicast_Implementation(UAnimMontage* Montage, bool CanInterruptCurrentMontage)
 {
 	if (!CanInterruptCurrentMontage && bCustomActionInProgress) return;
-
 	if (!Montage) return;
-
 	const auto Pawn = Cast<AAICharacter>(GetOwner());
 	if (!Pawn) return;
-
 	const auto AIController = Cast<APRTAIController>(Pawn->GetController());
 	if (!AIController) return;
-
 	//Abort Current Custom Action
 	if (CanInterruptCurrentMontage)
 	{
 		FinishCustomActionTimer.Invalidate();
 		FinishCustomAction();
-		//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("Abort Custom Action"));
 	}
-
 	AIController->LockBehavior(true);
+
 	Pawn->PlayAnimMontage(Montage);
+
+	
+	
 	LastAnimMontage = Montage;
 	bCustomActionInProgress = true;
 

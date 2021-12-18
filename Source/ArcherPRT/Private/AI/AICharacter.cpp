@@ -95,7 +95,7 @@ void AAICharacter::OnDeath()
 	if (DeathAnimMontage)
 	{
 		TArray<UAnimMontage*> EmptyArr;
-		CustomAction->TryPerformPlayAnimMontage(DeathAnimMontage, true);
+		CustomAction->TryPerformPlayAnimMontage_Server(DeathAnimMontage, true);
 	}
 
 	GetCharacterMovement()->DisableMovement();
@@ -116,20 +116,20 @@ void AAICharacter::OnHitReaction()
 	if (!AIController->GetEnemy())
 	{
 		if (!HitReaction) return;
-		CustomAction->TryPerformPlayAnimMontage(HitReaction, true);
+		CustomAction->TryPerformPlayAnimMontage_Server(HitReaction, true);
 		return;
 	}
 
 	// If Have Close Attack After Hit Reaction
 	if ((CloseAttackAfterHitReaction) && (GetDistanceTo(AIController->GetEnemy()) <= MinDistanceForAttackAfterHitReaction))
 	{
-		CustomAction->TryPerformPlayAnimMontage(CloseAttackAfterHitReaction, true);
+		CustomAction->TryPerformPlayAnimMontage_Server(CloseAttackAfterHitReaction, true);
 		return;
 	}
 
 	if (!HitReaction) return;
 
-	CustomAction->TryPerformPlayAnimMontage(HitReaction, true);
+	CustomAction->TryPerformPlayAnimMontage_Server(HitReaction, true);
 	
 	
 

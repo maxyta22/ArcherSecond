@@ -18,8 +18,11 @@ public:
 	
 	UCustomAction();
 
-	UFUNCTION(BlueprintCallable,Category = "Custom Action")
-		void TryPerformPlayAnimMontage(UAnimMontage* Montage, bool CanInterruptCurrentMontage);
+	UFUNCTION(Server, Reliable, BlueprintCallable,Category = "Custom Action")
+		void TryPerformPlayAnimMontage_Server(UAnimMontage* Montage, bool CanInterruptCurrentMontage);
+
+	UFUNCTION(NetMulticast, Reliable, BlueprintCallable, Category = "Custom Action")
+		void TryPerformPlayAnimMontage_Multicast(UAnimMontage* Montage, bool CanInterruptCurrentMontage);
 
 	UFUNCTION(BlueprintPure)
 		bool CustomActionInProgress() {  return  bCustomActionInProgress; }
