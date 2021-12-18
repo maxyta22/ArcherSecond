@@ -30,7 +30,11 @@ public:
 	UFUNCTION(BlueprintPure)
 		UAnimMontage* GetLastAnimMontage() { return  LastAnimMontage; }
 
-	void FinishCustomAction();
+	UFUNCTION(Server, Reliable)
+		void FinishCustomAction_Server();
+
+	UFUNCTION(NetMulticast, Reliable)
+		void FinishCustomAction_Multicast();
 
 
 protected:
