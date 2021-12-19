@@ -24,17 +24,19 @@ public:
 	UFUNCTION(NetMulticast, Reliable, BlueprintCallable, Category = "Custom Action")
 		void TryPerformPlayAnimMontage_Multicast(UAnimMontage* Montage, bool CanInterruptCurrentMontage);
 
-	UFUNCTION(BlueprintPure)
-		bool CustomActionInProgress() {  return  bCustomActionInProgress; }
-
-	UFUNCTION(BlueprintPure)
-		UAnimMontage* GetLastAnimMontage() { return  LastAnimMontage; }
-
 	UFUNCTION(Server, Reliable)
 		void FinishCustomAction_Server();
 
 	UFUNCTION(NetMulticast, Reliable)
 		void FinishCustomAction_Multicast();
+
+	UFUNCTION(BlueprintPure)
+		bool CustomActionInProgress() { return  bCustomActionInProgress; }
+
+	UFUNCTION(BlueprintPure)
+		UAnimMontage* GetLastAnimMontage() { return  LastAnimMontage; }
+
+	
 
 
 protected:

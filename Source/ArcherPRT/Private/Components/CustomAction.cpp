@@ -25,6 +25,47 @@ void UCustomAction::TickComponent(float DeltaTime, ELevelTick TickType, FActorCo
 
 }
 
+void UCustomAction::TryPerformPlayAnimMontage_Server_Implementation(UAnimMontage* Montage , bool CanInterruptCurrentMontage)
+{
+	//Server Logic
+
+	if (!CanInterruptCurrentMontage && bCustomActionInProgress) return;
+	if (!Montage) return;
+
+	const auto Pawn = Cast<AAICharacter>(GetOwner());
+	if (!Pawn) return;
+
+	if (Pawn->StatsComponent->IsDead() && Montage!=Pawn->DeathAnimMontage) return;
+
+	const auto AIController = Cast<APRTAIController>(Pawn->GetController());
+	if (!AIController) return;
+
+	AIController->LockBehavior(true);
+
+	TryPerformPlayAnimMontage_Multicast(Montage, CanInterruptCurrentMontage);
+}
+
+void UCustomAction::TryPerformPlayAnimMontage_Multicast_Implementation(UAnimMontage* Montage, bool CanInterruptCurrentMontage)
+{
+
+	const auto Pawn = Cast<AAICharacter>(GetOwner());
+	if (!Pawn) return;
+
+	//Abort Current Custom Action
+	if (CanInterruptCurrentMontage)
+	{
+		FinishCustomActionTimer.Invalidate();
+		FinishCustomAction_Server();
+	}
+	
+	Pawn->PlayAnimMontage(Montage);
+
+	LastAnimMontage = Montage;
+	bCustomActionInProgress = true;
+
+	GetWorld()->GetTimerManager().SetTimer(FinishCustomActionTimer, this, &UCustomAction::FinishCustomAction_Server, Montage->GetPlayLength(), false);
+}
+
 void UCustomAction::FinishCustomAction_Server_Implementation()
 {
 	//Server Logic
@@ -52,47 +93,5 @@ void UCustomAction::FinishCustomAction_Multicast_Implementation()
 	Pawn->AfterCustomAction();
 
 }
-
-void UCustomAction::TryPerformPlayAnimMontage_Server_Implementation(UAnimMontage* Montage , bool CanInterruptCurrentMontage)
-{
-	//Server Logic
-
-	if (!CanInterruptCurrentMontage && bCustomActionInProgress) return;
-	if (!Montage) return;
-
-	const auto Pawn = Cast<AAICharacter>(GetOwner());
-	if (!Pawn) return;
-
-	const auto AIController = Cast<APRTAIController>(Pawn->GetController());
-	if (!AIController) return;
-
-	AIController->LockBehavior(true);
-
-	TryPerformPlayAnimMontage_Multicast(Montage, CanInterruptCurrentMontage);
-}
-
-void UCustomAction::TryPerformPlayAnimMontage_Multicast_Implementation(UAnimMontage* Montage, bool CanInterruptCurrentMontage)
-{
-	if (!CanInterruptCurrentMontage && bCustomActionInProgress) return;
-	if (!Montage) return;
-	const auto Pawn = Cast<AAICharacter>(GetOwner());
-	if (!Pawn) return;
-
-	//Abort Current Custom Action
-	if (CanInterruptCurrentMontage)
-	{
-		FinishCustomActionTimer.Invalidate();
-		FinishCustomAction_Server();
-	}
-	
-	Pawn->PlayAnimMontage(Montage);
-
-	LastAnimMontage = Montage;
-	bCustomActionInProgress = true;
-
-	GetWorld()->GetTimerManager().SetTimer(FinishCustomActionTimer, this, &UCustomAction::FinishCustomAction_Server, Montage->GetPlayLength(), false);
-}
-
-
 
 

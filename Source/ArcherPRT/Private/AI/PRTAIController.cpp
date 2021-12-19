@@ -3,8 +3,10 @@
 
 #include "AI/PRTAIController.h"
 #include "AI/AICharacter.h"
+#include "Player/GameCharacter.h"
 #include "Components/PRTAIPerceptionComponent.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "Components/StatsComponent.h"
 #include "BrainComponent.h"
 
 APRTAIController::APRTAIController() 
@@ -15,9 +17,24 @@ APRTAIController::APRTAIController()
 
 void APRTAIController::Tick(float DeltaTime)
 {
-	Super::Tick(DeltaTime);
+	Super::Tick(DeltaTime);	
+	FocusService();
+}
 
-	if (FocusActive)
+void APRTAIController::OnPossess(APawn* InPawn)
+{
+	Super::OnPossess(InPawn);
+	const auto ControlledChar = Cast<AAICharacter>(InPawn);
+	if (ControlledChar)
+	{
+		RunBehaviorTree(ControlledChar->BehaviorTreeAsset);
+		ControlledPawn = ControlledChar;
+	}
+}
+
+void APRTAIController::FocusService()
+{
+	if (!ControlledPawn->StatsComponent->IsDead() && FocusActive)
 	{
 		const auto TargetActor = GetFocusOnActor();
 		SetFocus(TargetActor);
@@ -26,22 +43,10 @@ void APRTAIController::Tick(float DeltaTime)
 	{
 		SetFocus(nullptr);
 	}
-	
-}
-
-void APRTAIController::OnPossess(APawn* InPawn)
-{
-	Super::OnPossess(InPawn);
-	const auto Char = Cast<AAICharacter>(InPawn);
-	if (Char)
-	{
-		RunBehaviorTree(Char->BehaviorTreeAsset);
-	}
 }
 
 void APRTAIController::LockBehavior(bool Lock)
 {
-	
 	
 	if (BrainComponent)
 	{

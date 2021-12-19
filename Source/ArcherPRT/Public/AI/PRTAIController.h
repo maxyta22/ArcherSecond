@@ -7,6 +7,7 @@
 #include "PRTAIController.generated.h"
 
 class UPRTAIPerceptionComponent;
+class AGameCharacter;
 
 UCLASS()
 class ARCHERPRT_API APRTAIController : public AAIController
@@ -19,6 +20,8 @@ public:
 	void LockBehavior(bool Lock);
 
 	void SetEnemy(AActor* Enemy);
+
+	void FocusService();
 
 	UFUNCTION(BlueprintPure)
 	AActor* GetEnemy();
@@ -33,7 +36,9 @@ protected:
 		FName FocusOnKeyName = "EnemyActor";
 
 private:
+
 	AActor* GetFocusOnActor() const;
+	AGameCharacter* ControlledPawn;
 
 	virtual void OnPossess(APawn* InPawn) override;
 	virtual void Tick(float DeltaTime) override;

@@ -31,9 +31,15 @@ AArcherPRTProjectile::AArcherPRTProjectile()
 	ProjectileMovement->bRotationFollowsVelocity = true;
 	ProjectileMovement->bShouldBounce = true;
 	ProjectileMovement->ProjectileGravityScale = 0.0f;
-
+	
 	// Die after 3 seconds by default
 	InitialLifeSpan = 3.0f;
+
+	// Default Replicates
+	ProjectileMovement->SetIsReplicated(true);
+	SetReplicates(true);
+
+	
 }
 
 void AArcherPRTProjectile::OnHit_Implementation(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult &Hit)

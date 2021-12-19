@@ -154,7 +154,7 @@ void UWeaponComponent::MakeShot()
 	SuccessMakeShot();
 }
 
-void UWeaponComponent::SuccessMakeShot_Implementation()
+void UWeaponComponent::SuccessMakeShot()
 {
 	UWorld* const World = GetWorld();
 	if (!World) return;

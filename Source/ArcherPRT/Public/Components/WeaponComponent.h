@@ -54,7 +54,6 @@ public:
 
 	void MakeShot();
 
-	UFUNCTION(NetMulticast, Unreliable)
 	void SuccessMakeShot();
 
 	void SwitchAmmoInCurrentEquipWeapon();

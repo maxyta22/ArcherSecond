@@ -27,12 +27,20 @@ AAICharacter::AAICharacter()
 
 
 	// Setup Smooth Rotation
-	bUseControllerRotationYaw = false;
+	bUseControllerRotationYaw = true;
 	if (GetCharacterMovement())
 	{
 		GetCharacterMovement()->bUseControllerDesiredRotation = true;
 		GetCharacterMovement()->RotationRate = FRotator(0.0f, 200.0f, 0.0f);
 	}
+}
+
+void AAICharacter::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	CustomRootMotion();
+
 }
 
 //Accumulate To Aiming 
@@ -50,14 +58,12 @@ void AAICharacter::FinishAccumulateToAiming()
 	GetWorld()->GetTimerManager().ClearTimer(AccumulateToAiminHandleTimer);
 }
 
-void AAICharacter::Tick(float DeltaTime)
+void AAICharacter::CustomRootMotion()
 {
-	Super::Tick(DeltaTime);
-	
 	// Custom Root Motion When Play Montage
-	if (GetMesh()->GetAnimInstance()->GetCurrentActiveMontage())
+	if (GetMesh()->GetAnimInstance()->GetCurveValue("ForwardRootMotion") && !StatsComponent->IsDead())
 	{
-		AddActorWorldOffset(GetActorForwardVector() * GetMesh()->GetAnimInstance()->GetCurveValue("ForwardRootMotion"), true);	
+		AddActorWorldOffset(GetActorForwardVector() * GetMesh()->GetAnimInstance()->GetCurveValue("ForwardRootMotion"), true);
 	}
 }
 
