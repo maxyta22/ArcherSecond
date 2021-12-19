@@ -59,11 +59,11 @@ public:
 
 	UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
 
-	UFUNCTION()
-		void OnOverlapBeginInteractCapsule(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	UFUNCTION(Server, Reliable)
+		void ServerOnOverlapBeginInteractCapsule(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
-	UFUNCTION()
-		void OnOverlapEndInteractCapsule(UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+	UFUNCTION(Server, Reliable)
+		void ServerOnOverlapEndInteractCapsule(UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
 	//Blueprint Event for BP 
 
@@ -87,8 +87,9 @@ protected:
 
 	void LookUpAtRate(float Rate);
 
-	
-	void TryPerformInteract();
+	UFUNCTION(Server, Reliable)
+
+	void ServerTryPerformInteract();
 	
 	virtual void SetupPlayerInputComponent(UInputComponent* InputComponent) override;
 

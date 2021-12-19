@@ -42,8 +42,8 @@ APlayerCharacter::APlayerCharacter()
 	InteractCapsuleComponent = CreateDefaultSubobject<UCapsuleComponent>(TEXT("InteractCapsule"));
 	InteractCapsuleComponent->SetupAttachment(FirstPersonCameraComponent);
 
-	InteractCapsuleComponent->OnComponentBeginOverlap.AddDynamic(this, &APlayerCharacter::OnOverlapBeginInteractCapsule);
-	InteractCapsuleComponent->OnComponentEndOverlap.AddDynamic(this, &APlayerCharacter::OnOverlapEndInteractCapsule);
+	InteractCapsuleComponent->OnComponentBeginOverlap.AddDynamic(this, &APlayerCharacter::ServerOnOverlapBeginInteractCapsule);
+	InteractCapsuleComponent->OnComponentEndOverlap.AddDynamic(this, &APlayerCharacter::ServerOnOverlapEndInteractCapsule);
 
 	//Create InventoryComponent
 	InventoryComponent = CreateDefaultSubobject<UInventoryComponent>(TEXT("InventoryComponent"));
@@ -85,7 +85,7 @@ void APlayerCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerIn
 	PlayerInputComponent->BindAction("Fire", IE_Released, WeaponComponent, &UWeaponComponent::OffAiming);
 	PlayerInputComponent->BindAction("Fire", IE_Released, this, &APlayerCharacter::ReleasedAttackButton);
 	PlayerInputComponent->BindAction("SwitchAmmo", IE_Pressed, WeaponComponent, &UWeaponComponent::SwitchAmmoInCurrentEquipWeapon);
-	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &APlayerCharacter::TryPerformInteract);
+	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &APlayerCharacter::ServerTryPerformInteract);
 	PlayerInputComponent->BindAction("TryCraftItem", IE_Pressed, CraftComponent, &UCraftComponent::TryCraftItem);
 	PlayerInputComponent->BindAxis("MoveForward", this, &APlayerCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &APlayerCharacter::MoveRight);
@@ -128,7 +128,7 @@ void APlayerCharacter::LookUpAtRate(float Rate)
 	AddControllerPitchInput(Rate * BaseLookUpRate * GetWorld()->GetDeltaSeconds());
 }
 
-void APlayerCharacter::OnOverlapBeginInteractCapsule(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+void APlayerCharacter::ServerOnOverlapBeginInteractCapsule_Implementation(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	APickupBase* PickupBase;
 
@@ -147,7 +147,7 @@ void APlayerCharacter::OnOverlapBeginInteractCapsule(UPrimitiveComponent* Overla
 	}
 }
 
-void APlayerCharacter::OnOverlapEndInteractCapsule(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+void APlayerCharacter::ServerOnOverlapEndInteractCapsule_Implementation(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
 	APickupBase* PickupBase;
 
@@ -163,7 +163,7 @@ void APlayerCharacter::OnOverlapEndInteractCapsule(UPrimitiveComponent* Overlapp
 	}
 }
 
-void APlayerCharacter::TryPerformInteract()
+void APlayerCharacter::ServerTryPerformInteract_Implementation()
 {
 	APickupBase* PickupBase;
 
