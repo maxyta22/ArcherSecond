@@ -61,7 +61,7 @@ APlayerCharacter::APlayerCharacter()
 	HandMesh->SetRelativeLocation(FVector(-0.5f, -4.4f, -155.7f));
 }
 
-void APlayerCharacter::BeginPlay() 
+void APlayerCharacter::BeginPlay()
 {
 	
 	Super::BeginPlay();
@@ -128,41 +128,6 @@ void APlayerCharacter::LookUpAtRate(float Rate)
 	AddControllerPitchInput(Rate * BaseLookUpRate * GetWorld()->GetDeltaSeconds());
 }
 
-void APlayerCharacter::ServerOnOverlapBeginInteractCapsule_Implementation(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
-{
-	APickupBase* PickupBase;
-
-	if (OtherActor && (OtherActor != this) && OtherComp)
-	{
-		CurrentInteractTarget.Add(OtherActor);
-
-		if (GEngine)
-		{
-			PickupBase = Cast<APickupBase>(OtherActor);
-			if (PickupBase)
-			{
-				PickupBase->ShowInfo();
-			}
-		}
-	}
-}
-
-void APlayerCharacter::ServerOnOverlapEndInteractCapsule_Implementation(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
-{
-	APickupBase* PickupBase;
-
-	if (GEngine)
-	{
-		CurrentInteractTarget.Remove(OtherActor);
-
-		PickupBase = Cast<APickupBase>(OtherActor);
-		if (PickupBase)
-		{
-			PickupBase->HideInfo();
-		}
-	}
-}
-
 void APlayerCharacter::ServerTryPerformInteract_Implementation()
 {
 	APickupBase* PickupBase;
@@ -174,6 +139,52 @@ void APlayerCharacter::ServerTryPerformInteract_Implementation()
 		{
 			PickupBase->TryTakePickup_Server(this);
 		}
+}
+
+void APlayerCharacter::ServerOnOverlapBeginInteractCapsule_Implementation(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+
+	if (OtherActor && (OtherActor != this) && OtherComp)
+	{
+		ClientShowInfoObject(OtherActor);
+		CurrentInteractTarget.Add(OtherActor);
+	}
+}
+
+void APlayerCharacter::ServerOnOverlapEndInteractCapsule_Implementation(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+
+	if (GEngine)
+	{
+		ClientHideInfoObject(OtherActor);
+		CurrentInteractTarget.Remove(OtherActor);
+	}
+}
+
+void APlayerCharacter::ClientShowInfoObject_Implementation(AActor* InfoObject)
+{
+	if (GEngine)
+	{
+		APickupBase* PickupBase;
+		PickupBase = Cast<APickupBase>(InfoObject);
+		if (PickupBase)
+		{
+			PickupBase->ShowInfo();
+		}
+	}
+}
+
+void APlayerCharacter::ClientHideInfoObject_Implementation(AActor* InfoObject)
+{
+	if (GEngine)
+	{
+		APickupBase* PickupBase;
+		PickupBase = Cast<APickupBase>(InfoObject);
+		if (PickupBase)
+		{
+			PickupBase->HideInfo();
+		}
+	}
 }
 
 

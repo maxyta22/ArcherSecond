@@ -59,11 +59,19 @@ public:
 
 	UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
 
+	//Interact
+
 	UFUNCTION(Server, Reliable)
 		void ServerOnOverlapBeginInteractCapsule(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 	UFUNCTION(Server, Reliable)
 		void ServerOnOverlapEndInteractCapsule(UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+
+	UFUNCTION(Client, Reliable)
+		void ClientShowInfoObject(AActor* InfoObject);
+
+	UFUNCTION(Client, Reliable)
+		void ClientHideInfoObject(AActor* InfoObject);
 
 	//Blueprint Event for BP 
 
