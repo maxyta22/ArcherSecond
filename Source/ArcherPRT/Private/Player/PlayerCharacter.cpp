@@ -131,13 +131,20 @@ void APlayerCharacter::LookUpAtRate(float Rate)
 void APlayerCharacter::ServerTryPerformInteract_Implementation()
 {
 	APickupBase* PickupBase;
-
+	AArcherPRTProjectile* Projectile;
+	
 	if (CurrentInteractTarget.Num() == 0) return;
 	
 	PickupBase = Cast<APickupBase>(CurrentInteractTarget[0]);
 	if (PickupBase)
 		{
 			PickupBase->TryTakePickup_Server(this);
+		}
+
+	Projectile = Cast<AArcherPRTProjectile>(CurrentInteractTarget[0]);
+	if (Projectile)
+		{
+			Projectile->ServerTryTakeProjectile(this);
 		}
 }
 
@@ -167,9 +174,15 @@ void APlayerCharacter::ClientShowInfoObject_Implementation(AActor* InfoObject)
 	{
 		APickupBase* PickupBase;
 		PickupBase = Cast<APickupBase>(InfoObject);
+		AArcherPRTProjectile* Projectile;
+		Projectile = Cast<AArcherPRTProjectile>(InfoObject);
 		if (PickupBase)
 		{
 			PickupBase->ShowInfo();
+		}
+		if (Projectile)
+		{
+			Projectile->ShowInfo();
 		}
 	}
 }
@@ -180,9 +193,15 @@ void APlayerCharacter::ClientHideInfoObject_Implementation(AActor* InfoObject)
 	{
 		APickupBase* PickupBase;
 		PickupBase = Cast<APickupBase>(InfoObject);
+		AArcherPRTProjectile* Projectile;
+		Projectile = Cast<AArcherPRTProjectile>(InfoObject);
 		if (PickupBase)
 		{
 			PickupBase->HideInfo();
+		}
+		if (Projectile)
+		{
+			Projectile->HideInfo();
 		}
 	}
 }

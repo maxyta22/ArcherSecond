@@ -2,7 +2,9 @@
 
 #include "Projectile/ArcherPRTProjectile.h"
 #include "GameFramework/ProjectileMovementComponent.h"
+#include "Player/PlayerCharacter.h"
 #include "Components/SphereComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "Player/GameCharacter.h"
 #include "Components/StatsComponent.h"
 #include "Net/UnrealNetwork.h"
@@ -16,12 +18,17 @@ AArcherPRTProjectile::AArcherPRTProjectile()
 	CollisionComp->BodyInstance.SetCollisionProfileName("Projectile");
 	CollisionComp->OnComponentHit.AddDynamic(this, &AArcherPRTProjectile::OnHit);		// set up a notification for when this component hits something blocking
 
+	// Set as root component
+	RootComponent = CollisionComp;
+
+	InteractCollision = CreateDefaultSubobject<UCapsuleComponent>(TEXT("InteractCollision"));
+	InteractCollision->SetupAttachment(RootComponent);
+
 	// Players can't walk on it
 	CollisionComp->SetWalkableSlopeOverride(FWalkableSlopeOverride(WalkableSlope_Unwalkable, 0.f));
 	CollisionComp->CanCharacterStepUpOn = ECB_No;
 
-	// Set as root component
-	RootComponent = CollisionComp;
+
 
 	// Use a ProjectileMovementComponent to govern this projectile's movement
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileComp"));
@@ -40,6 +47,20 @@ AArcherPRTProjectile::AArcherPRTProjectile()
 	SetReplicates(true);
 
 	
+}
+
+void AArcherPRTProjectile::ShowInfo_Implementation()
+{
+}
+
+void AArcherPRTProjectile::HideInfo_Implementation()
+{
+}
+
+void AArcherPRTProjectile::ServerTryTakeProjectile_Implementation(APlayerCharacter* Pawn)
+{
+	Pawn->InventoryComponent->AddWoodArrow(1);
+	Destroy();
 }
 
 void AArcherPRTProjectile::OnHit_Implementation(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult &Hit)
@@ -67,10 +88,9 @@ void AArcherPRTProjectile::OnHit_Implementation(UPrimitiveComponent* HitComp, AA
 			else 
 			{
 				Pawn->TakeDamage_Server(0, FDamageEvent(), GetInstigatorController(), this);
-			}
-			
-				
+			}	
+			Destroy();		
 		}
-		Destroy();
+		//Destroy();
 	}
 }
