@@ -16,7 +16,7 @@ AArcherPRTProjectile::AArcherPRTProjectile()
 	CollisionComp = CreateDefaultSubobject<USphereComponent>(TEXT("SphereComp"));
 	CollisionComp->InitSphereRadius(5.0f);
 	CollisionComp->BodyInstance.SetCollisionProfileName("Projectile");
-	CollisionComp->OnComponentHit.AddDynamic(this, &AArcherPRTProjectile::OnHit);		// set up a notification for when this component hits something blocking
+	CollisionComp->OnComponentHit.AddDynamic(this, &AArcherPRTProjectile::OnHit_ServerRPC);		// set up a notification for when this component hits something blocking
 
 	// Set as root component
 	RootComponent = CollisionComp;
@@ -57,13 +57,13 @@ void AArcherPRTProjectile::HideInfo_Implementation()
 {
 }
 
-void AArcherPRTProjectile::ServerTryTakeProjectile_Implementation(APlayerCharacter* Pawn)
+void AArcherPRTProjectile::TryTakeProjectile_ServerRPC_Implementation(APlayerCharacter* Pawn)
 {
 	Pawn->InventoryComponent->AddWoodArrow(1);
 	Destroy();
 }
 
-void AArcherPRTProjectile::OnHit_Implementation(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult &Hit)
+void AArcherPRTProjectile::OnHit_ServerRPC_Implementation(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult &Hit)
 {
 	if (!GetWorld())  return;
 

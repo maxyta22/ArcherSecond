@@ -42,8 +42,8 @@ APlayerCharacter::APlayerCharacter()
 	InteractCapsuleComponent = CreateDefaultSubobject<UCapsuleComponent>(TEXT("InteractCapsule"));
 	InteractCapsuleComponent->SetupAttachment(FirstPersonCameraComponent);
 
-	InteractCapsuleComponent->OnComponentBeginOverlap.AddDynamic(this, &APlayerCharacter::ServerOnOverlapBeginInteractCapsule);
-	InteractCapsuleComponent->OnComponentEndOverlap.AddDynamic(this, &APlayerCharacter::ServerOnOverlapEndInteractCapsule);
+	InteractCapsuleComponent->OnComponentBeginOverlap.AddDynamic(this, &APlayerCharacter::ServerOnOverlapBeginInteractCapsule_ServerRPC);
+	InteractCapsuleComponent->OnComponentEndOverlap.AddDynamic(this, &APlayerCharacter::ServerOnOverlapEndInteractCapsule_ServerRPC);
 
 	//Create InventoryComponent
 	InventoryComponent = CreateDefaultSubobject<UInventoryComponent>(TEXT("InventoryComponent"));
@@ -79,13 +79,13 @@ void APlayerCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerIn
 
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
-	PlayerInputComponent->BindAction("Fire", IE_Pressed, WeaponComponent, &UWeaponComponent::OnAiming);
+	PlayerInputComponent->BindAction("Fire", IE_Pressed, WeaponComponent, &UWeaponComponent::OnAiming_ServerRPC);
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &APlayerCharacter::PressedAttackButon);
-	PlayerInputComponent->BindAction("Fire", IE_Released, WeaponComponent, &UWeaponComponent::OnFire_Server);
-	PlayerInputComponent->BindAction("Fire", IE_Released, WeaponComponent, &UWeaponComponent::OffAiming);
+	PlayerInputComponent->BindAction("Fire", IE_Released, WeaponComponent, &UWeaponComponent::OnFire_ServerRPC);
+	PlayerInputComponent->BindAction("Fire", IE_Released, WeaponComponent, &UWeaponComponent::OffAiming_ServerRPC);
 	PlayerInputComponent->BindAction("Fire", IE_Released, this, &APlayerCharacter::ReleasedAttackButton);
 	PlayerInputComponent->BindAction("SwitchAmmo", IE_Pressed, WeaponComponent, &UWeaponComponent::SwitchAmmoInCurrentEquipWeapon);
-	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &APlayerCharacter::ServerTryPerformInteract);
+	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &APlayerCharacter::TryPerformInteract_ServerRPC);
 	PlayerInputComponent->BindAction("TryCraftItem", IE_Pressed, CraftComponent, &UCraftComponent::TryCraftItem);
 	PlayerInputComponent->BindAxis("MoveForward", this, &APlayerCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &APlayerCharacter::MoveRight);
@@ -128,10 +128,10 @@ void APlayerCharacter::LookUpAtRate(float Rate)
 	AddControllerPitchInput(Rate * BaseLookUpRate * GetWorld()->GetDeltaSeconds());
 }
 
-void APlayerCharacter::ServerTryPerformInteract_Implementation()
+void APlayerCharacter::TryPerformInteract_ServerRPC_Implementation()
 {
 	APickupBase* PickupBase;
-	AArcherPRTProjectile* Projectile;
+	
 	
 	if (CurrentInteractTarget.Num() == 0) return;
 	
@@ -139,36 +139,39 @@ void APlayerCharacter::ServerTryPerformInteract_Implementation()
 	if (PickupBase)
 		{
 			PickupBase->TryTakePickup_Server(this);
+			return;
 		}
 
+	AArcherPRTProjectile* Projectile;
 	Projectile = Cast<AArcherPRTProjectile>(CurrentInteractTarget[0]);
 	if (Projectile)
 		{
-			Projectile->ServerTryTakeProjectile(this);
+			Projectile->TryTakeProjectile_ServerRPC(this);
+			return;
 		}
 }
 
-void APlayerCharacter::ServerOnOverlapBeginInteractCapsule_Implementation(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+void APlayerCharacter::ServerOnOverlapBeginInteractCapsule_ServerRPC_Implementation(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 
 	if (OtherActor && (OtherActor != this) && OtherComp)
 	{
-		ClientShowInfoObject(OtherActor);
+		ShowInfoObject_ClientRPC(OtherActor);
 		CurrentInteractTarget.Add(OtherActor);
 	}
 }
 
-void APlayerCharacter::ServerOnOverlapEndInteractCapsule_Implementation(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+void APlayerCharacter::ServerOnOverlapEndInteractCapsule_ServerRPC_Implementation(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
 
 	if (GEngine)
 	{
-		ClientHideInfoObject(OtherActor);
+		HideInfoObject_ClientRPC(OtherActor);
 		CurrentInteractTarget.Remove(OtherActor);
 	}
 }
 
-void APlayerCharacter::ClientShowInfoObject_Implementation(AActor* InfoObject)
+void APlayerCharacter::ShowInfoObject_ClientRPC_Implementation(AActor* InfoObject)
 {
 	if (GEngine)
 	{
@@ -187,7 +190,7 @@ void APlayerCharacter::ClientShowInfoObject_Implementation(AActor* InfoObject)
 	}
 }
 
-void APlayerCharacter::ClientHideInfoObject_Implementation(AActor* InfoObject)
+void APlayerCharacter::HideInfoObject_ClientRPC_Implementation(AActor* InfoObject)
 {
 	if (GEngine)
 	{

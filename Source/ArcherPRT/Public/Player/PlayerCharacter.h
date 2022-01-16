@@ -62,16 +62,16 @@ public:
 	//Interact
 
 	UFUNCTION(Server, Reliable)
-		void ServerOnOverlapBeginInteractCapsule(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+		void ServerOnOverlapBeginInteractCapsule_ServerRPC(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 	UFUNCTION(Server, Reliable)
-		void ServerOnOverlapEndInteractCapsule(UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+		void ServerOnOverlapEndInteractCapsule_ServerRPC(UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
 	UFUNCTION(Client, Reliable)
-		void ClientShowInfoObject(AActor* InfoObject);
+		void ShowInfoObject_ClientRPC(AActor* InfoObject);
 
 	UFUNCTION(Client, Reliable)
-		void ClientHideInfoObject(AActor* InfoObject);
+		void HideInfoObject_ClientRPC(AActor* InfoObject);
 
 	//Blueprint Event for BP 
 
@@ -96,8 +96,7 @@ protected:
 	void LookUpAtRate(float Rate);
 
 	UFUNCTION(Server, Reliable)
-
-	void ServerTryPerformInteract();
+		void TryPerformInteract_ServerRPC();
 	
 	virtual void SetupPlayerInputComponent(UInputComponent* InputComponent) override;
 

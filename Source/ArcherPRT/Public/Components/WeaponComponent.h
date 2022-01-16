@@ -37,20 +37,25 @@ public:
 	UPROPERTY(BlueprintReadWrite, Replicated, Category = "Internal")
 		float SpreadShot;
 
+
 	UFUNCTION(BlueprintCallable)
 		 int GetAmountAmmo() const;
 
 	UFUNCTION(BlueprintPure, Category = "Check")
 		bool AimingInProgress() const { return bAimingInProgress; };
 
-	UFUNCTION(Server, Reliable)
-	void OnAiming();
+	//Aiming
 
 	UFUNCTION(Server, Reliable)
-	void OffAiming();
+		void OnAiming_ServerRPC();
 
 	UFUNCTION(Server, Reliable)
-	void OnFire_Server();
+		void OffAiming_ServerRPC();
+
+	//Fire
+
+	UFUNCTION(Server, Reliable)
+	void OnFire_ServerRPC();
 
 	void MakeShot();
 

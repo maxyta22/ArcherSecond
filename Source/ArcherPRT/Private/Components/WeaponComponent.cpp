@@ -85,19 +85,19 @@ void UWeaponComponent::TraceAim()
 
 }
 
-void UWeaponComponent::OnAiming_Implementation() 
+void UWeaponComponent::OnAiming_ServerRPC_Implementation()
 {
 	//Check Have Ammo
 	if (!CanMakeShot()) return;
 	bAimingInProgress = true;
 }
 
-void UWeaponComponent::OffAiming_Implementation()
+void UWeaponComponent::OffAiming_ServerRPC_Implementation()
 {
 	bAimingInProgress = false;
 }
 
-void UWeaponComponent::OnFire_Server_Implementation()
+void UWeaponComponent::OnFire_ServerRPC_Implementation()
 {
 	if (!CurrentEquipWeapon) return;
 	if (!GetWorld()) return;

@@ -53,7 +53,6 @@ void AGameCharacter::TakeDamage_Server_Implementation(float Damage, FDamageEvent
 	
 }
 
-
 float AGameCharacter::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
 	Super::TakeDamage(Damage,DamageEvent,EventInstigator,DamageCauser);

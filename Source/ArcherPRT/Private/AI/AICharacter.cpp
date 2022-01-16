@@ -39,7 +39,7 @@ void AAICharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	CustomRootMotion();
+	CustomRootMotion_ServerRPC();
 
 }
 
@@ -58,7 +58,7 @@ void AAICharacter::FinishAccumulateToAiming()
 	GetWorld()->GetTimerManager().ClearTimer(AccumulateToAiminHandleTimer);
 }
 
-void AAICharacter::CustomRootMotion()
+void AAICharacter::CustomRootMotion_ServerRPC_Implementation()
 {
 	// Custom Root Motion When Play Montage
 	if (GetMesh()->GetAnimInstance()->GetCurveValue("ForwardRootMotion") && !StatsComponent->IsDead())
