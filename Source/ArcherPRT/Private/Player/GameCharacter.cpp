@@ -7,6 +7,7 @@
 #include "Animation/AnimInstance.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Player/PlayerCharacter.h"
 #include "Components/InputComponent.h"
 #include "Components/StatsComponent.h"
 #include "Components/WeaponComponent.h"
@@ -86,6 +87,7 @@ void AGameCharacter::MakeStrike(float StrikeDistance, float MinAngle, float MaxA
 	FCollisionShape CollisionShape;
 	CollisionShape.SetSphere(StrikeDistance);
 	AGameCharacter* DamagedActor;
+	APlayerCharacter* DamagedPlayerCharacter;
 
 
 	GetWorld()->OverlapMultiByObjectType(OverlapResult, GetActorLocation(), Rot, ObjectQueryParam, CollisionShape);
@@ -94,8 +96,11 @@ void AGameCharacter::MakeStrike(float StrikeDistance, float MinAngle, float MaxA
 	{
 		DamagedActor = Cast<AGameCharacter>(OverlapResult[i].GetActor());
 
+		DamagedPlayerCharacter = Cast<APlayerCharacter>(OverlapResult[i].GetActor());
+
 		if (
 			(DamagedActor)
+			&& (DamagedPlayerCharacter)
 			&& (DamagedActor != this)
 			&& (!IgnoreActorsDamage.Contains(DamagedActor))
 			)

@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "Components/StatsComponent.h"
 #include "Player/GameCharacter.h"
+#include "Player/PlayerCharacter.h"
 #include "Perception/AISense_Sight.h"
 
 AActor* UPRTAIPerceptionComponent::GetNearestEnemy() const
@@ -25,19 +26,27 @@ AActor* UPRTAIPerceptionComponent::GetNearestEnemy() const
 	
 	for (const auto PercieveActor: PerceivedActors)
 	{
-		AGameCharacter* CurrentPercieveCharacter = Cast<AGameCharacter>(PercieveActor);
+		// If Attack All Characters
+		//AGameCharacter* CurrentPercieveCharacter = Cast<AGameCharacter>(PercieveActor);
+		
+		APlayerCharacter* CurrentPercieveCharacter = Cast<APlayerCharacter>(PercieveActor);
+
 		const auto StatsComponent = PercieveActor->FindComponentByClass<UStatsComponent>();
 	
 		//if (CurrentPercieveCharacter && !CurrentPercieveCharacter->StatsComponent->IsDead())
-		if (StatsComponent && !StatsComponent->IsDead())
+		if (CurrentPercieveCharacter)
 		{
-			const auto CurrentDistance = (PercieveActor->GetActorLocation() - Pawn->GetActorLocation()).Size();
-			if (CurrentDistance < BestDistance)
+			if (StatsComponent && !StatsComponent->IsDead())
 			{
-				BestDistance = CurrentDistance;
-				BestPawn = PercieveActor;
+				const auto CurrentDistance = (PercieveActor->GetActorLocation() - Pawn->GetActorLocation()).Size();
+				if (CurrentDistance < BestDistance)
+				{
+					BestDistance = CurrentDistance;
+					BestPawn = PercieveActor;
+				}
 			}
 		}
+		
 	}
 	
 	return BestPawn;
