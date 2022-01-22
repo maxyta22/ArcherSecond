@@ -22,10 +22,19 @@ USTRUCT()
 	struct FAmmoData
 	{
 		GENERATED_USTRUCT_BODY()
-		int ValueWoodArrow = 2;
+		int ValueWoodArrow = 0;
 		int ValueRockArrow = 5;
 		int ValueMetalArrow = 3;
 	};
+
+USTRUCT()
+struct FMaxAmmoData
+{
+	GENERATED_USTRUCT_BODY()
+		int MaxWoodArrow = 0;
+		int MaxRockArrow = 5;
+		int MaxMetalArrow = 3;
+};
 
 
 UCLASS(ClassGroup = (Custom), blueprinttype, blueprintable, meta = (BlueprintSpawnableComponent))
@@ -58,6 +67,14 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Ammo")
 		int GetMetalArrow() const { return AmmoData.ValueMetalArrow; }
 	
+	//Get Max Ammo
+	UFUNCTION(BlueprintCallable, Category = "Ammo")
+		int GetMaxWoodArrow() const { return MaxAmmoData.MaxWoodArrow; }
+	UFUNCTION(BlueprintCallable, Category = "Ammo")
+		int GetMaxRockArrow() const { return MaxAmmoData.MaxRockArrow; }
+	UFUNCTION(BlueprintCallable, Category = "Ammo")
+		int GetMaxMetalArrow() const { return MaxAmmoData.MaxMetalArrow; }
+
 	// Add Inventory Contents resources
 	void AddWood(int value)  {ResoursesData.ValueWood = ResoursesData.ValueWood + value;}
 	void AddRock(int value)  {ResoursesData.ValueRock = ResoursesData.ValueRock + value;}
@@ -71,8 +88,6 @@ public:
 	void AddMetalArrow(int value) { AmmoData.ValueMetalArrow = AmmoData.ValueMetalArrow + value; }
 
 
-	
-
 protected:	
 	
 	virtual void BeginPlay() override;
@@ -81,6 +96,7 @@ private:
 	
 	FResoursesData ResoursesData;
 	FAmmoData AmmoData;
+	FMaxAmmoData MaxAmmoData;
 
 		
 		
