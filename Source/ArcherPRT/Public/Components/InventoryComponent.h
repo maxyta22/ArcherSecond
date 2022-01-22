@@ -31,7 +31,7 @@ USTRUCT()
 struct FMaxAmmoData
 {
 	GENERATED_USTRUCT_BODY()
-		int MaxWoodArrow = 0;
+		int MaxWoodArrow = 2;
 		int MaxRockArrow = 5;
 		int MaxMetalArrow = 3;
 };
@@ -79,13 +79,13 @@ public:
 	void AddWood(int value)  {ResoursesData.ValueWood = ResoursesData.ValueWood + value;}
 	void AddRock(int value)  {ResoursesData.ValueRock = ResoursesData.ValueRock + value;}
 	void AddGrass(int value) {ResoursesData.ValueGrass = ResoursesData.ValueGrass + value;}
-	void AddMetal(int value) { ResoursesData.ValueMetal = ResoursesData.ValueMetal + value; }
-	void AddFood(int value) { ResoursesData.ValueFood = ResoursesData.ValueFood + value; }
+	void AddMetal(int value) { ResoursesData.ValueMetal = ResoursesData.ValueMetal + value;}
+	void AddFood(int value) { ResoursesData.ValueFood = ResoursesData.ValueFood + value;}
 	
 	// Add Inventory Contents Ammo
 	void AddWoodArrow(int value) { AmmoData.ValueWoodArrow = AmmoData.ValueWoodArrow+ value;}
-	void AddRockArrow(int value) { AmmoData.ValueRockArrow = AmmoData.ValueRockArrow + value; }
-	void AddMetalArrow(int value) { AmmoData.ValueMetalArrow = AmmoData.ValueMetalArrow + value; }
+	void AddRockArrow(int value) { AmmoData.ValueRockArrow = AmmoData.ValueRockArrow + value;}
+	void AddMetalArrow(int value) { AmmoData.ValueMetalArrow = AmmoData.ValueMetalArrow + value;}
 
 
 protected:	
