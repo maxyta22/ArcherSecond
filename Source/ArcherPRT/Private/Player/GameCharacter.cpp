@@ -8,6 +8,7 @@
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Player/PlayerCharacter.h"
+#include "AI/AICharacter.h"
 #include "Components/InputComponent.h"
 #include "Components/StatsComponent.h"
 #include "Components/WeaponComponent.h"
@@ -87,8 +88,6 @@ void AGameCharacter::MakeStrike(float StrikeDistance, float MinAngle, float MaxA
 	FCollisionShape CollisionShape;
 	CollisionShape.SetSphere(StrikeDistance);
 	AGameCharacter* DamagedActor;
-	APlayerCharacter* DamagedPlayerCharacter;
-
 
 	GetWorld()->OverlapMultiByObjectType(OverlapResult, GetActorLocation(), Rot, ObjectQueryParam, CollisionShape);
 
@@ -96,11 +95,9 @@ void AGameCharacter::MakeStrike(float StrikeDistance, float MinAngle, float MaxA
 	{
 		DamagedActor = Cast<AGameCharacter>(OverlapResult[i].GetActor());
 
-		DamagedPlayerCharacter = Cast<APlayerCharacter>(OverlapResult[i].GetActor());
-
 		if (
 			(DamagedActor)
-			&& (DamagedPlayerCharacter)
+			&& (DamagedActor)
 			&& (DamagedActor != this)
 			&& (!IgnoreActorsDamage.Contains(DamagedActor))
 			)
@@ -109,9 +106,22 @@ void AGameCharacter::MakeStrike(float StrikeDistance, float MinAngle, float MaxA
 
 			if ((Angle >= MinAngle) && (Angle <= MaxAngle))
 			{
-				UGameplayStatics::ApplyDamage(DamagedActor, StrikeDamage, Controller, this, StrikeDamageType);
-				DamagedActor->OnHitReaction();
-				IgnoreActorsDamage.Add(DamagedActor);
+				if (IsA(AAICharacter::StaticClass()))
+				{
+					if (DamagedActor->IsA(APlayerCharacter::StaticClass()))
+					{
+						UGameplayStatics::ApplyDamage(DamagedActor, StrikeDamage, Controller, this, StrikeDamageType);
+						DamagedActor->OnHitReaction();
+						IgnoreActorsDamage.Add(DamagedActor);
+					}
+				}
+				else
+				{
+					UGameplayStatics::ApplyDamage(DamagedActor, StrikeDamage, Controller, this, StrikeDamageType);
+					DamagedActor->OnHitReaction();
+					IgnoreActorsDamage.Add(DamagedActor);
+				}
+
 			}
 		}
 	}
