@@ -147,7 +147,9 @@ void UWeaponComponent::MakeShot()
 
 		//Spend Ammo
 		int AmountAmmo;
-		LoopByAmmo(true, AmountAmmo);
+		int MaxAmmo;
+
+		LoopByAmmo(true, AmountAmmo, MaxAmmo);
 		
 	}
 
@@ -178,7 +180,7 @@ void UWeaponComponent::SuccessMakeShot()
 	}
 }
 
-void UWeaponComponent::LoopByAmmo(bool SpendAmmo, int& AmountAmmo) const
+void UWeaponComponent::LoopByAmmo(bool SpendAmmo, int& AmountAmmo, int& MaxAmmo) const
 {
 	if (!GetOwner()) return;
 
@@ -193,6 +195,7 @@ void UWeaponComponent::LoopByAmmo(bool SpendAmmo, int& AmountAmmo) const
 	case EAmmoType::WoodArrow:
 		
 		AmountAmmo = Owner->InventoryComponent->GetWoodArrow();
+		MaxAmmo = Owner->InventoryComponent->GetMaxWoodArrow();
 		
 		if (SpendAmmo)
 		{
@@ -203,6 +206,7 @@ void UWeaponComponent::LoopByAmmo(bool SpendAmmo, int& AmountAmmo) const
 	case EAmmoType::RockArrow:
 
 		AmountAmmo = Owner->InventoryComponent->GetRockArrow();
+		MaxAmmo = Owner->InventoryComponent->GetMaxRockArrow();
 		
 		if (SpendAmmo)
 		{
@@ -213,6 +217,7 @@ void UWeaponComponent::LoopByAmmo(bool SpendAmmo, int& AmountAmmo) const
 	case EAmmoType::MetalArrow:
 
 		AmountAmmo = Owner->InventoryComponent->GetMetalArrow();
+		MaxAmmo = Owner->InventoryComponent->GetMaxMetalArrow();
 
 		if (SpendAmmo)
 		{
@@ -225,8 +230,9 @@ void UWeaponComponent::LoopByAmmo(bool SpendAmmo, int& AmountAmmo) const
 bool UWeaponComponent::CanMakeShot() const 
 {
 	int AmountAmmo;
+	int MaxAmmo;
 
-	LoopByAmmo(false, AmountAmmo);
+	LoopByAmmo(false, AmountAmmo, MaxAmmo);
 
 	return AmountAmmo>0;
 }
@@ -239,9 +245,24 @@ int UWeaponComponent::GetAmountAmmo() const
 	if (!Owner) return 0;
 
 	int AmountAmmo;
+	int MaxAmmo;
 
-	LoopByAmmo(false, AmountAmmo);
+	LoopByAmmo(false, AmountAmmo, MaxAmmo);
 	return AmountAmmo;
+}
+
+int UWeaponComponent::GetMaxAmmo() const
+{
+	if (!GetOwner()) return 0;
+
+	const auto Owner = Cast<APlayerCharacter>(GetOwner());
+	if (!Owner) return 0;
+
+	int AmountAmmo;
+	int MaxAmmo;
+
+	LoopByAmmo(false, AmountAmmo, MaxAmmo);
+	return MaxAmmo;
 }
 
 void UWeaponComponent::SwitchAmmoInCurrentEquipWeapon()

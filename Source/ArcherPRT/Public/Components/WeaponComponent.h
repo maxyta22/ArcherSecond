@@ -37,9 +37,11 @@ public:
 	UPROPERTY(BlueprintReadWrite, Replicated, Category = "Internal")
 		float SpreadShot;
 
+	UFUNCTION(BlueprintCallable)
+		int GetAmountAmmo() const;
 
 	UFUNCTION(BlueprintCallable)
-		 int GetAmountAmmo() const;
+		int GetMaxAmmo() const;
 
 	UFUNCTION(BlueprintPure, Category = "Check")
 		bool AimingInProgress() const { return bAimingInProgress; };
@@ -67,7 +69,7 @@ public:
 
 	void EquipWeapon(TSubclassOf<UWeaponBase> Weapon);
 
-	void LoopByAmmo(bool SpendAmmo, int &AmountAmmo) const;
+	void LoopByAmmo(bool SpendAmmo, int &AmountAmmo, int &MaxAmmo) const;
 
 	bool CanMakeShot() const;
 
