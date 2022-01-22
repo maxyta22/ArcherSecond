@@ -24,29 +24,43 @@ AActor* UPRTAIPerceptionComponent::GetNearestEnemy() const
 	float BestDistance = MAX_FLT;
 	AActor* BestPawn = nullptr;
 	
-	for (const auto PercieveActor: PerceivedActors)
+	for (const auto PercieveActor : PerceivedActors)
 	{
-		// If Attack All Characters
-		//AGameCharacter* CurrentPercieveCharacter = Cast<AGameCharacter>(PercieveActor);
-		
-		APlayerCharacter* CurrentPercieveCharacter = Cast<APlayerCharacter>(PercieveActor);
-
 		const auto StatsComponent = PercieveActor->FindComponentByClass<UStatsComponent>();
-	
-		//if (CurrentPercieveCharacter && !CurrentPercieveCharacter->StatsComponent->IsDead())
+
+		AGameCharacter* CurrentPercieveCharacter = Cast<AGameCharacter>(PercieveActor);
+
 		if (CurrentPercieveCharacter)
 		{
-			if (StatsComponent && !StatsComponent->IsDead())
+			if (OnlySightOnPlayer)
 			{
-				const auto CurrentDistance = (PercieveActor->GetActorLocation() - Pawn->GetActorLocation()).Size();
-				if (CurrentDistance < BestDistance)
+				if (CurrentPercieveCharacter->IsA(APlayerCharacter::StaticClass()))
 				{
-					BestDistance = CurrentDistance;
-					BestPawn = PercieveActor;
+					if (StatsComponent && !StatsComponent->IsDead())
+					{
+						const auto CurrentDistance = (PercieveActor->GetActorLocation() - Pawn->GetActorLocation()).Size();
+						if (CurrentDistance < BestDistance)
+						{
+							BestDistance = CurrentDistance;
+							BestPawn = PercieveActor;
+						}
+					}
+				}
+			}
+			else
+			{
+				if (StatsComponent && !StatsComponent->IsDead())
+				{
+					const auto CurrentDistance = (PercieveActor->GetActorLocation() - Pawn->GetActorLocation()).Size();
+					if (CurrentDistance < BestDistance)
+					{
+						BestDistance = CurrentDistance;
+						BestPawn = PercieveActor;
+					}
 				}
 			}
 		}
-		
+
 	}
 	
 	return BestPawn;

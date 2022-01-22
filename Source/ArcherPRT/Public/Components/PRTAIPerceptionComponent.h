@@ -14,5 +14,8 @@ class ARCHERPRT_API UPRTAIPerceptionComponent : public UAIPerceptionComponent
 
 public:
 	AActor* GetNearestEnemy() const;
+
+UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Perception")
+	bool OnlySightOnPlayer = true;
 	
 };
