@@ -63,7 +63,10 @@ void AAICharacter::CustomRootMotion_ServerRPC_Implementation()
 	// Custom Root Motion When Play Montage
 	if (GetMesh()->GetAnimInstance()->GetCurveValue("ForwardRootMotion") && !StatsComponent->IsDead())
 	{
-		AddActorWorldOffset(GetActorForwardVector() * GetMesh()->GetAnimInstance()->GetCurveValue("ForwardRootMotion"), true);
+		//AddActorWorldOffset(GetActorForwardVector() * GetMesh()->GetAnimInstance()->GetCurveValue("ForwardRootMotion"), true);
+		//SetActorLocation(GetActorLocation()+GetActorForwardVector() * GetMesh()->GetAnimInstance()->GetCurveValue("ForwardRootMotion"), true);
+		//GetCapsuleComponent()->SetWorldLocation(GetActorLocation() + GetActorForwardVector() * GetMesh()->GetAnimInstance()->GetCurveValue("ForwardRootMotion"), true);
+		AddMovementInput(GetActorForwardVector(), 1);
 	}
 }
 
