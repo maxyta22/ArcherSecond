@@ -48,9 +48,6 @@ public:
 
 	void FinishAccumulateToAiming();
 
-	UFUNCTION(Server, Reliable)
-	void CustomRootMotion_ServerRPC();
-
 	virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 
 protected:

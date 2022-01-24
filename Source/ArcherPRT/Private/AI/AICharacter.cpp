@@ -38,9 +38,6 @@ AAICharacter::AAICharacter()
 void AAICharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	CustomRootMotion_ServerRPC();
-
 }
 
 //Accumulate To Aiming 
@@ -56,18 +53,6 @@ void AAICharacter::FinishAccumulateToAiming()
 {
 	if (!GetWorld()) return;
 	GetWorld()->GetTimerManager().ClearTimer(AccumulateToAiminHandleTimer);
-}
-
-void AAICharacter::CustomRootMotion_ServerRPC_Implementation()
-{
-	// Custom Root Motion When Play Montage
-	if (GetMesh()->GetAnimInstance()->GetCurveValue("ForwardRootMotion") && !StatsComponent->IsDead())
-	{
-		//AddActorWorldOffset(GetActorForwardVector() * GetMesh()->GetAnimInstance()->GetCurveValue("ForwardRootMotion"), true);
-		//SetActorLocation(GetActorLocation()+GetActorForwardVector() * GetMesh()->GetAnimInstance()->GetCurveValue("ForwardRootMotion"), true);
-		//GetCapsuleComponent()->SetWorldLocation(GetActorLocation() + GetActorForwardVector() * GetMesh()->GetAnimInstance()->GetCurveValue("ForwardRootMotion"), true);
-		AddMovementInput(GetActorForwardVector(), 1);
-	}
 }
 
 void AAICharacter::ReactionToAiming()
