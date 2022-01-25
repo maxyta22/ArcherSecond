@@ -66,7 +66,7 @@ public:
 		int GetRockArrow() const { return AmmoData.ValueRockArrow; }
 	UFUNCTION(BlueprintCallable, Category = "Ammo")
 		int GetMetalArrow() const { return AmmoData.ValueMetalArrow; }
-	
+
 	//Get Max Ammo
 	UFUNCTION(BlueprintCallable, Category = "Ammo")
 		int GetMaxWoodArrow() const { return MaxAmmoData.MaxWoodArrow; }
@@ -75,17 +75,33 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Ammo")
 		int GetMaxMetalArrow() const { return MaxAmmoData.MaxMetalArrow; }
 
+	//Set Max Ammo
+	UFUNCTION(BlueprintCallable, Category = "Ammo")
+		void SetMaxWoodArrow(int value)  {MaxAmmoData.MaxWoodArrow = value; }
+	UFUNCTION(BlueprintCallable, Category = "Ammo")
+		void SetMaxRockArrow(int value)  {MaxAmmoData.MaxRockArrow = value; }
+	UFUNCTION(BlueprintCallable, Category = "Ammo")
+		void SetMaxMetalArrow(int value)  {MaxAmmoData.MaxMetalArrow = value; }
+
 	// Add Inventory Contents resources
-	void AddWood(int value)  {ResoursesData.ValueWood = ResoursesData.ValueWood + value;}
-	void AddRock(int value)  {ResoursesData.ValueRock = ResoursesData.ValueRock + value;}
-	void AddGrass(int value) {ResoursesData.ValueGrass = ResoursesData.ValueGrass + value;}
-	void AddMetal(int value) { ResoursesData.ValueMetal = ResoursesData.ValueMetal + value;}
-	void AddFood(int value) { ResoursesData.ValueFood = ResoursesData.ValueFood + value;}
+	UFUNCTION(BlueprintCallable, Category = "resources")
+		void AddWood(int value)  {ResoursesData.ValueWood = ResoursesData.ValueWood + value;}
+	UFUNCTION(BlueprintCallable, Category = "resources")
+		void AddRock(int value)  {ResoursesData.ValueRock = ResoursesData.ValueRock + value;}
+	UFUNCTION(BlueprintCallable, Category = "resources")
+		void AddGrass(int value) {ResoursesData.ValueGrass = ResoursesData.ValueGrass + value;}
+	UFUNCTION(BlueprintCallable, Category = "resources")
+		void AddMetal(int value) {ResoursesData.ValueMetal = ResoursesData.ValueMetal + value;}
+	UFUNCTION(BlueprintCallable, Category = "resources")
+		void AddFood(int value)	 {ResoursesData.ValueFood = ResoursesData.ValueFood + value;}
 	
 	// Add Inventory Contents Ammo
-	void AddWoodArrow(int value) { AmmoData.ValueWoodArrow = AmmoData.ValueWoodArrow+ value;}
-	void AddRockArrow(int value) { AmmoData.ValueRockArrow = AmmoData.ValueRockArrow + value;}
-	void AddMetalArrow(int value) { AmmoData.ValueMetalArrow = AmmoData.ValueMetalArrow + value;}
+	UFUNCTION(BlueprintCallable, Category = "Ammo")
+		void AddWoodArrow(int value) { AmmoData.ValueWoodArrow = AmmoData.ValueWoodArrow+ value;}
+	UFUNCTION(BlueprintCallable, Category = "Ammo")
+		void AddRockArrow(int value) { AmmoData.ValueRockArrow = AmmoData.ValueRockArrow + value;}
+	UFUNCTION(BlueprintCallable, Category = "Ammo")
+		void AddMetalArrow(int value) { AmmoData.ValueMetalArrow = AmmoData.ValueMetalArrow + value;}
 
 
 protected:	
