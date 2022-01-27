@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "Enum/ResourcesTypeEnum.h"
+#include "Enum/AmmoTypeEnum.h"
 #include "InventoryComponent.generated.h"
 
 
@@ -17,6 +19,17 @@ USTRUCT()
 		int ValueMetal;
 		int ValueFood;
 	};
+
+USTRUCT()
+	struct FMaxResoursesData
+	{
+		GENERATED_USTRUCT_BODY()
+		int MaxWood;
+		int MaxRock;
+		int MaxGrass;
+		int MaxMetal;
+		int MaxFood;
+};
 
 USTRUCT()
 	struct FAmmoData
@@ -60,6 +73,9 @@ public:
 
 
 	// Get Inventory Contents Ammo
+	UFUNCTION(BlueprintPure, Category = "Ammo")
+		int GetValueAmmo(EAmmoType AmmoType);
+
 	UFUNCTION(BlueprintCallable, Category = "Ammo")
 		int GetWoodArrow() const { return AmmoData.ValueWoodArrow; }
 	UFUNCTION(BlueprintCallable, Category = "Ammo")
@@ -111,6 +127,7 @@ protected:
 private:
 	
 	FResoursesData ResoursesData;
+	FMaxResoursesData MaxResoursesData;
 	FAmmoData AmmoData;
 	FMaxAmmoData MaxAmmoData;
 
