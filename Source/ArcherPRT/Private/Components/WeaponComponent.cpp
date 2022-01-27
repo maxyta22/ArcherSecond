@@ -199,7 +199,7 @@ void UWeaponComponent::LoopByAmmo(bool SpendAmmo, int& AmountAmmo, int& MaxAmmo)
 		
 		if (SpendAmmo)
 		{
-			Owner->InventoryComponent->AddWoodArrow(-1);
+			Owner->InventoryComponent->AddAmmo(EAmmoType::WoodArrow, -1);
 		}
 		break;
 
@@ -210,7 +210,7 @@ void UWeaponComponent::LoopByAmmo(bool SpendAmmo, int& AmountAmmo, int& MaxAmmo)
 		
 		if (SpendAmmo)
 		{
-			Owner->InventoryComponent->AddRockArrow(-1);
+			Owner->InventoryComponent->AddAmmo(EAmmoType::RockArrow, -1);
 		}
 		break;
 
@@ -221,7 +221,7 @@ void UWeaponComponent::LoopByAmmo(bool SpendAmmo, int& AmountAmmo, int& MaxAmmo)
 
 		if (SpendAmmo)
 		{
-			Owner->InventoryComponent->AddMetalArrow(-1);
+			Owner->InventoryComponent->AddAmmo(EAmmoType::MetalArrow, -1);
 		}
 		break;
 	}		

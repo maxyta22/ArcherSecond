@@ -56,7 +56,7 @@ bool UCraftComponent::CheckRecipe(TSubclassOf<URecipeBase> Recipe, bool SpendRes
 					SuccessPosition++;
 					if (SpendResources)
 					{
-						Pawn->InventoryComponent->AddWood(CheckRecipeMap[KeysFromMap[i]] * -1);
+						Pawn->InventoryComponent->AddResources(EResourcesType::Wood, CheckRecipeMap[KeysFromMap[i]] * -1);
 					}
 			}
 			break;
@@ -68,7 +68,7 @@ bool UCraftComponent::CheckRecipe(TSubclassOf<URecipeBase> Recipe, bool SpendRes
 					SuccessPosition++;
 					if (SpendResources)
 					{
-						Pawn->InventoryComponent->AddRock(CheckRecipeMap[KeysFromMap[i]] * -1);
+						Pawn->InventoryComponent->AddResources(EResourcesType::Rock, CheckRecipeMap[KeysFromMap[i]] * -1);
 					}
 			}
 			break;
@@ -80,7 +80,7 @@ bool UCraftComponent::CheckRecipe(TSubclassOf<URecipeBase> Recipe, bool SpendRes
 					SuccessPosition++;
 					if (SpendResources)
 					{
-						Pawn->InventoryComponent->AddGrass(CheckRecipeMap[KeysFromMap[i]] * -1);
+						Pawn->InventoryComponent->AddResources(EResourcesType::Grass, CheckRecipeMap[KeysFromMap[i]] * -1);
 					}
 			}
 			break;
@@ -92,7 +92,7 @@ bool UCraftComponent::CheckRecipe(TSubclassOf<URecipeBase> Recipe, bool SpendRes
 					SuccessPosition++;
 					if (SpendResources)
 					{
-						Pawn->InventoryComponent->AddMetal(CheckRecipeMap[KeysFromMap[i]] * -1);
+						Pawn->InventoryComponent->AddResources(EResourcesType::Metal, CheckRecipeMap[KeysFromMap[i]] * -1);
 					}
 			}
 				break;
@@ -103,7 +103,7 @@ bool UCraftComponent::CheckRecipe(TSubclassOf<URecipeBase> Recipe, bool SpendRes
 					SuccessPosition++;
 					if (SpendResources)
 					{
-						Pawn->InventoryComponent->AddFood(CheckRecipeMap[KeysFromMap[i]] * -1);
+						Pawn->InventoryComponent->AddResources(EResourcesType::Food, CheckRecipeMap[KeysFromMap[i]] * -1);
 					}
 			}
 				break;
@@ -132,19 +132,19 @@ void UCraftComponent::GetRecipeResult(TSubclassOf<URecipeBase> Recipe)
 	{
 	case EAmmoType::WoodArrow:
 
-		Pawn->InventoryComponent->AddWoodArrow(1);
+		Pawn->InventoryComponent->AddAmmo(EAmmoType::WoodArrow, 1);
 
 		break;
 
 	case EAmmoType::RockArrow:
 
-		Pawn->InventoryComponent->AddRockArrow(1);
+		Pawn->InventoryComponent->AddAmmo(EAmmoType::RockArrow, 1);
 
 		break;
 
 	case EAmmoType::MetalArrow:
 
-		Pawn->InventoryComponent->AddMetalArrow(1);
+		Pawn->InventoryComponent->AddAmmo(EAmmoType::MetalArrow, 1);
 
 		break;
 

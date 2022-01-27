@@ -10,8 +10,6 @@ UInventoryComponent::UInventoryComponent()
 {
 }
 
-
-
 void UInventoryComponent::BeginPlay()
 {
 	Super::BeginPlay();
@@ -41,6 +39,34 @@ int UInventoryComponent::GetValueResourses(EResourcesType ResourcesType)
 		break;
 	default:
 			return 0;
+		break;
+	}
+}
+
+void UInventoryComponent::AddResources(EResourcesType ResourcesType, int Value)
+{
+	switch (ResourcesType)
+	{
+	case EResourcesType::None:
+			
+		break;
+	case EResourcesType::Wood:
+			ResoursesData.ValueWood = ResoursesData.ValueWood + Value;
+		break;
+	case EResourcesType::Rock:
+			ResoursesData.ValueRock = ResoursesData.ValueRock + Value;
+		break;
+	case EResourcesType::Grass:
+			ResoursesData.ValueGrass = ResoursesData.ValueGrass + Value;
+		break;
+	case EResourcesType::Metal:
+			ResoursesData.ValueMetal = ResoursesData.ValueMetal + Value;
+		break;
+	case EResourcesType::Food:
+			ResoursesData.ValueFood = ResoursesData.ValueFood + Value;
+		break;
+	default:
+			
 		break;
 	}
 }
@@ -88,6 +114,48 @@ int UInventoryComponent::GetMaxAmmo(EAmmoType AmmoType)
 		break;
 	}
 }
+
+void UInventoryComponent::SetMaxAmmo(EAmmoType AmmoType, int Value)
+{
+	switch (AmmoType)
+	{
+	case EAmmoType::None:
+		break;
+	case EAmmoType::WoodArrow:
+		MaxAmmoData.MaxWoodArrow = Value;
+		break;
+	case EAmmoType::RockArrow:
+		MaxAmmoData.MaxRockArrow = Value;
+		break;
+	case EAmmoType::MetalArrow:
+		MaxAmmoData.MaxMetalArrow = Value;
+		break;
+	default:
+		break;
+	}
+}
+
+void UInventoryComponent::AddAmmo(EAmmoType AmmoType, int Value)
+{
+	switch (AmmoType)
+	{
+	case EAmmoType::None:
+		break;
+	case EAmmoType::WoodArrow:
+		AmmoData.ValueWoodArrow = AmmoData.ValueWoodArrow + Value;;
+		break;
+	case EAmmoType::RockArrow:
+		AmmoData.ValueRockArrow = AmmoData.ValueRockArrow + Value;
+		break;
+	case EAmmoType::MetalArrow:
+		AmmoData.ValueMetalArrow = AmmoData.ValueMetalArrow + Value;
+		break;
+	default:
+		break;
+	}
+}
+
+
 
 
 

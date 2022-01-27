@@ -9,15 +9,15 @@
 	 Super::TryTakePickup_Server(Pawn);
 	 switch (ResourcesType)
 	 {
-	 case EResourcesType::Wood:  Pawn->InventoryComponent->AddWood(Value);
+	 case EResourcesType::Wood:  Pawn->InventoryComponent->AddResources(EResourcesType::Wood, Value);
 		 break;
-	 case EResourcesType::Rock:  Pawn->InventoryComponent->AddRock(Value);
+	 case EResourcesType::Rock:  Pawn->InventoryComponent->AddResources(EResourcesType::Rock, Value);
 		 break;
-	 case EResourcesType::Grass: Pawn->InventoryComponent->AddGrass(Value);
+	 case EResourcesType::Grass: Pawn->InventoryComponent->AddResources(EResourcesType::Grass, Value);
 		 break;
-	 case EResourcesType::Metal: Pawn->InventoryComponent->AddMetal(Value);
+	 case EResourcesType::Metal: Pawn->InventoryComponent->AddResources(EResourcesType::Metal, Value);
 		 break;
-	 case EResourcesType::Food: Pawn->InventoryComponent->AddFood(Value);
+	 case EResourcesType::Food: Pawn->InventoryComponent->AddResources(EResourcesType::Food, Value);
 		 break;
 	 default:
 		 break;
