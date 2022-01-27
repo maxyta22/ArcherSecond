@@ -194,8 +194,8 @@ void UWeaponComponent::LoopByAmmo(bool SpendAmmo, int& AmountAmmo, int& MaxAmmo)
 	{
 	case EAmmoType::WoodArrow:
 		
-		AmountAmmo = Owner->InventoryComponent->GetWoodArrow();
-		MaxAmmo = Owner->InventoryComponent->GetMaxWoodArrow();
+		AmountAmmo = Owner->InventoryComponent->GetValueAmmo(EAmmoType::WoodArrow);
+		MaxAmmo = Owner->InventoryComponent->GetMaxAmmo(EAmmoType::WoodArrow);
 		
 		if (SpendAmmo)
 		{
@@ -205,8 +205,8 @@ void UWeaponComponent::LoopByAmmo(bool SpendAmmo, int& AmountAmmo, int& MaxAmmo)
 
 	case EAmmoType::RockArrow:
 
-		AmountAmmo = Owner->InventoryComponent->GetRockArrow();
-		MaxAmmo = Owner->InventoryComponent->GetMaxRockArrow();
+		AmountAmmo = Owner->InventoryComponent->GetValueAmmo(EAmmoType::RockArrow);
+		MaxAmmo = Owner->InventoryComponent->GetMaxAmmo(EAmmoType::RockArrow);
 		
 		if (SpendAmmo)
 		{
@@ -216,8 +216,8 @@ void UWeaponComponent::LoopByAmmo(bool SpendAmmo, int& AmountAmmo, int& MaxAmmo)
 
 	case EAmmoType::MetalArrow:
 
-		AmountAmmo = Owner->InventoryComponent->GetMetalArrow();
-		MaxAmmo = Owner->InventoryComponent->GetMaxMetalArrow();
+		AmountAmmo = Owner->InventoryComponent->GetValueAmmo(EAmmoType::MetalArrow);
+		MaxAmmo = Owner->InventoryComponent->GetMaxAmmo(EAmmoType::MetalArrow);
 
 		if (SpendAmmo)
 		{

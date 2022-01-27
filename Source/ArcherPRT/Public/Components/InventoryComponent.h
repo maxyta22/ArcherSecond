@@ -60,36 +60,17 @@ public:
 	UInventoryComponent();
 
 	// Get Inventory Contents resources
-	UFUNCTION(BlueprintCallable, Category = "resources")
-		int GetWood() const {return ResoursesData.ValueWood;}
-	UFUNCTION(BlueprintCallable, Category = "resources")
-		int GetRock() const {return ResoursesData.ValueRock;}
-	UFUNCTION(BlueprintCallable, Category = "resources")
-		int GetGrass() const {return ResoursesData.ValueGrass;}
-	UFUNCTION(BlueprintCallable, Category = "resources")
-		int GetMetal() const { return ResoursesData.ValueMetal; }
-	UFUNCTION(BlueprintCallable, Category = "resources")
-		int GetFood() const { return ResoursesData.ValueFood; }
-
+	UFUNCTION(BlueprintPure, Category = "resources")
+		int GetValueResourses(EResourcesType ResourcesType);
 
 	// Get Inventory Contents Ammo
 	UFUNCTION(BlueprintPure, Category = "Ammo")
 		int GetValueAmmo(EAmmoType AmmoType);
 
-	UFUNCTION(BlueprintCallable, Category = "Ammo")
-		int GetWoodArrow() const { return AmmoData.ValueWoodArrow; }
-	UFUNCTION(BlueprintCallable, Category = "Ammo")
-		int GetRockArrow() const { return AmmoData.ValueRockArrow; }
-	UFUNCTION(BlueprintCallable, Category = "Ammo")
-		int GetMetalArrow() const { return AmmoData.ValueMetalArrow; }
-
 	//Get Max Ammo
-	UFUNCTION(BlueprintCallable, Category = "Ammo")
-		int GetMaxWoodArrow() const { return MaxAmmoData.MaxWoodArrow; }
-	UFUNCTION(BlueprintCallable, Category = "Ammo")
-		int GetMaxRockArrow() const { return MaxAmmoData.MaxRockArrow; }
-	UFUNCTION(BlueprintCallable, Category = "Ammo")
-		int GetMaxMetalArrow() const { return MaxAmmoData.MaxMetalArrow; }
+	UFUNCTION(BlueprintPure, Category = "Ammo")
+		int GetMaxAmmo(EAmmoType AmmoType);
+
 
 	//Set Max Ammo
 	UFUNCTION(BlueprintCallable, Category = "Ammo")

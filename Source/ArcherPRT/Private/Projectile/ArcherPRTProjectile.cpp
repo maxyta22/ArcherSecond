@@ -60,7 +60,7 @@ void AArcherPRTProjectile::HideInfo_Implementation()
 
 void AArcherPRTProjectile::TryTakeProjectile_ServerRPC_Implementation(APlayerCharacter* Pawn)
 {
-	if (Pawn->InventoryComponent->GetWoodArrow() < Pawn->InventoryComponent->GetMaxWoodArrow())
+	if (Pawn->InventoryComponent->GetValueAmmo(EAmmoType::WoodArrow) < Pawn->InventoryComponent->GetMaxAmmo(EAmmoType::WoodArrow))
 	{
 		Pawn->InventoryComponent->AddWoodArrow(1);
 		Destroy();

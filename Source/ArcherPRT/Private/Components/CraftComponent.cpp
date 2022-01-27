@@ -51,7 +51,7 @@ bool UCraftComponent::CheckRecipe(TSubclassOf<URecipeBase> Recipe, bool SpendRes
 
 			case EResourcesType::Wood:
 
-			if (Pawn->InventoryComponent->GetWood() >= CheckRecipeMap[KeysFromMap[i]])
+			if (Pawn->InventoryComponent->GetValueResourses(EResourcesType::Wood) >= CheckRecipeMap[KeysFromMap[i]])
 			{
 					SuccessPosition++;
 					if (SpendResources)
@@ -63,7 +63,7 @@ bool UCraftComponent::CheckRecipe(TSubclassOf<URecipeBase> Recipe, bool SpendRes
 					
 			case EResourcesType::Rock:
 
-			if (Pawn->InventoryComponent->GetRock() >= CheckRecipeMap[KeysFromMap[i]])
+			if (Pawn->InventoryComponent->GetValueResourses(EResourcesType::Rock) >= CheckRecipeMap[KeysFromMap[i]])
 			{
 					SuccessPosition++;
 					if (SpendResources)
@@ -75,7 +75,7 @@ bool UCraftComponent::CheckRecipe(TSubclassOf<URecipeBase> Recipe, bool SpendRes
 
 			case EResourcesType::Grass:
 
-			if (Pawn->InventoryComponent->GetGrass() >= CheckRecipeMap[KeysFromMap[i]])
+			if (Pawn->InventoryComponent->GetValueResourses(EResourcesType::Grass) >= CheckRecipeMap[KeysFromMap[i]])
 			{
 					SuccessPosition++;
 					if (SpendResources)
@@ -87,7 +87,7 @@ bool UCraftComponent::CheckRecipe(TSubclassOf<URecipeBase> Recipe, bool SpendRes
 
 			case EResourcesType::Metal:
 
-			if (Pawn->InventoryComponent->GetMetal() >= CheckRecipeMap[KeysFromMap[i]])
+			if (Pawn->InventoryComponent->GetValueResourses(EResourcesType::Metal) >= CheckRecipeMap[KeysFromMap[i]])
 			{
 					SuccessPosition++;
 					if (SpendResources)
@@ -98,7 +98,7 @@ bool UCraftComponent::CheckRecipe(TSubclassOf<URecipeBase> Recipe, bool SpendRes
 				break;
 			case EResourcesType::Food:
 
-			if (Pawn->InventoryComponent->GetFood() >= CheckRecipeMap[KeysFromMap[i]])
+			if (Pawn->InventoryComponent->GetValueResourses(EResourcesType::Food) >= CheckRecipeMap[KeysFromMap[i]])
 			{
 					SuccessPosition++;
 					if (SpendResources)
