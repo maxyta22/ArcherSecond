@@ -43,7 +43,6 @@ void APickupBase::TryTakePickup_Server_Implementation(APlayerCharacter* Pawn)
 }
 
 
-
 void APickupBase::TakePickup_Server_Implementation()
 {
 	AfterWasTaken();

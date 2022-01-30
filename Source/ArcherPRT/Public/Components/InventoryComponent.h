@@ -24,11 +24,11 @@ USTRUCT()
 	struct FMaxResoursesData
 	{
 		GENERATED_USTRUCT_BODY()
-		int MaxWood;
-		int MaxRock;
-		int MaxGrass;
-		int MaxMetal;
-		int MaxFood;
+		int MaxWood = 5;
+		int MaxRock = 5;
+		int MaxGrass = 5;
+		int MaxMetal = 5;
+		int MaxFood  =5;
 };
 
 USTRUCT()
@@ -67,6 +67,14 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "resources")
 		void AddResources(EResourcesType ResourcesType, int Value);
 
+	// GetMaxResourses
+	UFUNCTION(BlueprintPure, Category = "Resources")
+		int GetMaxResourses(EResourcesType ResourcesType);
+
+	// SetMaxResourses
+	UFUNCTION(BlueprintCallable, Category = "Resources")
+		void SetMaxResourses(EResourcesType ResourcesType, int Value);
+
 	// Get Inventory Contents Ammo
 	UFUNCTION(BlueprintPure, Category = "Ammo")
 		int GetValueAmmo(EAmmoType AmmoType);
@@ -82,6 +90,10 @@ public:
 	// Add Inventory Contents Ammo
 	UFUNCTION(BlueprintCallable, Category = "Ammo")
 		void AddAmmo(EAmmoType AmmoType, int Value);
+
+	// Check Can Take Resources
+	UFUNCTION(BlueprintPure, Category = "Resources")
+		bool CheckCanTakeResources(EResourcesType ResourcesType);
 
 	
 	
