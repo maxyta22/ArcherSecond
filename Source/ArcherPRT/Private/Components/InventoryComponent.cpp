@@ -237,6 +237,28 @@ bool UInventoryComponent::CheckCanTakeResources(EResourcesType ResourcesType)
 	}
 }
 
+bool UInventoryComponent::CheckCanTakeAmmo(EAmmoType AmmoType)
+{
+	switch (AmmoType)
+	{
+	case EAmmoType::None:
+		return false;
+		break;
+	case EAmmoType::WoodArrow:
+		return AmmoData.ValueWoodArrow < MaxAmmoData.MaxWoodArrow;
+		break;
+	case EAmmoType::RockArrow:
+		return AmmoData.ValueRockArrow < MaxAmmoData.MaxRockArrow;
+		break;
+	case EAmmoType::MetalArrow:
+		return AmmoData.ValueMetalArrow < MaxAmmoData.MaxMetalArrow;
+		break;
+	default:
+		return false;
+		break;
+	}
+}
+
 
 
 

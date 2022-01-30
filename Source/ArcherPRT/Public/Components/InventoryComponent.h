@@ -95,6 +95,9 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Resources")
 		bool CheckCanTakeResources(EResourcesType ResourcesType);
 
+	UFUNCTION(BlueprintPure, Category = "Resources")
+		bool CheckCanTakeAmmo(EAmmoType AmmoType);
+
 	
 	
 

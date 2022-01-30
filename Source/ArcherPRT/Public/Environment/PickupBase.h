@@ -34,8 +34,6 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 		USkeletalMeshComponent* SkeletalMeshComponent;
 
-	
-
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Description")
 		void ShowInfo();

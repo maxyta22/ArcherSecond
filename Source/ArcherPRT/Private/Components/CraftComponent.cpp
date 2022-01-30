@@ -2,7 +2,9 @@
 
 #include "Components/CraftComponent.h"
 #include "Craft/RecipeBase.h"
+#include "Enum/AmmoTypeEnum.h"
 #include "Enum/ResourcesTypeEnum.h"
+#include "Craft/RecipeBase.h"
 #include "Player/PlayerCharacter.h"
 
 
@@ -12,14 +14,21 @@ UCraftComponent::UCraftComponent()
 
 void UCraftComponent::TryCraftItem()
 {
-	if (CheckRecipe(RecipeDataBase[SelectedIndex], false))
+	const auto Pawn = Cast<APlayerCharacter>(GetOwner());
+
+	if (!Pawn) return;
+	if (!RecipeDataBase[SelectedIndex]) return;
+
+	TSubclassOf<URecipeBase>  CurrentRecipe = RecipeDataBase[SelectedIndex];
+	EAmmoType Result = CurrentRecipe.GetDefaultObject()->Ammo;
+	
+	if (Pawn->InventoryComponent->CheckCanTakeAmmo(Result)&& CheckRecipe(RecipeDataBase[SelectedIndex], false))
 	{
 		CheckRecipe(RecipeDataBase[SelectedIndex], true);
 		GetRecipeResult(RecipeDataBase[SelectedIndex]);
 
 		//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("CraftSuccess"));
 	}
-	
 }
 
 void UCraftComponent::BeginPlay()
