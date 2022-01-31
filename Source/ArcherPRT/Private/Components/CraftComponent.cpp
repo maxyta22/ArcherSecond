@@ -12,6 +12,15 @@ UCraftComponent::UCraftComponent()
 {
 }
 
+void UCraftComponent::BeginPlay()
+{
+	Super::BeginPlay();
+}
+
+void UCraftComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+{
+}
+
 void UCraftComponent::TryCraftItem()
 {
 	const auto Pawn = Cast<APlayerCharacter>(GetOwner());
@@ -24,16 +33,21 @@ void UCraftComponent::TryCraftItem()
 	
 	if (Pawn->InventoryComponent->CheckCanTakeAmmo(Result)&& CheckRecipe(RecipeDataBase[SelectedIndex], false))
 	{
-		CheckRecipe(RecipeDataBase[SelectedIndex], true);
-		GetRecipeResult(RecipeDataBase[SelectedIndex]);
-
-		//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("CraftSuccess"));
+		GetWorld()->GetTimerManager().SetTimer(CraftInProgressTimer, this, &UCraftComponent::CraftSucceess, TimeCraft, false);
 	}
 }
 
-void UCraftComponent::BeginPlay()
+void UCraftComponent::AbortCraftProcess()
 {
-	Super::BeginPlay();	
+	GetWorld()->GetTimerManager().ClearTimer(CraftInProgressTimer);
+}
+
+void UCraftComponent::CraftSucceess()
+{
+	GetWorld()->GetTimerManager().ClearTimer(CraftInProgressTimer);
+	CheckRecipe(RecipeDataBase[SelectedIndex], true);
+	GetRecipeResult(RecipeDataBase[SelectedIndex]);
+	//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("CraftSuccess"));
 }
 
 bool UCraftComponent::CheckRecipe(TSubclassOf<URecipeBase> Recipe, bool SpendResources)
