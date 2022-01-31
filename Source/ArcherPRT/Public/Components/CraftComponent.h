@@ -30,6 +30,9 @@ public:
 	UFUNCTION(BlueprintPure)
 		bool CraftInProgress() { return  CraftInProgressTimer.IsValid(); }
 
+	UFUNCTION(BlueprintPure)
+		float GetCraftTimeRemaining();
+
 	void TryCraftItem();
 
 	void AbortCraftProcess();

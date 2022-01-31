@@ -50,6 +50,11 @@ void UCraftComponent::CraftSucceess()
 	//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("CraftSuccess"));
 }
 
+float UCraftComponent::GetCraftTimeRemaining()
+{
+	return GetWorld()->GetTimerManager().GetTimerRemaining(CraftInProgressTimer);
+}
+
 bool UCraftComponent::CheckRecipe(TSubclassOf<URecipeBase> Recipe, bool SpendResources)
 {	
 	const auto Pawn = Cast<APlayerCharacter>(GetOwner());
