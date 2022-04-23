@@ -19,8 +19,6 @@ public class ArcherPRT : ModuleRules
 			"Niagara",
 			"GameplayTasks",
 			"NavigationSystem",
-			"OnlineSubsystem",
-			"OnlineSubsystemSteam"
 		});
 
 	}
