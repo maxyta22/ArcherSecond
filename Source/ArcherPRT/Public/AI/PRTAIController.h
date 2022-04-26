@@ -18,7 +18,7 @@ public:
 	APRTAIController();
 
 	
-	UFUNCTION(BlueprintCallable, Category = "AI")
+	UFUNCTION(BlueprintCallable, Category = "AII")
 	void LockBehavior(bool Lock);
 
 	void SetEnemy(AActor* Enemy);
