@@ -34,10 +34,14 @@ AGameCharacter::AGameCharacter()
 
 	StatsComponent = CreateDefaultSubobject<UStatsComponent>("StatsComponent");
 	StatsComponent->SetIsReplicated(true);
+
 	WeaponComponent = CreateDefaultSubobject<UWeaponComponent>("WeaponComponent");
 	WeaponComponent->SetIsReplicated(true);
+
 	CustomAction = CreateDefaultSubobject<UCustomAction>("CustomObjectComponent");
 	CustomAction->SetIsReplicated(true);
+
+	AbilitySystemComponent = CreateDefaultSubobject<UAbilitySystemComponent>("AbilitySystemComponent");
 
 }
 

@@ -19,6 +19,8 @@ public class ArcherPRT : ModuleRules
 			"Niagara",
 			"GameplayTasks",
 			"NavigationSystem",
+			"GameplayAbilities",
+			"GameplayTags"
 		});
 
 	}

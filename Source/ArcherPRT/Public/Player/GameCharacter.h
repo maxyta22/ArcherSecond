@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "Net/UnrealNetwork.h"
+#include "AbilitySystemComponent.h"
 #include "GameCharacter.generated.h"
 
 class UInputComponent;
@@ -41,6 +42,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
 		UCustomAction* CustomAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
+		UAbilitySystemComponent* AbilitySystemComponent;
 
 
 	//Animation
