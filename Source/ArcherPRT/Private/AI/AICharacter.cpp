@@ -105,6 +105,10 @@ void AAICharacter::OnHitReaction()
 
 	const auto AIController = Cast<APRTAIController>(Controller);
 	if (!AIController) return;
+
+	PerformHitReaction();
+
+	/*
 	
 	// If No Enemy
 	if (!AIController->GetEnemy())
@@ -126,6 +130,6 @@ void AAICharacter::OnHitReaction()
 	CustomAction->TryPerformPlayAnimMontage_Server(HitReaction, true);
 	
 	
-
+	*/
 	
 }

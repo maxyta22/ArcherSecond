@@ -36,11 +36,14 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Animation", meta = (Tooltip = "Make Attack after hit reaction"))
 		UAnimMontage* CloseAttackAfterHitReaction;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Animation")
+		UAnimMontage* MainAttack;
+
 	UFUNCTION(BlueprintImplementableEvent, Category = "Behavior")
 		void AfterReactionToAiming();
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Behavior")
-		void AfterCustomAction();
+		void PerformHitReaction();
 
 	void ReactionToAiming();
 

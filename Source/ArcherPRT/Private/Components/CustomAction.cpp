@@ -90,8 +90,6 @@ void UCustomAction::FinishCustomAction_Multicast_Implementation()
 
 	bCustomActionInProgress = false;
 
-	Pawn->AfterCustomAction();
-
 }
 
 
