@@ -106,7 +106,7 @@ void AAICharacter::OnHitReaction()
 	const auto AIController = Cast<APRTAIController>(Controller);
 	if (!AIController) return;
 
-	PerformHitReaction();
+	AfterHitReaction();
 
 	/*
 	

@@ -43,7 +43,7 @@ public:
 		void AfterReactionToAiming();
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Behavior")
-		void PerformHitReaction();
+		void AfterHitReaction();
 
 	void ReactionToAiming();
 
