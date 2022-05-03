@@ -2,6 +2,7 @@
 
 
 #include "Components/WeaponComponent.h"
+#include "Components/CraftComponent.h"
 #include "Weapon/WeaponBase.h"
 #include "Player/GameCharacter.h"
 #include "Projectile/ArcherPRTProjectile.h"
@@ -109,6 +110,8 @@ void UWeaponComponent::OnFire_ServerRPC_Implementation()
 	if (!Owner) return;
 
 	if (CurrentEquipWeapon.GetDefaultObject()->ProjectileAmmoMap.Num() == 0) return;
+
+	if (Owner->CraftComponent->CraftInProgress()) return;
 
 	//Check Have Ammo
 	if (!CanMakeShot()) return;
