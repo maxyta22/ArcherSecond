@@ -109,9 +109,9 @@ void UWeaponComponent::OnFire_ServerRPC_Implementation()
 	const auto Owner = Cast<APlayerCharacter>(GetOwner());
 	if (!Owner) return;
 
-	if (CurrentEquipWeapon.GetDefaultObject()->ProjectileAmmoMap.Num() == 0) return;
-
 	if (Owner->CraftComponent->CraftInProgress()) return;
+
+	if (CurrentEquipWeapon.GetDefaultObject()->ProjectileAmmoMap.Num() == 0) return;
 
 	//Check Have Ammo
 	if (!CanMakeShot()) return;
