@@ -81,6 +81,9 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, Category = "Attack")
 		void ReleasedAttackButton();
 
+	UFUNCTION(BlueprintImplementableEvent, Category = "Craft")
+		void AfterBeginCraft();
+
 protected:
 
 	virtual void BeginPlay() override;

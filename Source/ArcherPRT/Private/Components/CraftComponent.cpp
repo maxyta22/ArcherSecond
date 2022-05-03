@@ -1,9 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Components/CraftComponent.h"
+#include "Components/WeaponComponent.h"
 #include "Craft/RecipeBase.h"
-#include "Enum/AmmoTypeEnum.h"
-#include "Enum/ResourcesTypeEnum.h"
+#include "Core/ArcherPRTData.h"
 #include "Craft/RecipeBase.h"
 #include "Player/PlayerCharacter.h"
 
@@ -31,9 +31,14 @@ void UCraftComponent::TryCraftItem()
 	TSubclassOf<URecipeBase>  CurrentRecipe = RecipeDataBase[SelectedIndex];
 	EAmmoType Result = CurrentRecipe.GetDefaultObject()->Ammo;
 	
-	if (Pawn->InventoryComponent->CheckCanTakeAmmo(Result)&& CheckRecipe(RecipeDataBase[SelectedIndex], false))
+	if (Pawn->InventoryComponent->CheckCanTakeAmmo(Result)
+		&& CheckRecipe(RecipeDataBase[SelectedIndex],false) 
+		&& !Pawn->WeaponComponent->AimingInProgress() 
+		&& !CraftInProgress())
 	{
+		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Green, TEXT("Start Craft"));
 		GetWorld()->GetTimerManager().SetTimer(CraftInProgressTimer, this, &UCraftComponent::CraftSucceess, TimeCraft, false);
+		Pawn->AfterBeginCraft();
 	}
 }
 

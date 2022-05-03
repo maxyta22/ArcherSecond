@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Environment/PickupBase.h"
-#include "Enum/ResourcesTypeEnum.h"
+#include "Core/ArcherPRTData.h"
 #include "PickupResourcesBase.generated.h"
 
 

@@ -5,8 +5,7 @@
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
 #include "Environment/PickupBase.h"
-#include "Enum/ResourcesTypeEnum.h"
-#include "Enum/AmmoTypeEnum.h"
+#include "Core/ArcherPRTData.h"
 #include "RecipeBase.generated.h"
 
 class APickupBase;

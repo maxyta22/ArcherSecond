@@ -15,3 +15,22 @@ enum class EAbilityInputID : uint8
 	Punch
 };
 
+UENUM(BlueprintType, Category = "Ammo")
+enum class EAmmoType : uint8
+{
+	None,
+	WoodArrow,
+	RockArrow,
+	MetalArrow,
+};
+
+UENUM(BlueprintType, Category = "Resources")
+enum class EResourcesType : uint8
+{
+	None,
+	Wood,
+	Rock,
+	Grass,
+	Metal,
+	Food,
+};

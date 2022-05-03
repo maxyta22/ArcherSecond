@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Enum/AmmoTypeEnum.h"
+#include "Core/ArcherPRTData.h"
 #include "WeaponBase.generated.h"
 
 class USkeletalMeshComponent;

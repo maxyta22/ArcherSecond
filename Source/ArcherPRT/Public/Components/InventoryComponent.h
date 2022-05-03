@@ -4,8 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include "Enum/ResourcesTypeEnum.h"
-#include "Enum/AmmoTypeEnum.h"
+#include "Core/ArcherPRTData.h"
 #include "InventoryComponent.generated.h"
 
 
