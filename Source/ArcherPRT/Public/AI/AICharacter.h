@@ -33,6 +33,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Behavior")
 		float MinDistanceForAttackAfterHitReaction = 300;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Behavior")
+		float MaxDistanceDetection = 1500.0f;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Animation", meta = (Tooltip = "Make Attack after hit reaction"))
 		UAnimMontage* CloseAttackAfterHitReaction;
 

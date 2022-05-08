@@ -24,8 +24,6 @@ AAICharacter::AAICharacter()
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECollisionChannel::ECC_WorldDynamic, ECollisionResponse::ECR_Block);
 	
 	
-
-
 	// Setup Smooth Rotation
 	bUseControllerRotationYaw = true;
 	if (GetCharacterMovement())
