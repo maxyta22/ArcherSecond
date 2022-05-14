@@ -48,6 +48,9 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, Category = "Behavior")
 		void AfterHitReaction();
 
+	UFUNCTION(BlueprintImplementableEvent, Category = "Behavior")
+		void AfterEnemyFound();
+
 	void ReactionToAiming();
 
 	void StartAccumulateToAiming();
