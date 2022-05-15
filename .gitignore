@@ -1,4 +1,3 @@
-Binaries
 DerivedDataCache
 Intermediate
 Saved
@@ -20,3 +19,4 @@ ExternalContent
 *.suo
 *.xcodeproj
 *.xcworkspace
+*.pdb
