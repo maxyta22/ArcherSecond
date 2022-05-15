@@ -13,18 +13,18 @@ URandomLocationTask::URandomLocationTask()
 
 EBTNodeResult::Type URandomLocationTask::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
-	const auto Controller = OwnerComp.GetAIOwner();
+	const auto OwnerAIController = OwnerComp.GetAIOwner();
 	const auto Blackboard = OwnerComp.GetBlackboardComponent();
-	if (!Controller || !Blackboard) return EBTNodeResult::Failed;
+	if (!OwnerAIController || !Blackboard) return EBTNodeResult::Failed;
 
-	const auto Pawn = Controller->GetPawn();
-	if(!Pawn) return EBTNodeResult::Failed;
+	const auto OwnerAICharacter = OwnerAIController->GetPawn();
+	if(!OwnerAICharacter) return EBTNodeResult::Failed;
 
-	const auto NavSys = UNavigationSystemV1::GetCurrent(Pawn);
+	const auto NavSys = UNavigationSystemV1::GetCurrent(OwnerAICharacter);
 	if(!NavSys) return EBTNodeResult::Failed;
 
 	FNavLocation NavLocation;
-	auto Location = Pawn->GetActorLocation();
+	auto Location = OwnerAICharacter->GetActorLocation();
 	if (!SelfCenter)
 	{
 		auto CenterActor = Cast<AActor>(Blackboard->GetValueAsObject(CenterActorKey.SelectedKeyName));

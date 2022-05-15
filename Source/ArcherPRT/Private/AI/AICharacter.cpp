@@ -9,6 +9,7 @@
 #include "Components/CustomAction.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "BehaviorTree/BehaviorTree.h"
+#include "Engine/TargetPoint.h"
 #include "TimerManager.h"
 
 
@@ -51,6 +52,31 @@ void AAICharacter::FinishAccumulateToAiming()
 {
 	if (!GetWorld()) return;
 	GetWorld()->GetTimerManager().ClearTimer(AccumulateToAiminHandleTimer);
+}
+
+FVector AAICharacter::GetNextPatrolTargetPointLocation()
+{
+	if (TargetsForPatrol.Num() == 0) return FVector::ZeroVector;
+
+	if (TargetsForPatrol[CurrentPatrolIndex])
+	{
+		const auto TargetLocation = TargetsForPatrol[CurrentPatrolIndex]->GetActorLocation();
+
+		CurrentPatrolIndex++;
+
+		if (CurrentPatrolIndex >= TargetsForPatrol.Num())
+		{
+			CurrentPatrolIndex = 0;
+		}
+		return TargetLocation;
+	}
+
+	else
+	{
+		return FVector::ZeroVector;
+	}
+
+	
 }
 
 void AAICharacter::ReactionToAiming()

@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Player/GameCharacter.h"
+#include "Engine/TargetPoint.h"
 #include "AICharacter.generated.h"
 
 class UBehaviorTree;
@@ -36,6 +37,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Behavior")
 		float MaxDistanceDetection = 1500.0f;
 
+	UPROPERTY(EditInstanceOnly, BlueprintReadWrite, Category = "Behavior")
+		TArray<ATargetPoint*> TargetsForPatrol;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Animation", meta = (Tooltip = "Make Attack after hit reaction"))
 		UAnimMontage* CloseAttackAfterHitReaction;
 
@@ -51,11 +55,14 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, Category = "Behavior")
 		void AfterEnemyFound();
 
+
 	void ReactionToAiming();
 
 	void StartAccumulateToAiming();
 
 	void FinishAccumulateToAiming();
+
+	FVector GetNextPatrolTargetPointLocation();
 
 	virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 
@@ -70,10 +77,7 @@ private:
 
 	FTimerHandle AccumulateToAiminHandleTimer;
 
-
-	
-
-
+	int CurrentPatrolIndex = 0;
 
 	
 };
