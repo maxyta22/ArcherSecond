@@ -53,12 +53,12 @@ void APRTAIController::LockBehavior(bool Lock)
 		if (Lock == true)
 		{
 			GetBlackboardComponent()->SetValueAsBool("LockBehavior", true);
-			//BrainComponent->StopLogic("Stop");
+			BrainComponent->StopLogic("Stop");
 
 		}
 		else
 			GetBlackboardComponent()->SetValueAsBool("LockBehavior", false);
-			//BrainComponent->StartLogic();
+			BrainComponent->StartLogic();
 	}
 }
 
