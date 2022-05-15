@@ -6,15 +6,6 @@
 
 class ARCHERPRT_API ArcherPRTData;
 
-UENUM(BlueprintType)
-enum class EAbilityInputID : uint8
-{
-	None,
-	Confirm,
-	Cancel,
-	Punch
-};
-
 UENUM(BlueprintType, Category = "Ammo")
 enum class EAmmoType : uint8
 {
@@ -33,4 +24,12 @@ enum class EResourcesType : uint8
 	Grass,
 	Metal,
 	Food,
+};
+
+UENUM(BlueprintType, Category = "AI")
+enum class EAIStartCondition : uint8
+{
+	Idle,
+	Patrol,
+	Sleep
 };

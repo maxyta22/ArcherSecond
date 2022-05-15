@@ -4,6 +4,8 @@
 #include "AI/PRTAIController.h"
 #include "AI/AICharacter.h"
 #include "Player/GameCharacter.h"
+#include "AI/AICharacter.h"
+#include "Core/ArcherPRTData.h"
 #include "Components/PRTAIPerceptionComponent.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Components/StatsComponent.h"
@@ -29,6 +31,8 @@ void APRTAIController::OnPossess(APawn* InPawn)
 	{
 		RunBehaviorTree(ControlledChar->BehaviorTreeAsset);
 		ControlledPawn = ControlledChar;
+		const EAIStartCondition Start = ControlledChar->StartCondition;
+		GetBlackboardComponent()->SetValueAsEnum("StartCondition", StaticCast<uint8>(ControlledChar->StartCondition));
 	}
 }
 

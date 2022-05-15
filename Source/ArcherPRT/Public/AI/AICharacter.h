@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Player/GameCharacter.h"
 #include "Engine/TargetPoint.h"
+#include "Core/ArcherPRTData.h"
 #include "AICharacter.generated.h"
 
 class UBehaviorTree;
@@ -23,10 +24,21 @@ public:
 
 	virtual void Tick(float DeltaTime) override;
 
+	//Animation
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Animation", meta = (Tooltip = "Make Attack after hit reaction"))
+		UAnimMontage* CloseAttackAfterHitReaction;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Animation")
+		UAnimMontage* MainAttack;
+
 	//AI
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Behavior")
 		UBehaviorTree* BehaviorTreeAsset;
+
+	UPROPERTY(EditInstanceOnly, BlueprintReadWrite, Category = "Behavior")
+		EAIStartCondition StartCondition;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Behavior")
 		float TimeToReactionToAiming = 2;
@@ -39,12 +51,6 @@ public:
 
 	UPROPERTY(EditInstanceOnly, BlueprintReadWrite, Category = "Behavior")
 		TArray<ATargetPoint*> TargetsForPatrol;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Animation", meta = (Tooltip = "Make Attack after hit reaction"))
-		UAnimMontage* CloseAttackAfterHitReaction;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Animation")
-		UAnimMontage* MainAttack;
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Behavior")
 		void AfterReactionToAiming();

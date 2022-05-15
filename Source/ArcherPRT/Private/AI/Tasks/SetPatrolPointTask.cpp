@@ -9,7 +9,7 @@
 
 USetPatrolPointTask::USetPatrolPointTask()
 {
-	NodeName = "Se tPatrol PointTask";
+	NodeName = "SetPatrol PointTask";
 }
 
 EBTNodeResult::Type USetPatrolPointTask::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
