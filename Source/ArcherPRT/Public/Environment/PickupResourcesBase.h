@@ -24,5 +24,5 @@ public:
 		
 protected:
 
-		virtual void TryTakePickup_Server(APlayerCharacter* Pawn) override;
+		virtual void TryTakePickup(APlayerCharacter* Pawn) override;
 };

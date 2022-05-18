@@ -24,27 +24,20 @@ APickupBase::APickupBase()
 
 }
 
-void APickupBase::ShowInfo_Implementation()
-{
-}
-
-void APickupBase::HideInfo_Implementation()
-{
-}
-
 void APickupBase::BeginPlay()
 {
 	Super::BeginPlay();
 }
 
-void APickupBase::TryTakePickup_Server_Implementation(APlayerCharacter* Pawn)
+void APickupBase::TryTakePickup(APlayerCharacter* Pawn)
 {
 	 
 }
 
-void APickupBase::TakePickup_Server_Implementation()
+void APickupBase::TakePickup()
 {
 	AfterWasTaken();
+	if (bInfinity) return;
 	Destroy();
 }
 

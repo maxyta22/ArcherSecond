@@ -34,32 +34,27 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 		USkeletalMeshComponent* SkeletalMeshComponent;
 
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "Description")
+		void ShowInfo();	
 
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Description")
-		void ShowInfo();
-		void ShowInfo_Implementation();
-
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Description")
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "Description")
 		void HideInfo();
-		void HideInfo_Implementation();
 
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "Take")
 		void AfterWasTaken();
 
-	UFUNCTION(Server, Reliable)
-		virtual void TryTakePickup_Server(APlayerCharacter* Pawn);
+	UPROPERTY(EditInstanceOnly, BlueprintReadWrite)
+		bool bInfinity;
 
+	virtual void TryTakePickup(APlayerCharacter* Pawn);
 
 protected:
 
 	virtual void BeginPlay() override;	
 
-	UFUNCTION(Server, Reliable)
-	void TakePickup_Server();
+	void TakePickup();
 
-	//UFUNCTION(NetMulticast, Reliable)
-	//void TakePickupMulticast();
-	//void TakePickupMulticast_Implementation();
+
 
 
 	

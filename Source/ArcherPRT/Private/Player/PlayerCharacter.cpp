@@ -138,7 +138,7 @@ void APlayerCharacter::TryPerformInteract_ServerRPC_Implementation()
 	PickupBase = Cast<APickupBase>(CurrentInteractTarget[0]);
 	if (PickupBase)
 		{
-			PickupBase->TryTakePickup_Server(this);
+			PickupBase->TryTakePickup(this);
 			return;
 		}
 
