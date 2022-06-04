@@ -34,6 +34,13 @@ AAICharacter::AAICharacter()
 	}
 }
 
+void AAICharacter::BeginPlay()
+{
+	Super::BeginPlay();
+
+	AIControllerRef = Cast<APRTAIController>(GetController());
+}
+
 void AAICharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
@@ -45,6 +52,8 @@ void AAICharacter::StartAccumulateToAiming()
 {
 	if (!GetWorld()) return;
 	if (GetWorld()->GetTimerManager().IsTimerActive(AccumulateToAiminHandleTimer)) return;
+	if (!GetAIControollerRef()) return;
+	if (!GetAIControollerRef()->GetEnemy()) return;
 	GetWorld()->GetTimerManager().SetTimer(AccumulateToAiminHandleTimer, this, &AAICharacter::ReactionToAiming, TimeToReactionToAiming);
 }
 
@@ -127,33 +136,7 @@ void AAICharacter::OnHitReaction()
 
 	if (StatsComponent->IsDead()) return;
 
-	const auto AIController = Cast<APRTAIController>(Controller);
-	if (!AIController) return;
-
 	AfterHitReaction();
 
-	/*
-	
-	// If No Enemy
-	if (!AIController->GetEnemy())
-	{
-		if (!HitReaction) return;
-		CustomAction->TryPerformPlayAnimMontage_Server(HitReaction, true);
-		return;
-	}
-
-	// If Have Close Attack After Hit Reaction
-	if ((CloseAttackAfterHitReaction) && (GetDistanceTo(AIController->GetEnemy()) <= MinDistanceForAttackAfterHitReaction))
-	{
-		CustomAction->TryPerformPlayAnimMontage_Server(CloseAttackAfterHitReaction, true);
-		return;
-	}
-
-	if (!HitReaction) return;
-
-	CustomAction->TryPerformPlayAnimMontage_Server(HitReaction, true);
-	
-	
-	*/
 	
 }

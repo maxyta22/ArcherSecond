@@ -26,7 +26,7 @@ enum class EResourcesType : uint8
 	Food,
 };
 
-UENUM(BlueprintType, Category = "AI")
+UENUM(BlueprintType, Category = "AIStartCondition")
 enum class EAIStartCondition : uint8
 {
 	Idle,

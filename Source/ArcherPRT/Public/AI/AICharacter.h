@@ -6,6 +6,7 @@
 #include "Player/GameCharacter.h"
 #include "Engine/TargetPoint.h"
 #include "Core/ArcherPRTData.h"
+#include "AI/PRTAIController.h"
 #include "AICharacter.generated.h"
 
 class UBehaviorTree;
@@ -23,6 +24,8 @@ public:
 	AAICharacter();
 
 	virtual void Tick(float DeltaTime) override;
+
+	virtual void BeginPlay() override;
 
 	//Animation
 
@@ -51,6 +54,10 @@ public:
 
 	UPROPERTY(EditInstanceOnly, BlueprintReadWrite, Category = "Behavior")
 		TArray<ATargetPoint*> TargetsForPatrol;
+
+	UFUNCTION(BlueprintPure)
+		APRTAIController* GetAIControollerRef() { return AIControllerRef; }
+
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Behavior")
 		void AfterReactionToAiming();
@@ -84,6 +91,8 @@ private:
 	FTimerHandle AccumulateToAiminHandleTimer;
 
 	int CurrentPatrolIndex = 0;
+
+	APRTAIController* AIControllerRef;
 
 	
 };
