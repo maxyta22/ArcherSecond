@@ -112,22 +112,7 @@ void AAICharacter::OnDeath()
 {
 	Super::OnDeath();
 
-	const auto AIController = Cast<AAIController>(Controller);
-	if (AIController && AIController->BrainComponent)
-	{
-		AIController->GetBlackboardComponent()->SetValueAsBool("LockBehavior", true);
-		AIController->BrainComponent->Cleanup();
-	}
-
-	if (DeathAnimMontage)
-	{
-		TArray<UAnimMontage*> EmptyArr;
-		CustomAction->TryPerformPlayAnimMontage_Server(DeathAnimMontage, true);
-	}
-
-	GetCharacterMovement()->DisableMovement();
-	GetCapsuleComponent()->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
-
+	AfterOnDeath();
 }
 
 void AAICharacter::OnHitReaction()

@@ -58,6 +58,7 @@ public:
 	UFUNCTION(BlueprintPure)
 		APRTAIController* GetAIControollerRef() { return AIControllerRef; }
 
+	// Blueprint Implementable Events
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Behavior")
 		void AfterReactionToAiming();
@@ -67,6 +68,9 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Behavior")
 		void AfterEnemyFound();
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Behavior")
+		void AfterOnDeath();
 
 
 	void ReactionToAiming();
