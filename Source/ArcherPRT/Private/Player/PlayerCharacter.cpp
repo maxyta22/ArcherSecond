@@ -14,7 +14,7 @@
 #include "DrawDebugHelpers.h"
 #include "GameFramework/Actor.h"
 #include "XRMotionControllerBase.h" // for FXRMotionControllerBase::RightHandSourceId
-#include "Environment/PickupBase.h"
+#include "Environment/InteractObjectBase.h"
 #include "Components/CraftComponent.h"
 #include "Components/InventoryComponent.h"
 #include "Components/WeaponComponent.h"
@@ -130,15 +130,15 @@ void APlayerCharacter::LookUpAtRate(float Rate)
 
 void APlayerCharacter::TryPerformInteract_ServerRPC_Implementation()
 {
-	APickupBase* PickupBase;
+	AInteractObjectBase* InteractObject;
 	
 	
 	if (CurrentInteractTarget.Num() == 0) return;
 	
-	PickupBase = Cast<APickupBase>(CurrentInteractTarget[0]);
-	if (PickupBase)
+	InteractObject = Cast<AInteractObjectBase>(CurrentInteractTarget[0]);
+	if (InteractObject)
 		{
-			PickupBase->TryTakePickup(this);
+			InteractObject->TryUseInteractObject(this);
 			return;
 		}
 
@@ -175,13 +175,13 @@ void APlayerCharacter::ShowInfoObject_ClientRPC_Implementation(AActor* InfoObjec
 {
 	if (GEngine)
 	{
-		APickupBase* PickupBase;
-		PickupBase = Cast<APickupBase>(InfoObject);
+		AInteractObjectBase* InteractObject;
+		InteractObject = Cast<AInteractObjectBase>(InfoObject);
 		AArcherPRTProjectile* Projectile;
 		Projectile = Cast<AArcherPRTProjectile>(InfoObject);
-		if (PickupBase)
+		if (InteractObject)
 		{
-			PickupBase->ShowInfo();
+			InteractObject->ShowInfo();
 		}
 		if (Projectile)
 		{
@@ -194,13 +194,13 @@ void APlayerCharacter::HideInfoObject_ClientRPC_Implementation(AActor* InfoObjec
 {
 	if (GEngine)
 	{
-		APickupBase* PickupBase;
-		PickupBase = Cast<APickupBase>(InfoObject);
+		AInteractObjectBase* InteractObject;
+		InteractObject = Cast<AInteractObjectBase>(InfoObject);
 		AArcherPRTProjectile* Projectile;
 		Projectile = Cast<AArcherPRTProjectile>(InfoObject);
-		if (PickupBase)
+		if (InteractObject)
 		{
-			PickupBase->HideInfo();
+			InteractObject->HideInfo();
 		}
 		if (Projectile)
 		{

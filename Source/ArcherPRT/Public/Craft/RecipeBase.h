@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
-#include "Environment/PickupBase.h"
+#include "Environment/InteractObjectBase.h"
 #include "Core/ArcherPRTData.h"
 #include "RecipeBase.generated.h"
 

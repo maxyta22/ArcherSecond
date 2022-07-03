@@ -3,13 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Environment/PickupBase.h"
+#include "Environment/InteractObjectBase.h"
 #include "Core/ArcherPRTData.h"
 #include "PickupResourcesBase.generated.h"
 
 
 UCLASS()
-class ARCHERPRT_API APickupResourcesBase : public APickupBase
+class ARCHERPRT_API APickupResourcesBase : public AInteractObjectBase
 {
 	GENERATED_BODY()
 
@@ -21,8 +21,15 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ResoursesValue")
 		int Value = 1;
 
-		
+	UPROPERTY(EditInstanceOnly, BlueprintReadWrite)
+		bool bInfinity;
+
+
 protected:
 
-		virtual void TryTakePickup(APlayerCharacter* Pawn) override;
+		virtual void TryUseInteractObject(APlayerCharacter* Pawn) override;
+
+private:
+
+	void TakePickup();
 };

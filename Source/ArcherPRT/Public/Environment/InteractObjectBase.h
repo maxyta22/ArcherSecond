@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Net/UnrealNetwork.h"
-#include "PickupBase.generated.h"
+#include "InteractObjectBase.generated.h"
 
 
 
@@ -17,13 +17,13 @@ class USkeletalMeshComponent;
 
 
 UCLASS()
-class ARCHERPRT_API APickupBase : public AActor
+class ARCHERPRT_API AInteractObjectBase : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	
-	APickupBase();
+	AInteractObjectBase();
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 		USphereComponent* SphereCollision;
@@ -40,19 +40,16 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "Description")
 		void HideInfo();
 
-	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "Take")
-		void AfterWasTaken();
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "Use")
+		void AfterWasUseInteractObject();
 
-	UPROPERTY(EditInstanceOnly, BlueprintReadWrite)
-		bool bInfinity;
-
-	virtual void TryTakePickup(APlayerCharacter* Pawn);
+	virtual void TryUseInteractObject(APlayerCharacter* Pawn);
 
 protected:
 
 	virtual void BeginPlay() override;	
 
-	void TakePickup();
+	
 
 
 

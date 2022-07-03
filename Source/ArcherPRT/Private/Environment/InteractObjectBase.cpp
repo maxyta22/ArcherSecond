@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Environment/PickupBase.h"
+#include "Environment/InteractObjectBase.h"
 #include "Components/SphereComponent.h"
 #include "Player/PlayerCharacter.h"
 #include "Net/UnrealNetwork.h"
@@ -9,7 +9,7 @@
 
 DEFINE_LOG_CATEGORY_STATIC(PickupBase, All, All);
 
-APickupBase::APickupBase()
+AInteractObjectBase::AInteractObjectBase()
 {
 	SphereCollision = CreateDefaultSubobject<USphereComponent>("SphereCollision");
 	SetRootComponent(SphereCollision);
@@ -24,22 +24,17 @@ APickupBase::APickupBase()
 
 }
 
-void APickupBase::BeginPlay()
+void AInteractObjectBase::BeginPlay()
 {
 	Super::BeginPlay();
 }
 
-void APickupBase::TryTakePickup(APlayerCharacter* Pawn)
+void AInteractObjectBase::TryUseInteractObject(APlayerCharacter* Pawn)
 {
 	 
 }
 
-void APickupBase::TakePickup()
-{
-	AfterWasTaken();
-	if (bInfinity) return;
-	Destroy();
-}
+
 
 
 

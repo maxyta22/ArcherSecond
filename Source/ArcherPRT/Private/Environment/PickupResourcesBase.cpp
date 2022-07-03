@@ -4,14 +4,21 @@
 #include "Environment/PickupResourcesBase.h"
 #include "Player/PlayerCharacter.h"
 
-void APickupResourcesBase::TryTakePickup(APlayerCharacter* Pawn)
+void APickupResourcesBase::TryUseInteractObject(APlayerCharacter* Pawn)
 {
-	Super::TryTakePickup(Pawn);
+	Super::TryUseInteractObject(Pawn);
 
 	if (Pawn->InventoryComponent->CheckCanTakeResources(ResourcesType))
 	{
 		Pawn->InventoryComponent->AddResources(ResourcesType, Value);
 		TakePickup();
 	}
+}
+
+void APickupResourcesBase::TakePickup()
+{
+	AfterWasUseInteractObject();
+	if (bInfinity) return;
+	Destroy();
 }
 
