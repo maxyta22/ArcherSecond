@@ -34,7 +34,7 @@ USTRUCT()
 	struct FAmmoData
 	{
 		GENERATED_USTRUCT_BODY()
-		int ValueWoodArrow = 0;
+		int ValueWoodArrow = 10;
 		int ValueRockArrow = 5;
 		int ValueMetalArrow = 3;
 	};
@@ -85,6 +85,9 @@ public:
 	//Set Max Ammo
 	UFUNCTION(BlueprintCallable, Category = "Ammo")
 		void SetMaxAmmo(EAmmoType AmmoType, int Value);
+
+	UFUNCTION(BlueprintCallable, Category = "Ammo")
+		void SetAmmo(EAmmoType AmmoType, int Value);
 
 	// Add Inventory Contents Ammo
 	UFUNCTION(BlueprintCallable, Category = "Ammo")

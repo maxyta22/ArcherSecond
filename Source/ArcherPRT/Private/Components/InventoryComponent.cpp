@@ -188,6 +188,26 @@ void UInventoryComponent::SetMaxAmmo(EAmmoType AmmoType, int Value)
 	}
 }
 
+void UInventoryComponent::SetAmmo(EAmmoType AmmoType, int Value)
+{
+	switch (AmmoType)
+	{
+	case EAmmoType::None:
+		break;
+	case EAmmoType::WoodArrow:
+		AmmoData.ValueWoodArrow = Value;;
+		break;
+	case EAmmoType::RockArrow:
+		AmmoData.ValueRockArrow = Value;
+		break;
+	case EAmmoType::MetalArrow:
+		AmmoData.ValueMetalArrow = Value;
+		break;
+	default:
+		break;
+	}
+}
+
 void UInventoryComponent::AddAmmo(EAmmoType AmmoType, int Value)
 {
 	switch (AmmoType)
