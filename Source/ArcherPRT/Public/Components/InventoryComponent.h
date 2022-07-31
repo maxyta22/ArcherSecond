@@ -34,7 +34,7 @@ USTRUCT()
 	struct FAmmoData
 	{
 		GENERATED_USTRUCT_BODY()
-		int ValueWoodArrow = 0;
+		int ValueWoodArrow = 5;
 		int ValueRockArrow = 0;
 		int ValueMetalArrow = 0;
 	};
