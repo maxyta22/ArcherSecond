@@ -73,8 +73,7 @@ void AGameCharacter::OnHealChanged(float Health)
 
 void AGameCharacter::OnDeath()
 {
-
-
+	AfterOnDeath();
 }
 
 void AGameCharacter::OnHitReaction()

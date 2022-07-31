@@ -98,8 +98,8 @@ void APlayerCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerIn
 
 void APlayerCharacter::OnDeath()
 {
+	Super::OnDeath();
 	GetCharacterMovement()->DisableMovement();	
-	//SetLifeSpan(5.0f);
 }
 
 void APlayerCharacter::MoveForward(float Value)

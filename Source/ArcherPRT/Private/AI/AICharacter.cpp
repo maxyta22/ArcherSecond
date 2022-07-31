@@ -112,7 +112,6 @@ void AAICharacter::OnDeath()
 {
 	Super::OnDeath();
 
-	AfterOnDeath();
 }
 
 void AAICharacter::OnHitReaction()

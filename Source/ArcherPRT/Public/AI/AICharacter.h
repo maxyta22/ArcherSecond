@@ -69,9 +69,6 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, Category = "Behavior")
 		void AfterEnemyFound();
 
-	UFUNCTION(BlueprintImplementableEvent, Category = "Behavior")
-		void AfterOnDeath();
-
 
 	void ReactionToAiming();
 
