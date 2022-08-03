@@ -28,7 +28,7 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 		USphereComponent* SphereCollision;
 
-	UPROPERTY(VisibleAnywhere, Category = "Components")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
 		UStaticMeshComponent* StaticMeshComponent;
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")
@@ -41,7 +41,7 @@ public:
 		void HideInfo();
 
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "Use")
-		void AfterWasUseInteractObject();
+		void AfterWasTryUseInteractObject();
 
 	virtual void TryUseInteractObject(APlayerCharacter* Pawn);
 

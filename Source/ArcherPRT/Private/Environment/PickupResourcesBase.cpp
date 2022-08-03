@@ -17,7 +17,6 @@ void APickupResourcesBase::TryUseInteractObject(APlayerCharacter* Pawn)
 
 void APickupResourcesBase::TakePickup()
 {
-	AfterWasUseInteractObject();
 	if (bInfinity) return;
 	Destroy();
 }

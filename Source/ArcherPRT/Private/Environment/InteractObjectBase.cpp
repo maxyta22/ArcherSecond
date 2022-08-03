@@ -31,7 +31,7 @@ void AInteractObjectBase::BeginPlay()
 
 void AInteractObjectBase::TryUseInteractObject(APlayerCharacter* Pawn)
 {
-	 
+	AfterWasTryUseInteractObject();
 }
 
 
