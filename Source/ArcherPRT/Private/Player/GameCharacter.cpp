@@ -76,6 +76,17 @@ void AGameCharacter::OnDeath()
 	AfterOnDeath();
 }
 
+void AGameCharacter::Landed(const FHitResult& Hit)
+{
+	Super::Landed(Hit);
+	const auto FallVelocityZ = -GetCharacterMovement()->Velocity.Z;
+	if (FallVelocityZ < LandedDamageVelocity.X) return;
+
+	const auto FinalDamage = FMath::GetMappedRangeValueClamped(LandedDamageVelocity, LandedDamage, FallVelocityZ);
+	TakeDamage(FinalDamage, FDamageEvent{}, nullptr, nullptr);
+
+}
+
 void AGameCharacter::OnHitReaction()
 {
 }
