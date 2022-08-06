@@ -32,12 +32,6 @@ APlayerCharacter::APlayerCharacter()
 	BaseTurnRate = 45.f;
 	BaseLookUpRate = 45.f;
 
-	// Create a CameraComponent	
-	FirstPersonCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("FirstPersonCamera"));
-	FirstPersonCameraComponent->SetupAttachment(GetMesh());
-	//FirstPersonCameraComponent->SetRelativeLocation(FVector(-39.56f, 1.75f, 64.f)); // Position the camera
-	FirstPersonCameraComponent->bUsePawnControlRotation = true;
-
 	//Create InteractCapsule
 	InteractCapsuleComponent = CreateDefaultSubobject<UCapsuleComponent>(TEXT("InteractCapsule"));
 	InteractCapsuleComponent->SetupAttachment(FirstPersonCameraComponent);
@@ -59,6 +53,12 @@ APlayerCharacter::APlayerCharacter()
 	HandMesh->CastShadow = false;
 	HandMesh->SetRelativeRotation(FRotator(1.9f, -19.19f, 5.2f));
 	HandMesh->SetRelativeLocation(FVector(-0.5f, -4.4f, -155.7f));
+
+	// Create a CameraComponent	
+	FirstPersonCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("FirstPersonCamera"));
+	FirstPersonCameraComponent->SetupAttachment(HandMesh, "camera_socket");
+	//FirstPersonCameraComponent->SetRelativeLocation(FVector(-39.56f, 1.75f, 64.f)); // Position the camera
+	FirstPersonCameraComponent->bUsePawnControlRotation = true;
 }
 
 void APlayerCharacter::BeginPlay()
