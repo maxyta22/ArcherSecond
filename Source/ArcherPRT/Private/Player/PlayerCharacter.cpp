@@ -43,8 +43,8 @@ APlayerCharacter::APlayerCharacter()
 	InteractCapsuleComponent = CreateDefaultSubobject<UCapsuleComponent>(TEXT("InteractCapsule"));
 	InteractCapsuleComponent->SetupAttachment(FirstPersonCameraComponent);
 
-	InteractCapsuleComponent->OnComponentBeginOverlap.AddDynamic(this, &APlayerCharacter::ServerOnOverlapBeginInteractCapsule_ServerRPC);
-	InteractCapsuleComponent->OnComponentEndOverlap.AddDynamic(this, &APlayerCharacter::ServerOnOverlapEndInteractCapsule_ServerRPC);
+	InteractCapsuleComponent->OnComponentBeginOverlap.AddDynamic(this, &APlayerCharacter::OnOverlapBeginInteractCapsule);
+	InteractCapsuleComponent->OnComponentEndOverlap.AddDynamic(this, &APlayerCharacter::OnOverlapEndInteractCapsule);
 
 	//Create InventoryComponent
 	InventoryComponent = CreateDefaultSubobject<UInventoryComponent>(TEXT("InventoryComponent"));
@@ -88,7 +88,7 @@ void APlayerCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerIn
 	PlayerInputComponent->BindAction("Fire", IE_Released, WeaponComponent, &UWeaponComponent::OffAiming_ServerRPC);
 	PlayerInputComponent->BindAction("Fire", IE_Released, this, &APlayerCharacter::ReleasedAttackButton);
 	PlayerInputComponent->BindAction("SwitchAmmo", IE_Pressed, WeaponComponent, &UWeaponComponent::SwitchAmmoInCurrentEquipWeapon);
-	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &APlayerCharacter::TryPerformInteract_ServerRPC);
+	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &APlayerCharacter::TryPerformInteract);
 	PlayerInputComponent->BindAction("TryCraftItem", IE_Pressed, CraftComponent, &UCraftComponent::TryCraftItem);
 	PlayerInputComponent->BindAxis("MoveForward", this, &APlayerCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &APlayerCharacter::MoveRight);
@@ -131,7 +131,7 @@ void APlayerCharacter::LookUpAtRate(float Rate)
 	AddControllerPitchInput(Rate * BaseLookUpRate * GetWorld()->GetDeltaSeconds());
 }
 
-void APlayerCharacter::TryPerformInteract_ServerRPC_Implementation()
+void APlayerCharacter::TryPerformInteract()
 {
 	AInteractObjectBase* InteractObject;
 	
@@ -154,27 +154,27 @@ void APlayerCharacter::TryPerformInteract_ServerRPC_Implementation()
 		}
 }
 
-void APlayerCharacter::ServerOnOverlapBeginInteractCapsule_ServerRPC_Implementation(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+void APlayerCharacter::OnOverlapBeginInteractCapsule(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 
 	if (OtherActor && (OtherActor != this) && OtherComp)
 	{
-		ShowInfoObject_ClientRPC(OtherActor);
+		ShowInfoObject(OtherActor);
 		CurrentInteractTarget.Add(OtherActor);
 	}
 }
 
-void APlayerCharacter::ServerOnOverlapEndInteractCapsule_ServerRPC_Implementation(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+void APlayerCharacter::OnOverlapEndInteractCapsule(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
 
 	if (GEngine)
 	{
-		HideInfoObject_ClientRPC(OtherActor);
+		HideInfoObject(OtherActor);
 		CurrentInteractTarget.Remove(OtherActor);
 	}
 }
 
-void APlayerCharacter::ShowInfoObject_ClientRPC_Implementation(AActor* InfoObject)
+void APlayerCharacter::ShowInfoObject(AActor* InfoObject)
 {
 	if (GEngine)
 	{
@@ -193,7 +193,7 @@ void APlayerCharacter::ShowInfoObject_ClientRPC_Implementation(AActor* InfoObjec
 	}
 }
 
-void APlayerCharacter::HideInfoObject_ClientRPC_Implementation(AActor* InfoObject)
+void APlayerCharacter::HideInfoObject(AActor* InfoObject)
 {
 	if (GEngine)
 	{
