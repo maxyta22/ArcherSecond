@@ -3,10 +3,78 @@
 
 #include "Components/InventoryComponent.h"
 #include "Core/ArcherPRTData.h"
+#include "Player/PlayerCharacter.h"
+#include "Craft/RecipeBase.h"
 
 
 UInventoryComponent::UInventoryComponent()
 {
+}
+
+bool UInventoryComponent::CheckHasResources(TMap<EResourcesType, int> ResourcesMap)
+{
+	const auto Pawn = Cast<APlayerCharacter>(GetOwner());
+
+	TArray<EResourcesType> KeysFromMap;
+	ResourcesMap.GetKeys(KeysFromMap);
+
+	TArray<int> ValueFromMap;
+	ResourcesMap.GenerateValueArray(ValueFromMap);
+
+	int SuccessPosition = 0;
+
+	for (int i = 0; i < ResourcesMap.Num(); i++)
+	{
+		switch (KeysFromMap[i])
+		{
+		case EResourcesType::Wood:
+
+			if (Pawn->InventoryComponent->GetValueResourses(EResourcesType::Wood) >= ResourcesMap[KeysFromMap[i]])
+			{
+				SuccessPosition++;
+			}
+			break;
+
+		case EResourcesType::Rock:
+
+			if (Pawn->InventoryComponent->GetValueResourses(EResourcesType::Wood) >= ResourcesMap[KeysFromMap[i]])
+			{
+				SuccessPosition++;
+			}
+			break;
+
+		case EResourcesType::Grass:
+
+			if (Pawn->InventoryComponent->GetValueResourses(EResourcesType::Wood) >= ResourcesMap[KeysFromMap[i]])
+			{
+				SuccessPosition++;
+			}
+			break;
+
+		case EResourcesType::Metal:
+
+			if (Pawn->InventoryComponent->GetValueResourses(EResourcesType::Wood) >= ResourcesMap[KeysFromMap[i]])
+			{
+				SuccessPosition++;
+			}
+			break;
+
+		case EResourcesType::Food:
+
+			if (Pawn->InventoryComponent->GetValueResourses(EResourcesType::Wood) >= ResourcesMap[KeysFromMap[i]])
+			{
+				SuccessPosition++;
+			}
+			break;
+		}
+	}
+
+	if (SuccessPosition == ResourcesMap.Num())
+	{
+		return true;
+	}
+
+	return false;
 }
 
 void UInventoryComponent::BeginPlay()

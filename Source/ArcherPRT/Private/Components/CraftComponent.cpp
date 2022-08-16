@@ -4,7 +4,6 @@
 #include "Components/WeaponComponent.h"
 #include "Craft/RecipeBase.h"
 #include "Core/ArcherPRTData.h"
-#include "Craft/RecipeBase.h"
 #include "Player/PlayerCharacter.h"
 
 

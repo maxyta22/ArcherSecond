@@ -34,14 +34,21 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 		USkeletalMeshComponent* SkeletalMeshComponent;
 
+	// Show Info
+
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "Description")
 		void ShowInfo();	
 
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "Description")
 		void HideInfo();
 
-	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "Use")
+	// Blueprint Implementable Events
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "After Events")
 		void AfterWasTryUseInteractObject();
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "After Events")
+		void AfterWasSuccessUseInteractObject();
 
 	virtual void TryUseInteractObject(APlayerCharacter* Pawn);
 

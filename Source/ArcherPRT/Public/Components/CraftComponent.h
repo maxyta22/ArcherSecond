@@ -4,7 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "Craft/RecipeBase.h"
 #include "CraftComponent.generated.h"
+
 
 class URecipeBase;
 
