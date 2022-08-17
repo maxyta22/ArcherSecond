@@ -134,24 +134,28 @@ void APlayerCharacter::LookUpAtRate(float Rate)
 void APlayerCharacter::TryPerformInteract()
 {
 	AInteractObjectBase* InteractObject;
-	
-	
+	AArcherPRTProjectile* Projectile;
+		
 	if (CurrentInteractTarget.Num() == 0) return;
-	
-	InteractObject = Cast<AInteractObjectBase>(CurrentInteractTarget[0]);
-	if (InteractObject)
+
+	for (AActor* CheckActor : CurrentInteractTarget)
+	{
+		InteractObject = Cast<AInteractObjectBase>(CheckActor);
+		if (InteractObject)
 		{
 			InteractObject->TryUseInteractObject(this);
 			return;
 		}
 
-	AArcherPRTProjectile* Projectile;
-	Projectile = Cast<AArcherPRTProjectile>(CurrentInteractTarget[0]);
-	if (Projectile)
+		
+		Projectile = Cast<AArcherPRTProjectile>(CheckActor);
+		if (Projectile)
 		{
-			Projectile->TryTakeProjectile_ServerRPC(this);
+			Projectile->TryTakeProjectile(this);
 			return;
 		}
+	}
+	
 }
 
 void APlayerCharacter::OnOverlapBeginInteractCapsule(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)

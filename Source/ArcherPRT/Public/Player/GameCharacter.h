@@ -58,9 +58,7 @@ public:
 
 	//Take Damage
 	
-	UFUNCTION(Server, Reliable)
-	void TakeDamage_Server(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser);
-
+	UFUNCTION()
 	virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "AfterEvents")

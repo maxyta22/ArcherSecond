@@ -17,7 +17,7 @@ AArcherPRTProjectile::AArcherPRTProjectile()
 	CollisionComp->InitSphereRadius(5.0f);
 	CollisionComp->BodyInstance.SetCollisionProfileName("Projectile");
 	// set up a notification for when this component hits something blocking
-	CollisionComp->OnComponentHit.AddDynamic(this, &AArcherPRTProjectile::OnHit_ServerRPC);		
+	CollisionComp->OnComponentHit.AddDynamic(this, &AArcherPRTProjectile::OnHit);		
 
 	// Set as root component
 	RootComponent = CollisionComp;
@@ -28,8 +28,6 @@ AArcherPRTProjectile::AArcherPRTProjectile()
 	// Players can't walk on it
 	CollisionComp->SetWalkableSlopeOverride(FWalkableSlopeOverride(WalkableSlope_Unwalkable, 0.f));
 	CollisionComp->CanCharacterStepUpOn = ECB_No;
-
-
 
 	// Use a ProjectileMovementComponent to govern this projectile's movement
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileComp"));
@@ -47,18 +45,9 @@ AArcherPRTProjectile::AArcherPRTProjectile()
 	ProjectileMovement->SetIsReplicated(true);
 	SetReplicates(true);
 
-	
 }
 
-void AArcherPRTProjectile::ShowInfo_Implementation()
-{
-}
-
-void AArcherPRTProjectile::HideInfo_Implementation()
-{
-}
-
-void AArcherPRTProjectile::TryTakeProjectile_ServerRPC_Implementation(APlayerCharacter* Pawn)
+void AArcherPRTProjectile::TryTakeProjectile(APlayerCharacter* Pawn)
 {
 	if (Pawn->InventoryComponent->CheckCanTakeAmmo(EAmmoType::WoodArrow))
 	{
@@ -68,14 +57,13 @@ void AArcherPRTProjectile::TryTakeProjectile_ServerRPC_Implementation(APlayerCha
 	
 }
 
-void AArcherPRTProjectile::OnHit_ServerRPC_Implementation(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult &Hit)
+void AArcherPRTProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult &Hit)
 {
 	if (!GetWorld())  return;
 
 	ProjectileMovement->StopMovementImmediately();
 
 	FHitResult HitResult = Hit;
-	
 
 	if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr))
 	{
@@ -85,14 +73,14 @@ void AArcherPRTProjectile::OnHit_ServerRPC_Implementation(UPrimitiveComponent* H
 		{
 			if (HitResult.GetComponent()->ComponentHasTag("Head"))
 			{
-				Pawn->TakeDamage_Server(DamageWeapon + DamageProjectile, FDamageEvent(), GetInstigatorController(), this);
+				Pawn->TakeDamage(DamageWeapon + DamageProjectile, FDamageEvent(), GetInstigatorController(), this);
 				Pawn->OnHitReaction();
 
 				GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Red, TEXT("HEAD SHOT"));
 			}
 			else 
 			{
-				Pawn->TakeDamage_Server(0, FDamageEvent(), GetInstigatorController(), this);
+				Pawn->TakeDamage(0, FDamageEvent(), GetInstigatorController(), this);
 			}	
 			Destroy();		
 		}

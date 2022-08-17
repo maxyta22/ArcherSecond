@@ -53,12 +53,6 @@ void AGameCharacter::BeginPlay()
 	StatsComponent->OnDeath.AddUObject(this, &AGameCharacter::OnDeath);
 }
 
-void AGameCharacter::TakeDamage_Server_Implementation(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
-{
-	TakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
-	
-}
-
 float AGameCharacter::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
 	Super::TakeDamage(Damage,DamageEvent,EventInstigator,DamageCauser);

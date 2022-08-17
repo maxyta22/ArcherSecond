@@ -30,23 +30,20 @@ public:
 
 	AArcherPRTProjectile();
 
-	UFUNCTION(Server, Reliable)
-		void OnHit_ServerRPC(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+	UFUNCTION()
+		void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 
-	UFUNCTION(Server, Reliable)
-		void TryTakeProjectile_ServerRPC(APlayerCharacter* Pawn);
+	void TryTakeProjectile(APlayerCharacter* Pawn);
 
 	USphereComponent* GetCollisionComp() const { return CollisionComp; }
 
 	UProjectileMovementComponent* GetProjectileMovement() const { return ProjectileMovement; }
 
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Description")
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "Description")
 		void ShowInfo();
-		void ShowInfo_Implementation();
 
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Description")
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "Description")
 		void HideInfo();
-		void HideInfo_Implementation();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 		int DamageProjectile = 0;
