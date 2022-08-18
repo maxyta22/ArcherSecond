@@ -59,7 +59,7 @@ public:
 	UInventoryComponent();
 
 	UFUNCTION(BlueprintPure, Category = "resources")
-		bool CheckHasResources(TMap<EResourcesType, int> ResourcesMap);
+		bool LoopOnResourcesByMap(TMap<EResourcesType, int> ResourcesMap, bool SpendResources = false, bool AddResources = false);
 
 	// Get Inventory Contents resources
 	UFUNCTION(BlueprintPure, Category = "resources")

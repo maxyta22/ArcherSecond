@@ -16,10 +16,18 @@ class ARCHERPRT_API ACustomInteractObjectBase : public AInteractObjectBase
 public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TMap<EResourcesType, int> ResoursesForInteract;
+		TMap<EResourcesType, int> ResoursesForInteract;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool ReturnResources;
+	
 
 protected:
 
 	virtual void TryUseInteractObject(APlayerCharacter* Pawn) override;
+
+private:
+
+	bool Activate;
 	
 };

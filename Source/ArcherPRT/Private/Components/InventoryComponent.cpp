@@ -11,7 +11,7 @@ UInventoryComponent::UInventoryComponent()
 {
 }
 
-bool UInventoryComponent::CheckHasResources(TMap<EResourcesType, int> ResourcesMap)
+bool UInventoryComponent::LoopOnResourcesByMap(TMap<EResourcesType, int> ResourcesMap, bool SpendResources, bool AddResources)
 {
 	const auto Pawn = Cast<APlayerCharacter>(GetOwner());
 
@@ -33,38 +33,93 @@ bool UInventoryComponent::CheckHasResources(TMap<EResourcesType, int> ResourcesM
 			{
 				SuccessPosition++;
 			}
+
+			if (SpendResources)
+			{
+				Pawn->InventoryComponent->AddResources(EResourcesType::Wood, ResourcesMap[KeysFromMap[i]] * -1);
+			}
+
+			if (AddResources)
+			{
+				Pawn->InventoryComponent->AddResources(EResourcesType::Wood, ResourcesMap[KeysFromMap[i]]);
+			}
+
 			break;
 
 		case EResourcesType::Rock:
 
-			if (Pawn->InventoryComponent->GetValueResourses(EResourcesType::Wood) >= ResourcesMap[KeysFromMap[i]])
+			if (Pawn->InventoryComponent->GetValueResourses(EResourcesType::Rock) >= ResourcesMap[KeysFromMap[i]])
 			{
 				SuccessPosition++;
 			}
+
+			if (SpendResources)
+			{
+				Pawn->InventoryComponent->AddResources(EResourcesType::Rock, ResourcesMap[KeysFromMap[i]] * -1);
+			}
+
+			if (AddResources)
+			{
+				Pawn->InventoryComponent->AddResources(EResourcesType::Rock, ResourcesMap[KeysFromMap[i]]);
+			}
+
 			break;
 
 		case EResourcesType::Grass:
 
-			if (Pawn->InventoryComponent->GetValueResourses(EResourcesType::Wood) >= ResourcesMap[KeysFromMap[i]])
+			if (Pawn->InventoryComponent->GetValueResourses(EResourcesType::Grass) >= ResourcesMap[KeysFromMap[i]])
 			{
 				SuccessPosition++;
 			}
+
+			if (SpendResources)
+			{
+				Pawn->InventoryComponent->AddResources(EResourcesType::Grass, ResourcesMap[KeysFromMap[i]] * -1);
+			}
+
+			if (AddResources)
+			{
+				Pawn->InventoryComponent->AddResources(EResourcesType::Grass, ResourcesMap[KeysFromMap[i]]);
+			}
+
 			break;
 
 		case EResourcesType::Metal:
 
-			if (Pawn->InventoryComponent->GetValueResourses(EResourcesType::Wood) >= ResourcesMap[KeysFromMap[i]])
+			if (Pawn->InventoryComponent->GetValueResourses(EResourcesType::Metal) >= ResourcesMap[KeysFromMap[i]])
 			{
 				SuccessPosition++;
 			}
+
+			if (SpendResources)
+			{
+				Pawn->InventoryComponent->AddResources(EResourcesType::Metal, ResourcesMap[KeysFromMap[i]] * -1);
+			}
+
+			if (AddResources)
+			{
+				Pawn->InventoryComponent->AddResources(EResourcesType::Metal, ResourcesMap[KeysFromMap[i]]);
+			}
+
 			break;
 
 		case EResourcesType::Food:
 
-			if (Pawn->InventoryComponent->GetValueResourses(EResourcesType::Wood) >= ResourcesMap[KeysFromMap[i]])
+			if (Pawn->InventoryComponent->GetValueResourses(EResourcesType::Food) >= ResourcesMap[KeysFromMap[i]])
 			{
 				SuccessPosition++;
 			}
+
+			if (SpendResources)
+			{
+				Pawn->InventoryComponent->AddResources(EResourcesType::Food, ResourcesMap[KeysFromMap[i]] * -1);
+			}
+
+			if (AddResources)
+			{
+				Pawn->InventoryComponent->AddResources(EResourcesType::Food, ResourcesMap[KeysFromMap[i]]);
+			}
+
 			break;
 		}
 	}
