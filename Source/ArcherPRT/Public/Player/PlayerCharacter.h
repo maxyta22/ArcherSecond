@@ -18,6 +18,7 @@ class UAnimMontage;
 class USoundBase;
 class UCapsuleComponent;
 class UInventoryComponent;
+class UBuildingComponent;
 class UCraftComponent;
 
 
@@ -46,6 +47,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Craft")
 		UCraftComponent* CraftComponent;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Building")
+		UBuildingComponent* BuildingComponent;
 
 	//Animation
 

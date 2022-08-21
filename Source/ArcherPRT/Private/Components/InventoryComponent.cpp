@@ -134,7 +134,6 @@ bool UInventoryComponent::LoopOnResourcesByMap(TMap<EResourcesType, int> Resourc
 
 void UInventoryComponent::BeginPlay()
 {
-	Super::BeginPlay();
 }
 
 int UInventoryComponent::GetValueResourses(EResourcesType ResourcesType)

@@ -17,6 +17,7 @@
 #include "Environment/InteractObjectBase.h"
 #include "Components/CraftComponent.h"
 #include "Components/InventoryComponent.h"
+#include "Components/BuildingComponent.h"
 #include "Components/WeaponComponent.h"
 #include "Net/UnrealNetwork.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -51,6 +52,9 @@ APlayerCharacter::APlayerCharacter()
 
 	//Create CraftComponent
 	CraftComponent = CreateDefaultSubobject<UCraftComponent>(TEXT("CraftComponent"));
+
+	//Create BuildingComponent
+	BuildingComponent = CreateDefaultSubobject<UBuildingComponent>(TEXT("BuildingComponent"));
 
 	// Create a mesh component that will be used when being viewed from a '1st person' view (when controlling this pawn)
 	HandMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("CharacterMesh1P"));
@@ -90,6 +94,7 @@ void APlayerCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerIn
 	PlayerInputComponent->BindAction("SwitchAmmo", IE_Pressed, WeaponComponent, &UWeaponComponent::SwitchAmmoInCurrentEquipWeapon);
 	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &APlayerCharacter::TryPerformInteract);
 	PlayerInputComponent->BindAction("TryCraftItem", IE_Pressed, CraftComponent, &UCraftComponent::TryCraftItem);
+	PlayerInputComponent->BindAction("StartBuilding", IE_Pressed, BuildingComponent, &UBuildingComponent::BuildingMode);
 	PlayerInputComponent->BindAxis("MoveForward", this, &APlayerCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &APlayerCharacter::MoveRight);
 	PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
