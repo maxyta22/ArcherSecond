@@ -94,7 +94,7 @@ void APlayerCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerIn
 	PlayerInputComponent->BindAction("SwitchAmmo", IE_Pressed, WeaponComponent, &UWeaponComponent::SwitchAmmoInCurrentEquipWeapon);
 	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &APlayerCharacter::TryPerformInteract);
 	PlayerInputComponent->BindAction("TryCraftItem", IE_Pressed, CraftComponent, &UCraftComponent::TryCraftItem);
-	PlayerInputComponent->BindAction("StartBuilding", IE_Pressed, BuildingComponent, &UBuildingComponent::BuildingMode);
+	PlayerInputComponent->BindAction("StartBuilding", IE_Pressed, BuildingComponent, &UBuildingComponent::ToggleBuildingMode);
 	PlayerInputComponent->BindAxis("MoveForward", this, &APlayerCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &APlayerCharacter::MoveRight);
 	PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
@@ -138,6 +138,14 @@ void APlayerCharacter::LookUpAtRate(float Rate)
 
 void APlayerCharacter::TryPerformInteract()
 {
+	
+	if (BuildingComponent->BuildingModeActivated())
+	{
+		BuildingComponent->TrySpawnObject();
+		return;
+	}
+
+
 	AInteractObjectBase* InteractObject;
 	AArcherPRTProjectile* Projectile;
 		

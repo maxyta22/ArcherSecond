@@ -5,22 +5,24 @@
 #include "Components/SphereComponent.h"
 #include "Player/PlayerCharacter.h"
 #include "Net/UnrealNetwork.h"
+#include "Components/ArrowComponent.h"
 #include "Components/InventoryComponent.h"
 
 DEFINE_LOG_CATEGORY_STATIC(PickupBase, All, All);
 
 AInteractObjectBase::AInteractObjectBase()
 {
+	PivotArrow = CreateDefaultSubobject<UArrowComponent>("ArrowComponent");
+	SetRootComponent(PivotArrow);
+
 	SphereCollision = CreateDefaultSubobject<USphereComponent>("SphereCollision");
-	SetRootComponent(SphereCollision);
+	SphereCollision->SetupAttachment(PivotArrow);
 
 	SkeletalMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>("SkeletalMesh");
-	SkeletalMeshComponent->SetupAttachment(SphereCollision);
+	SkeletalMeshComponent->SetupAttachment(PivotArrow);
 
 	StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>("StaticMesh");
-	StaticMeshComponent->SetupAttachment(SphereCollision);
-
-	bReplicates = true;
+	StaticMeshComponent->SetupAttachment(PivotArrow);
 
 }
 

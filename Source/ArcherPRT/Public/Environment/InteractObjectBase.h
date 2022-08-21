@@ -13,6 +13,7 @@ class APlayerCharacter;
 class USphereComponent;
 class UStaticMeshComponent;
 class USkeletalMeshComponent;
+class UArrowComponent;
 
 
 
@@ -24,6 +25,9 @@ class ARCHERPRT_API AInteractObjectBase : public AActor
 public:	
 	
 	AInteractObjectBase();
+
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+		UArrowComponent* PivotArrow;
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 		USphereComponent* SphereCollision;

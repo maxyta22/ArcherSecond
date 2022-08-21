@@ -23,14 +23,24 @@ protected:
 
 public:	
 
-	void BuildingMode();
+	void ToggleBuildingMode();
+
+	void PreSpawnObject();
+
+	void TrySpawnObject();
+
+	bool BuildingModeActivated() const {return bBuildingMode;}
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AvaliableObjects")
 		TArray<TSubclassOf<AInteractObjectBase>> AvaliableObjects;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Settings")
+		float SpawnOffset = 150;
+
 private:
 
 	bool bBuildingMode;
+	AInteractObjectBase* CurrentPreSpawnObject;
 	
 
 		
