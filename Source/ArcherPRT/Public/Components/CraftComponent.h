@@ -53,7 +53,6 @@ private:
 
 	FTimerHandle CraftInProgressTimer;
 
-	bool CheckRecipe(TSubclassOf<URecipeBase> Recipe, bool SpendResources);
 	void GetRecipeResult(TSubclassOf<URecipeBase> Recipe);
 	
 	

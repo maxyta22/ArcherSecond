@@ -31,7 +31,7 @@ void UCraftComponent::TryCraftItem()
 	EAmmoType Result = CurrentRecipe.GetDefaultObject()->Ammo;
 	
 	if (Pawn->InventoryComponent->CheckCanTakeAmmo(Result)
-		&& CheckRecipe(RecipeDataBase[SelectedIndex],false) 
+		&& Pawn->InventoryComponent->LoopOnResourcesByMap(CurrentRecipe.GetDefaultObject()->RecipeMap)
 		&& !Pawn->WeaponComponent->AimingInProgress() 
 		&& !CraftInProgress())
 	{
@@ -48,110 +48,19 @@ void UCraftComponent::AbortCraftProcess()
 
 void UCraftComponent::CraftSucceess()
 {
+	const auto Pawn = Cast<APlayerCharacter>(GetOwner());
+
+	if (!Pawn) return;
+
 	GetWorld()->GetTimerManager().ClearTimer(CraftInProgressTimer);
-	CheckRecipe(RecipeDataBase[SelectedIndex], true);
+	Pawn->InventoryComponent->LoopOnResourcesByMap(RecipeDataBase[SelectedIndex].GetDefaultObject()->RecipeMap, true, false);
 	GetRecipeResult(RecipeDataBase[SelectedIndex]);
-	//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("CraftSuccess"));
+	GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Green, TEXT("CraftSuccess"));
 }
 
 float UCraftComponent::GetCraftTimeRemaining()
 {
 	return GetWorld()->GetTimerManager().GetTimerRemaining(CraftInProgressTimer);
-}
-
-bool UCraftComponent::CheckRecipe(TSubclassOf<URecipeBase> Recipe, bool SpendResources)
-{	
-	const auto Pawn = Cast<APlayerCharacter>(GetOwner());
-
-	const auto CheckRecipeMap = Recipe.GetDefaultObject()->RecipeMap;
-
-	TArray<EResourcesType> KeysFromMap;
-	CheckRecipeMap.GetKeys(KeysFromMap);
-
-	TArray<int> ValueFromMap;
-	CheckRecipeMap.GenerateValueArray(ValueFromMap);
-
-	int SuccessPosition = 0;
-
-	//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("CheckResourcesLoopIteration"));
-
-	for (int  i = 0; i < CheckRecipeMap.Num(); i++)	
-	{
-		
-		switch (KeysFromMap[i])
-		{
-
-			case EResourcesType::Wood:
-
-			if (Pawn->InventoryComponent->GetValueResourses(EResourcesType::Wood) >= CheckRecipeMap[KeysFromMap[i]])
-			{
-					SuccessPosition++;
-					if (SpendResources)
-					{
-						Pawn->InventoryComponent->AddResources(EResourcesType::Wood, CheckRecipeMap[KeysFromMap[i]] * -1);
-					}
-			}
-			break;
-					
-			case EResourcesType::Rock:
-
-			if (Pawn->InventoryComponent->GetValueResourses(EResourcesType::Rock) >= CheckRecipeMap[KeysFromMap[i]])
-			{
-					SuccessPosition++;
-					if (SpendResources)
-					{
-						Pawn->InventoryComponent->AddResources(EResourcesType::Rock, CheckRecipeMap[KeysFromMap[i]] * -1);
-					}
-			}
-			break;
-
-			case EResourcesType::Grass:
-
-			if (Pawn->InventoryComponent->GetValueResourses(EResourcesType::Grass) >= CheckRecipeMap[KeysFromMap[i]])
-			{
-					SuccessPosition++;
-					if (SpendResources)
-					{
-						Pawn->InventoryComponent->AddResources(EResourcesType::Grass, CheckRecipeMap[KeysFromMap[i]] * -1);
-					}
-			}
-			break;
-
-			case EResourcesType::Metal:
-
-			if (Pawn->InventoryComponent->GetValueResourses(EResourcesType::Metal) >= CheckRecipeMap[KeysFromMap[i]])
-			{
-					SuccessPosition++;
-					if (SpendResources)
-					{
-						Pawn->InventoryComponent->AddResources(EResourcesType::Metal, CheckRecipeMap[KeysFromMap[i]] * -1);
-					}
-			}
-				break;
-			case EResourcesType::Food:
-
-			if (Pawn->InventoryComponent->GetValueResourses(EResourcesType::Food) >= CheckRecipeMap[KeysFromMap[i]])
-			{
-					SuccessPosition++;
-					if (SpendResources)
-					{
-						Pawn->InventoryComponent->AddResources(EResourcesType::Food, CheckRecipeMap[KeysFromMap[i]] * -1);
-					}
-			}
-				break;
-			
-			default:
-
-				break;
-			}	
-	}
-
-	if (SuccessPosition == CheckRecipeMap.Num())
-	{
-		return true;
-	}
-
-	return false;
 }
 
 void UCraftComponent::GetRecipeResult(TSubclassOf<URecipeBase> Recipe)
