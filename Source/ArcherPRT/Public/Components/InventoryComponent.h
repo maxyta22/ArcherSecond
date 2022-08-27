@@ -17,6 +17,8 @@ USTRUCT()
 		int ValueGrass;
 		int ValueMetal;
 		int ValueFood;
+		int ValueBattery;
+		int ValueLamp;
 	};
 
 USTRUCT()
@@ -27,7 +29,9 @@ USTRUCT()
 		int MaxRock = 5;
 		int MaxGrass = 5;
 		int MaxMetal = 5;
-		int MaxFood  =5;
+		int MaxFood  = 5;
+		int MaxBattery  =  5;
+		int MaxLamp = 5;
 };
 
 USTRUCT()

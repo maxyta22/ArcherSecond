@@ -3,6 +3,7 @@
 #include "Components/BuildingComponent.h"
 #include "Environment/InteractObjectBase.h"
 #include "Player/PlayerCharacter.h"
+#include "Craft/RecipeBase.h"
 
 
 UBuildingComponent::UBuildingComponent()
@@ -43,15 +44,17 @@ void UBuildingComponent::PreSpawnObject()
 	if (!World) return;
 	const auto Owner = Cast<APlayerCharacter>(GetOwner());
 	if (!Owner) return;
-	if (!AvaliableObjects[0]) return;
+	if (!AvaliableRecipes[SelectedIndex]) return;
+	if (!AvaliableRecipes[SelectedIndex].GetDefaultObject()->Object) return;
 
 	//Init Spawn parameters
 	const FVector SpawnLocation = Owner->GetActorLocation() + Owner->GetActorForwardVector()*SpawnOffset;
 	const FRotator SpawnRotation = Owner->GetActorRotation();
+	const TSubclassOf<AActor> SpawnActor = AvaliableRecipes[SelectedIndex].GetDefaultObject()->Object;
 
 	if (!CurrentPreSpawnObject)
 	{
-		CurrentPreSpawnObject = World->SpawnActorDeferred<AInteractObjectBase>(AvaliableObjects[0], FTransform(SpawnRotation, SpawnLocation),nullptr, nullptr, ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
+		CurrentPreSpawnObject = World->SpawnActorDeferred<AInteractObjectBase>(SpawnActor, FTransform(SpawnRotation, SpawnLocation), nullptr, nullptr, ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
 		if (CurrentPreSpawnObject)
 		{
 			CurrentPreSpawnObject->FinishSpawning(FTransform(SpawnRotation, SpawnLocation));
@@ -71,13 +74,24 @@ void UBuildingComponent::TrySpawnObject()
 	if (!World) return;
 	const auto Owner = Cast<APlayerCharacter>(GetOwner());
 	if (!Owner) return;
-	if (!AvaliableObjects[0]) return;
 	if (!CurrentPreSpawnObject) return;
+	if (!AvaliableRecipes[SelectedIndex]) return;
+	if (!AvaliableRecipes[SelectedIndex].GetDefaultObject()->Object) return;
 
 	const FVector SpawnLocation = CurrentPreSpawnObject->GetActorLocation();
 	const FRotator SpawnRotation = CurrentPreSpawnObject->GetActorRotation();
 
-	World->SpawnActorAbsolute(AvaliableObjects[0], FTransform(SpawnRotation, SpawnLocation));
+	const TSubclassOf<AActor> SpawnActor = AvaliableRecipes[SelectedIndex].GetDefaultObject()->Object;
+	const TSubclassOf<URecipeBase>  CurrentRecipe = AvaliableRecipes[SelectedIndex];
+	const TMap<EResourcesType, int> NeededResources = CurrentRecipe.GetDefaultObject()->RecipeMap;
+
+	
+	if (Owner->InventoryComponent->LoopOnResourcesByMap(NeededResources))
+	{
+		Owner->InventoryComponent->LoopOnResourcesByMap(NeededResources, true, false);
+		World->SpawnActorAbsolute(SpawnActor, FTransform(SpawnRotation, SpawnLocation));
+	}
+	
 	
 }
 

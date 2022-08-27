@@ -121,6 +121,44 @@ bool UInventoryComponent::LoopOnResourcesByMap(TMap<EResourcesType, int> Resourc
 			}
 
 			break;
+
+		case EResourcesType::Battery:
+
+			if (Pawn->InventoryComponent->GetValueResourses(EResourcesType::Battery) >= ResourcesMap[KeysFromMap[i]])
+			{
+				SuccessPosition++;
+			}
+
+			if (SpendResources)
+			{
+				Pawn->InventoryComponent->AddResources(EResourcesType::Battery, ResourcesMap[KeysFromMap[i]] * -1);
+			}
+
+			if (AddResources)
+			{
+				Pawn->InventoryComponent->AddResources(EResourcesType::Battery, ResourcesMap[KeysFromMap[i]]);
+			}
+
+			break;
+
+		case EResourcesType::Lamp:
+
+			if (Pawn->InventoryComponent->GetValueResourses(EResourcesType::Lamp) >= ResourcesMap[KeysFromMap[i]])
+			{
+				SuccessPosition++;
+			}
+
+			if (SpendResources)
+			{
+				Pawn->InventoryComponent->AddResources(EResourcesType::Lamp, ResourcesMap[KeysFromMap[i]] * -1);
+			}
+
+			if (AddResources)
+			{
+				Pawn->InventoryComponent->AddResources(EResourcesType::Lamp, ResourcesMap[KeysFromMap[i]]);
+			}
+
+			break;
 		}
 	}
 
@@ -158,6 +196,12 @@ int UInventoryComponent::GetValueResourses(EResourcesType ResourcesType)
 	case EResourcesType::Food:
 			return ResoursesData.ValueFood;
 		break;
+	case EResourcesType::Battery:
+		return ResoursesData.ValueBattery;
+		break;
+	case EResourcesType::Lamp:
+		return ResoursesData.ValueLamp;
+		break;
 	default:
 			return 0;
 		break;
@@ -186,6 +230,12 @@ int UInventoryComponent::GetMaxResourses(EResourcesType ResourcesType)
 	case EResourcesType::Food:
 		return MaxResoursesData.MaxFood;
 		break;
+	case EResourcesType::Battery:
+		return MaxResoursesData.MaxBattery;
+		break;
+	case EResourcesType::Lamp:
+		return MaxResoursesData.MaxLamp;
+		break;
 	default:
 		return 0;
 		break;
@@ -212,6 +262,12 @@ void UInventoryComponent::SetMaxResourses(EResourcesType ResourcesType, int Valu
 		break;
 	case EResourcesType::Food:
 		MaxResoursesData.MaxFood = Value;
+		break;
+	case EResourcesType::Battery:
+		MaxResoursesData.MaxBattery = Value;
+		break;
+	case EResourcesType::Lamp:
+		MaxResoursesData.MaxLamp = Value;
 		break;
 	default:
 		break;
@@ -240,8 +296,48 @@ void UInventoryComponent::AddResources(EResourcesType ResourcesType, int Value)
 	case EResourcesType::Food:
 			ResoursesData.ValueFood = ResoursesData.ValueFood + Value;
 		break;
+	case EResourcesType::Battery:
+		ResoursesData.ValueBattery = ResoursesData.ValueBattery + Value;
+		break;
+	case EResourcesType::Lamp:
+		ResoursesData.ValueLamp = ResoursesData.ValueLamp + Value;
+		break;
 	default:
 			
+		break;
+	}
+}
+
+bool UInventoryComponent::CheckCanTakeResources(EResourcesType ResourcesType)
+{
+	switch (ResourcesType)
+	{
+	case EResourcesType::None:
+		return false;
+		break;
+	case EResourcesType::Wood:
+		return ResoursesData.ValueWood < MaxResoursesData.MaxWood;
+		break;
+	case EResourcesType::Rock:
+		return ResoursesData.ValueRock < MaxResoursesData.MaxRock;
+		break;
+	case EResourcesType::Grass:
+		return ResoursesData.ValueGrass < MaxResoursesData.MaxGrass;
+		break;
+	case EResourcesType::Metal:
+		return ResoursesData.ValueMetal < MaxResoursesData.MaxMetal;
+		break;
+	case EResourcesType::Food:
+		return ResoursesData.ValueFood < MaxResoursesData.MaxFood;
+		break;
+	case EResourcesType::Battery:
+		return ResoursesData.ValueBattery < MaxResoursesData.MaxBattery;
+		break;
+	case EResourcesType::Lamp:
+		return ResoursesData.ValueLamp < MaxResoursesData.MaxLamp;
+		break;
+	default:
+		return false;
 		break;
 	}
 }
@@ -346,34 +442,6 @@ void UInventoryComponent::AddAmmo(EAmmoType AmmoType, int Value)
 		AmmoData.ValueMetalArrow = AmmoData.ValueMetalArrow + Value;
 		break;
 	default:
-		break;
-	}
-}
-
-bool UInventoryComponent::CheckCanTakeResources(EResourcesType ResourcesType)
-{
-	switch (ResourcesType)
-	{
-	case EResourcesType::None: 
-		return false;
-		break;
-	case EResourcesType::Wood:
-		return ResoursesData.ValueWood < MaxResoursesData.MaxWood;
-		break;
-	case EResourcesType::Rock:
-		return ResoursesData.ValueRock < MaxResoursesData.MaxRock;
-		break;
-	case EResourcesType::Grass:
-		return ResoursesData.ValueGrass < MaxResoursesData.MaxGrass;
-		break;
-	case EResourcesType::Metal:
-		return ResoursesData.ValueMetal < MaxResoursesData.MaxMetal;
-		break;
-	case EResourcesType::Food:
-		return ResoursesData.ValueFood < MaxResoursesData.MaxFood;
-		break;
-	default:
-		return false;
 		break;
 	}
 }
