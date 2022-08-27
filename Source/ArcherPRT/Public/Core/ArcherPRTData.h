@@ -24,6 +24,8 @@ enum class EResourcesType : uint8
 	Grass,
 	Metal,
 	Food,
+	Battery,
+	Lamp,
 };
 
 UENUM(BlueprintType, Category = "AIStartCondition")

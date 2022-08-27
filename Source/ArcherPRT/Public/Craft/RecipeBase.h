@@ -25,5 +25,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Result")
 		EAmmoType Ammo;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Result")
+		TSubclassOf<AInteractObjectBase> Object;
 	
 };

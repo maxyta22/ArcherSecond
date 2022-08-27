@@ -27,11 +27,12 @@ void UCraftComponent::TryCraftItem()
 	if (!Pawn) return;
 	if (!RecipeDataBase[SelectedIndex]) return;
 
-	TSubclassOf<URecipeBase>  CurrentRecipe = RecipeDataBase[SelectedIndex];
-	EAmmoType Result = CurrentRecipe.GetDefaultObject()->Ammo;
+	const TSubclassOf<URecipeBase>  CurrentRecipe = RecipeDataBase[SelectedIndex];
+	const EAmmoType Result = CurrentRecipe.GetDefaultObject()->Ammo;
+	const TMap<EResourcesType, int> NeededResources = CurrentRecipe.GetDefaultObject()->RecipeMap;
 	
 	if (Pawn->InventoryComponent->CheckCanTakeAmmo(Result)
-		&& Pawn->InventoryComponent->LoopOnResourcesByMap(CurrentRecipe.GetDefaultObject()->RecipeMap)
+		&& Pawn->InventoryComponent->LoopOnResourcesByMap(NeededResources)
 		&& !Pawn->WeaponComponent->AimingInProgress() 
 		&& !CraftInProgress())
 	{
