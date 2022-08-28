@@ -2,8 +2,13 @@
 
 #include "Components/BuildingComponent.h"
 #include "Environment/InteractObjectBase.h"
+#include "Environment/CustomInteractObjectBase.h"
 #include "Player/PlayerCharacter.h"
 #include "Craft/RecipeBase.h"
+#include "Components/ActorComponent.h"
+#include "Components/ArrowComponent.h"
+#include "Kismet/GameplayStatics.h"
+
 
 
 UBuildingComponent::UBuildingComponent()
@@ -48,23 +53,33 @@ void UBuildingComponent::PreSpawnObject()
 	if (!AvaliableRecipes[SelectedIndex].GetDefaultObject()->Object) return;
 
 	//Init Spawn parameters
-	const FVector SpawnLocation = Owner->GetActorLocation() + Owner->GetActorForwardVector()*SpawnOffset;
+
+	// Calculate Z Point
+	FVector StartTrace = Owner->GetActorLocation() + Owner->GetActorForwardVector() * SpawnOffset;
+	FVector EndTrace = StartTrace + Owner->GetActorUpVector()*-1 * 5000;
+	FHitResult TraceResult;
+
+	GetWorld()->LineTraceSingleByChannel(TraceResult, StartTrace, EndTrace, ECollisionChannel::ECC_Visibility);
+
+	const FVector SpawnLocation = TraceResult.Location;
+
 	const FRotator SpawnRotation = Owner->GetActorRotation();
 	const TSubclassOf<AActor> SpawnActor = AvaliableRecipes[SelectedIndex].GetDefaultObject()->Object;
 
 	if (!CurrentPreSpawnObject)
 	{
-		CurrentPreSpawnObject = World->SpawnActorDeferred<AInteractObjectBase>(SpawnActor, FTransform(SpawnRotation, SpawnLocation), nullptr, nullptr, ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
+		CurrentPreSpawnObject = World->SpawnActorDeferred<ACustomInteractObjectBase>(SpawnActor, FTransform(SpawnRotation, SpawnLocation), nullptr, nullptr, ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
 		if (CurrentPreSpawnObject)
 		{
+			CurrentPreSpawnObject->BuildingPlayer = Owner;
 			CurrentPreSpawnObject->FinishSpawning(FTransform(SpawnRotation, SpawnLocation));
 		}
 	}
-
-	
-	CurrentPreSpawnObject->SetActorLocationAndRotation(SpawnLocation, SpawnRotation);
 	
 
+	CurrentPreSpawnObject->SetActorLocationAndRotation(SpawnLocation, SpawnRotation, true);
+	CurrentPreSpawnObject->SetBuildingMaterial();
+	
 
 }
 
@@ -77,6 +92,7 @@ void UBuildingComponent::TrySpawnObject()
 	if (!CurrentPreSpawnObject) return;
 	if (!AvaliableRecipes[SelectedIndex]) return;
 	if (!AvaliableRecipes[SelectedIndex].GetDefaultObject()->Object) return;
+	if (!CurrentPreSpawnObject->CheckCanSpawnThisObject()) return;
 
 	const FVector SpawnLocation = CurrentPreSpawnObject->GetActorLocation();
 	const FRotator SpawnRotation = CurrentPreSpawnObject->GetActorRotation();

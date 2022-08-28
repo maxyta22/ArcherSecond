@@ -3,6 +3,7 @@
 
 #include "Environment/InteractObjectBase.h"
 #include "Components/SphereComponent.h"
+#include "Components/BoxComponent.h"
 #include "Player/PlayerCharacter.h"
 #include "Net/UnrealNetwork.h"
 #include "Components/ArrowComponent.h"
@@ -23,7 +24,6 @@ AInteractObjectBase::AInteractObjectBase()
 
 	StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>("StaticMesh");
 	StaticMeshComponent->SetupAttachment(PivotArrow);
-
 }
 
 void AInteractObjectBase::BeginPlay()

@@ -15,8 +15,6 @@ class UStaticMeshComponent;
 class USkeletalMeshComponent;
 class UArrowComponent;
 
-
-
 UCLASS()
 class ARCHERPRT_API AInteractObjectBase : public AActor
 {

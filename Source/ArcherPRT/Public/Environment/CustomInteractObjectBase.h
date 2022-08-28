@@ -5,7 +5,10 @@
 #include "CoreMinimal.h"
 #include "Environment/InteractObjectBase.h"
 #include "Core/ArcherPRTData.h"
+#include "Materials/Material.h"
 #include "CustomInteractObjectBase.generated.h"
+
+class UBoxComponent;
 
 
 UCLASS()
@@ -15,11 +18,32 @@ class ARCHERPRT_API ACustomInteractObjectBase : public AInteractObjectBase
 
 public:
 
+	ACustomInteractObjectBase();
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TMap<EResourcesType, int> ResoursesForInteract;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool ReturnResources;
+
+	//Building
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Building")
+		UMaterial* FailPreSpawnMaterial;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Building")
+		UMaterial* SuccessPreSpawnMaterial;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
+		UBoxComponent* BoxGabaritCollision;
+
+	APlayerCharacter* BuildingPlayer;
+
+	bool CheckCanSpawnThisObject();
+
+	void SetBuildingMaterial ();
+
+
 	
 
 protected:
@@ -29,5 +53,8 @@ protected:
 private:
 
 	bool Activate;
+
+	
+
 	
 };

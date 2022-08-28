@@ -6,6 +6,7 @@
 #include "Components/ActorComponent.h"
 #include "Craft/RecipeBase.h"
 #include "Environment/InteractObjectBase.h"
+#include "Environment/CustomInteractObjectBase.h"
 #include "BuildingComponent.generated.h"
 
 
@@ -36,12 +37,12 @@ public:
 		TArray<TSubclassOf<URecipeBase>> AvaliableRecipes;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Settings")
-		float SpawnOffset = 150;
+		float SpawnOffset = 200;
 
 private:
 
 	bool bBuildingMode;
-	AInteractObjectBase* CurrentPreSpawnObject;
+	ACustomInteractObjectBase* CurrentPreSpawnObject;
 	int SelectedIndex = 0;
 	
 
