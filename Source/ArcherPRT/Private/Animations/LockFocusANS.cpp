@@ -18,7 +18,6 @@ void ULockFocusANS::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequenceB
 	AIController = Cast<APRTAIController>(AICharacterOwner->GetController());
 	if (!AIController) return;
 
-	AICharacterOwner->bUseControllerRotationYaw = true;
 	AIController->FocusActive = false;
 	
 }
@@ -40,7 +39,6 @@ void ULockFocusANS::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequenceBas
 	AIController = Cast<APRTAIController>(AICharacterOwner->GetController());
 	if (!AIController) return;
 
-	AICharacterOwner->bUseControllerRotationYaw = false;
 	AIController->FocusActive = true;
 
 }
