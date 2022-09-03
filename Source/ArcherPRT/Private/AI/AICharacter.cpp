@@ -39,8 +39,6 @@ void AAICharacter::BeginPlay()
 	Super::BeginPlay();
 
 	AIControllerRef = Cast<APRTAIController>(GetController());
-
-	ToggleHitColliders(false);
 }
 
 void AAICharacter::Tick(float DeltaTime)
