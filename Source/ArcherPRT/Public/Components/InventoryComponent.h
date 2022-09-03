@@ -8,50 +8,81 @@
 #include "InventoryComponent.generated.h"
 
 
-USTRUCT()
-	struct FResoursesData
-	{
-		GENERATED_USTRUCT_BODY()
-		int ValueWood;
-		int ValueRock;
-		int ValueGrass;
-		int ValueMetal;
-		int ValueFood;
-		int ValueBattery;
-		int ValueLamp;
-	};
+USTRUCT(BlueprintType)
+struct FResoursesData
+{
+	GENERATED_USTRUCT_BODY()
 
-USTRUCT()
-	struct FMaxResoursesData
-	{
-		GENERATED_USTRUCT_BODY()
-		int MaxWood = 5;
-		int MaxRock = 5;
-		int MaxGrass = 5;
-		int MaxMetal = 5;
-		int MaxFood  = 5;
-		int MaxBattery  =  5;
-		int MaxLamp = 5;
+	public:
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int ValueWood;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int ValueRock;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int ValueGrass;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int ValueMetal;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int ValueFood;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int ValueBattery;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int ValueLamp;
 };
 
-USTRUCT()
-	struct FAmmoData
-	{
-		GENERATED_USTRUCT_BODY()
-		int ValueWoodArrow = 5;
-		int ValueRockArrow = 0;
-		int ValueMetalArrow = 0;
-	};
+USTRUCT(BlueprintType)
+struct FMaxResoursesData
+{
+	GENERATED_USTRUCT_BODY()
 
-USTRUCT()
+	public:
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int MaxWood;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int MaxRock;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int MaxGrass;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int MaxMetal;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int MaxFood;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int MaxBattery;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int MaxLamp;
+};
+
+USTRUCT(BlueprintType)
+struct FAmmoData
+{
+	GENERATED_USTRUCT_BODY()
+
+	public:
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int ValueWoodArrow;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int ValueRockArrow;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int ValueMetalArrow;
+};
+
+USTRUCT(BlueprintType)
 struct FMaxAmmoData
 {
 	GENERATED_USTRUCT_BODY()
-		int MaxWoodArrow = 2;
-		int MaxRockArrow = 5;
-		int MaxMetalArrow = 3;
-};
 
+	public:
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int MaxWoodArrow;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int MaxRockArrow;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int MaxMetalArrow;
+};
 
 UCLASS(ClassGroup = (Custom), blueprinttype, blueprintable, meta = (BlueprintSpawnableComponent))
 class ARCHERPRT_API UInventoryComponent : public UActorComponent
@@ -61,6 +92,22 @@ class ARCHERPRT_API UInventoryComponent : public UActorComponent
 public:		
 	
 	UInventoryComponent();
+
+	//-----------------------------------------------------------------------------------//
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FResoursesData Resources;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FMaxResoursesData MaxResources;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FAmmoData  Ammo;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FMaxAmmoData  MaxAmmo;
+
+	//------------------------------------------------------------------------------------//
 
 	UFUNCTION(BlueprintPure, Category = "resources")
 		bool LoopOnResourcesByMap(TMap<EResourcesType, int> ResourcesMap, bool SpendResources = false, bool AddResources = false);
