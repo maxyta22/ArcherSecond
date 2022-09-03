@@ -56,7 +56,10 @@ public:
 		TArray<ATargetPoint*> TargetsForPatrol;
 
 	UFUNCTION(BlueprintPure)
-		APRTAIController* GetAIControollerRef() { return AIControllerRef; }
+		APRTAIController* GetAIControollerRef() { return AIControllerRef;}
+
+	UFUNCTION()
+		void ToggleHitColliders(bool Activate);
 
 	// Blueprint Implementable Events
 

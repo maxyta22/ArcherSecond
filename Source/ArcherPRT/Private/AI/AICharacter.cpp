@@ -39,6 +39,8 @@ void AAICharacter::BeginPlay()
 	Super::BeginPlay();
 
 	AIControllerRef = Cast<APRTAIController>(GetController());
+
+	ToggleHitColliders(false);
 }
 
 void AAICharacter::Tick(float DeltaTime)
@@ -86,6 +88,28 @@ FVector AAICharacter::GetNextPatrolTargetPointLocation()
 	}
 
 	
+}
+
+void AAICharacter::ToggleHitColliders(bool Activate)
+{
+	const auto Components = GetComponents();
+
+	for (UActorComponent* CurrentComponent : Components)
+	{	
+		const auto Collision = Activate ? ECollisionEnabled::QueryAndPhysics : ECollisionEnabled::NoCollision;
+
+		if (CurrentComponent->ComponentHasTag("Head"))
+		{
+			UPrimitiveComponent* CurrentPrimitiveComponent = Cast<UPrimitiveComponent>(CurrentComponent);
+			CurrentPrimitiveComponent->SetCollisionEnabled(Collision);
+		}
+
+		if (CurrentComponent->ComponentHasTag("Torso"))
+		{
+			UPrimitiveComponent* CurrentPrimitiveComponent = Cast<UPrimitiveComponent>(CurrentComponent);
+			CurrentPrimitiveComponent->SetCollisionEnabled(Collision);
+		}	
+	}
 }
 
 void AAICharacter::ReactionToAiming()
