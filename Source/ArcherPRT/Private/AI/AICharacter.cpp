@@ -26,11 +26,12 @@ AAICharacter::AAICharacter()
 	
 	
 	// Setup Smooth Rotation
-	bUseControllerRotationYaw = true;
+	bUseControllerRotationYaw = false;
 	if (GetCharacterMovement())
 	{
-		GetCharacterMovement()->bUseControllerDesiredRotation = true;
-		GetCharacterMovement()->RotationRate = FRotator(0.0f, 200.0f, 0.0f);
+		GetCharacterMovement()->bUseControllerDesiredRotation = false;
+		GetCharacterMovement()->bOrientRotationToMovement = true;
+		GetCharacterMovement()->RotationRate = FRotator(0.0f, 180.0f, 0.0f);
 	}
 }
 
