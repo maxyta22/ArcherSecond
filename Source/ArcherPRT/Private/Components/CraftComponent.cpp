@@ -74,7 +74,7 @@ void UCraftComponent::GetRecipeResult(TSubclassOf<URecipeBase> Recipe)
 	{
 	case EAmmoType::WoodArrow:
 
-		Pawn->InventoryComponent->AddAmmo(EAmmoType::WoodArrow, 1);
+		Pawn->InventoryComponent->AddAmmo(EAmmoType::WoodArrow, 3);
 
 		break;
 
