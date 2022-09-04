@@ -144,7 +144,7 @@ float AAICharacter::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AC
 	Super::TakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
 
 	const auto AIController = Cast<APRTAIController>(Controller);
-	if (AIController)
+	if (AIController && EventInstigator)
 	{
 		AIController->SetEnemy(EventInstigator->GetPawn());
 	}
