@@ -7,6 +7,7 @@
 #include "Engine/TargetPoint.h"
 #include "Core/ArcherPRTData.h"
 #include "AI/PRTAIController.h"
+#include "Environment/PickupResourcesBase.h"
 #include "AICharacter.generated.h"
 
 class UBehaviorTree;
@@ -57,6 +58,11 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Behavior")
 		float SpeedRotationOnTarget = 10.0f;
+
+	// Drop Settings
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Drop")
+		TArray<TSubclassOf<APickupResourcesBase>> DropList;
 
 	UFUNCTION(BlueprintPure)
 		APRTAIController* GetAIControollerRef() { return AIControllerRef;}

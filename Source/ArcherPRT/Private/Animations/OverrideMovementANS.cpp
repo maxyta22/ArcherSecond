@@ -10,7 +10,6 @@
 
 void UOverrideMovementANS::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float TotalDuration)
 {
-	Super::NotifyBegin(MeshComp, Animation, TotalDuration);
 
 	AAICharacter* AICharacterOwner;
 	AICharacterOwner = Cast<AAICharacter>(MeshComp->GetOwner());
@@ -35,7 +34,6 @@ void UOverrideMovementANS::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSe
 
 void UOverrideMovementANS::NotifyTick(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float FrameDeltaTime)
 {
-	Super::NotifyTick(MeshComp, Animation, FrameDeltaTime);
 
 	AAICharacter* AICharacterOwner;
 	AICharacterOwner = Cast<AAICharacter>(MeshComp->GetOwner());
@@ -62,7 +60,6 @@ void UOverrideMovementANS::NotifyTick(USkeletalMeshComponent* MeshComp, UAnimSeq
 
 void UOverrideMovementANS::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation)
 {
-	Super::NotifyEnd(MeshComp, Animation);
 
 	AAICharacter* AICharacterOwner;
 	AICharacterOwner = Cast<AAICharacter>(MeshComp->GetOwner());

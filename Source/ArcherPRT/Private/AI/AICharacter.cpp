@@ -11,6 +11,7 @@
 #include "BehaviorTree/BehaviorTree.h"
 #include "Engine/TargetPoint.h"
 #include "TimerManager.h"
+#include "Environment/PickupResourcesBase.h"
 #include "MathUtils.h"
 #include "Kismet/KismetMathLibrary.h"
 
