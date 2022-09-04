@@ -20,7 +20,6 @@ APRTAIController::APRTAIController()
 void APRTAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);	
-	FocusService();
 }
 
 void APRTAIController::OnPossess(APawn* InPawn)
@@ -33,19 +32,6 @@ void APRTAIController::OnPossess(APawn* InPawn)
 		ControlledPawn = ControlledChar;
 		const EAIStartCondition Start = ControlledChar->StartCondition;
 		GetBlackboardComponent()->SetValueAsEnum("StartCondition", StaticCast<uint8>(ControlledChar->StartCondition));
-	}
-}
-
-void APRTAIController::FocusService()
-{
-	if (!ControlledPawn->StatsComponent->IsDead() && FocusActive)
-	{
-		const auto TargetActor = GetFocusOnActor();
-		SetFocus(TargetActor);
-	}
-	else
-	{
-		SetFocus(nullptr);
 	}
 }
 

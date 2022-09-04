@@ -55,6 +55,9 @@ public:
 	UPROPERTY(EditInstanceOnly, BlueprintReadWrite, Category = "Behavior")
 		TArray<ATargetPoint*> TargetsForPatrol;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Behavior")
+		float SpeedRotationOnTarget = 10.0f;
+
 	UFUNCTION(BlueprintPure)
 		APRTAIController* GetAIControollerRef() { return AIControllerRef;}
 
@@ -78,6 +81,8 @@ public:
 	void StartAccumulateToAiming();
 
 	void FinishAccumulateToAiming();
+
+	void RotationOnTarget();
 
 	FVector GetNextPatrolTargetPointLocation();
 

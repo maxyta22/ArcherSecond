@@ -11,6 +11,8 @@
 #include "BehaviorTree/BehaviorTree.h"
 #include "Engine/TargetPoint.h"
 #include "TimerManager.h"
+#include "MathUtils.h"
+#include "Kismet/KismetMathLibrary.h"
 
 
 AAICharacter::AAICharacter()
@@ -62,6 +64,24 @@ void AAICharacter::FinishAccumulateToAiming()
 {
 	if (!GetWorld()) return;
 	GetWorld()->GetTimerManager().ClearTimer(AccumulateToAiminHandleTimer);
+}
+
+void AAICharacter::RotationOnTarget()
+{
+	if (!GetWorld()) return;
+	if (!AIControllerRef) return;
+	if (!AIControllerRef->GetBlackboardComponent()) return;
+	if (!AIControllerRef->GetBlackboardComponent()->GetValueAsObject("EnemyActor")) return;
+
+	const AActor* Target = Cast<AActor>(AIControllerRef->GetBlackboardComponent()->GetValueAsObject("EnemyActor"));
+
+	if (Target)
+	{
+		const auto DesiredRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), Target->GetActorLocation());
+		const auto XYZRotation = FMath::RInterpTo(GetActorRotation(), DesiredRotation, GetWorld()->GetDeltaSeconds(), SpeedRotationOnTarget);
+		const auto ZRotation = FRotator(GetActorRotation().Pitch, XYZRotation.Yaw, GetActorRotation().Roll);
+		SetActorRotation(ZRotation);
+	}
 }
 
 FVector AAICharacter::GetNextPatrolTargetPointLocation()

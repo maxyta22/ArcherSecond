@@ -104,6 +104,8 @@ private:
 	TArray<AActor*> IgnoreActorsDamage;
 
 	
+
+	
 	
 	
 

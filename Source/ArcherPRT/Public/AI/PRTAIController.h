@@ -22,13 +22,9 @@ public:
 
 	void SetEnemy(AActor* Enemy);
 
-	void FocusService();
-
 	UFUNCTION(BlueprintPure)
 	AActor* GetEnemy();
 
-	bool FocusActive = true;
-	
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
 		UPRTAIPerceptionComponent* PRTAIPerceptionComponent;
