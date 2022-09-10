@@ -4,13 +4,15 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Net/UnrealNetwork.h"
+#include "NiagaraComponent.h"
 #include "ArcherPRTProjectile.generated.h"
 
 class USphereComponent;
 class UCapsuleComponent;
 class UProjectileMovementComponent;
 class APlayerCharacter;
+class UPhysicalMaterial;
+class USoundCue;
 
 UCLASS(config=Game)
 class AArcherPRTProjectile : public AActor
@@ -49,6 +51,20 @@ public:
 		int DamageProjectile = 0;
 
 		int DamageWeapon;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Effects")
+		UNiagaraSystem* DefaultImpactEffect;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Effects")
+		TMap<UPhysicalMaterial*, UNiagaraSystem*> ImpactEffectsMap;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Effects")
+		USoundCue* DefaultImpactSound;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Effects")
+		TMap<UPhysicalMaterial*, USoundCue*> ImpactSoundMap;
+
+	void SpawnHitEffect(FHitResult Hit);
 
 		
 

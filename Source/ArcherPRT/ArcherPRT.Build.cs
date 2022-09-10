@@ -17,6 +17,7 @@ public class ArcherPRT : ModuleRules
 			"GameplayTasks",
 			"NavigationSystem",
 			"Niagara",
+			"PhysicsCore",
 			"GameplayTasks",
 			"NavigationSystem",
 			"GameplayAbilities",

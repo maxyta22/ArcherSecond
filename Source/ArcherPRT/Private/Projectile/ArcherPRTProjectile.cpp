@@ -7,8 +7,10 @@
 #include "Components/CapsuleComponent.h"
 #include "Player/GameCharacter.h"
 #include "Components/StatsComponent.h"
-#include "Net/UnrealNetwork.h"
 #include "Kismet/GameplayStatics.h"
+#include "NiagaraFunctionLibrary.h"
+#include "PhysicalMaterials/PhysicalMaterial.h"
+#include "Sound/SoundCue.h"
 
 AArcherPRTProjectile::AArcherPRTProjectile() 
 {
@@ -17,7 +19,9 @@ AArcherPRTProjectile::AArcherPRTProjectile()
 	CollisionComp->InitSphereRadius(5.0f);
 	CollisionComp->BodyInstance.SetCollisionProfileName("Projectile");
 	// set up a notification for when this component hits something blocking
-	CollisionComp->OnComponentHit.AddDynamic(this, &AArcherPRTProjectile::OnHit);		
+	CollisionComp->OnComponentHit.AddDynamic(this, &AArcherPRTProjectile::OnHit);
+	// Can Return PhysMat
+	CollisionComp->bReturnMaterialOnMove = true;
 
 	// Set as root component
 	RootComponent = CollisionComp;
@@ -57,13 +61,43 @@ void AArcherPRTProjectile::TryTakeProjectile(APlayerCharacter* Pawn)
 	
 }
 
+void AArcherPRTProjectile::SpawnHitEffect(FHitResult Hit)
+{
+	auto ImpactEffect = DefaultImpactEffect;
+	auto ImpactSound = DefaultImpactSound;
+
+	if (Hit.PhysMaterial.IsValid())
+	{
+		const auto PhysMat = Hit.PhysMaterial.Get();
+		if (ImpactEffectsMap.Contains(PhysMat))
+		{
+			ImpactEffect = ImpactEffectsMap[PhysMat];	
+		}
+		if (ImpactSoundMap.Contains(PhysMat))
+		{
+			ImpactSound = ImpactSoundMap[PhysMat];
+		}
+		
+	}
+
+	if (ImpactEffect)
+	{
+		UNiagaraComponent* SpawnEffect = UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), ImpactEffect, GetActorLocation(), GetActorRotation());
+	}
+	if (ImpactSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(GetWorld(), ImpactSound, GetActorLocation());
+	}
+	
+}
+
 void AArcherPRTProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult &Hit)
 {
 	if (!GetWorld())  return;
 
 	ProjectileMovement->StopMovementImmediately();
 
-	FHitResult HitResult = Hit;
+	SpawnHitEffect(Hit);
 
 	if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr))
 	{
@@ -71,7 +105,7 @@ void AArcherPRTProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActo
 		
 		if (Pawn)
 		{
-			if (HitResult.GetComponent()->ComponentHasTag("Head"))
+			if (Hit.GetComponent()->ComponentHasTag("Head"))
 			{
 				Pawn->TakeDamage(DamageWeapon + DamageProjectile, FDamageEvent(), GetInstigatorController(), this);
 				Pawn->OnHitReaction();
