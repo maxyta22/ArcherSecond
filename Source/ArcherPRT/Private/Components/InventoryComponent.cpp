@@ -4,6 +4,7 @@
 #include "Components/InventoryComponent.h"
 #include "Core/ArcherPRTData.h"
 #include "Player/PlayerCharacter.h"
+#include "GameFramework/Actor.h"
 #include "Craft/RecipeBase.h"
 
 
@@ -433,13 +434,13 @@ void UInventoryComponent::AddAmmo(EAmmoType AmmoType, int Value)
 	case EAmmoType::None:
 		break;
 	case EAmmoType::WoodArrow:
-		AmmoData.ValueWoodArrow = AmmoData.ValueWoodArrow + Value;;
+		AmmoData.ValueWoodArrow = FMath::Clamp(AmmoData.ValueWoodArrow + Value, 0, MaxAmmoData.MaxWoodArrow);
 		break;
 	case EAmmoType::RockArrow:
-		AmmoData.ValueRockArrow = AmmoData.ValueRockArrow + Value;
+		AmmoData.ValueRockArrow = FMath::Clamp(AmmoData.ValueRockArrow + Value, 0, MaxAmmoData.MaxRockArrow);
 		break;
 	case EAmmoType::MetalArrow:
-		AmmoData.ValueMetalArrow = AmmoData.ValueMetalArrow + Value;
+		AmmoData.ValueMetalArrow = FMath::Clamp(AmmoData.ValueMetalArrow + Value, 0, MaxAmmoData.MaxMetalArrow);
 		break;
 	default:
 		break;
