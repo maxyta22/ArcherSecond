@@ -12,6 +12,10 @@ UInventoryComponent::UInventoryComponent()
 {
 }
 
+void UInventoryComponent::BeginPlay()
+{
+}
+
 bool UInventoryComponent::LoopOnResourcesByMap(TMap<EResourcesType, int> ResourcesMap, bool SpendResources, bool AddResources)
 {
 	const auto Pawn = Cast<APlayerCharacter>(GetOwner());
@@ -160,6 +164,26 @@ bool UInventoryComponent::LoopOnResourcesByMap(TMap<EResourcesType, int> Resourc
 			}
 
 			break;
+
+
+		case EResourcesType::Mine:
+
+			if (Pawn->InventoryComponent->GetValueResourses(EResourcesType::Mine) >= ResourcesMap[KeysFromMap[i]])
+			{
+				SuccessPosition++;
+			}
+
+			if (SpendResources)
+			{
+				Pawn->InventoryComponent->AddResources(EResourcesType::Mine, ResourcesMap[KeysFromMap[i]] * -1);
+			}
+
+			if (AddResources)
+			{
+				Pawn->InventoryComponent->AddResources(EResourcesType::Mine, ResourcesMap[KeysFromMap[i]]);
+			}
+
+			break;
 		}
 	}
 
@@ -169,10 +193,6 @@ bool UInventoryComponent::LoopOnResourcesByMap(TMap<EResourcesType, int> Resourc
 	}
 
 	return false;
-}
-
-void UInventoryComponent::BeginPlay()
-{
 }
 
 int UInventoryComponent::GetValueResourses(EResourcesType ResourcesType)
@@ -202,6 +222,9 @@ int UInventoryComponent::GetValueResourses(EResourcesType ResourcesType)
 		break;
 	case EResourcesType::Lamp:
 		return ResoursesData.ValueLamp;
+		break;
+	case EResourcesType::Mine:
+		return ResoursesData.ValueMine;
 		break;
 	default:
 			return 0;
@@ -237,6 +260,9 @@ int UInventoryComponent::GetMaxResourses(EResourcesType ResourcesType)
 	case EResourcesType::Lamp:
 		return MaxResoursesData.MaxLamp;
 		break;
+	case EResourcesType::Mine:
+		return MaxResoursesData.MaxMine;
+		break;
 	default:
 		return 0;
 		break;
@@ -269,6 +295,9 @@ void UInventoryComponent::SetMaxResourses(EResourcesType ResourcesType, int Valu
 		break;
 	case EResourcesType::Lamp:
 		MaxResoursesData.MaxLamp = Value;
+		break;
+	case EResourcesType::Mine:
+		MaxResoursesData.MaxMine = Value;
 		break;
 	default:
 		break;
@@ -303,6 +332,9 @@ void UInventoryComponent::AddResources(EResourcesType ResourcesType, int Value)
 	case EResourcesType::Lamp:
 		ResoursesData.ValueLamp = ResoursesData.ValueLamp + Value;
 		break;
+	case EResourcesType::Mine:
+		ResoursesData.ValueMine = ResoursesData.ValueMine + Value;
+		break;
 	default:
 			
 		break;
@@ -336,6 +368,9 @@ bool UInventoryComponent::CheckCanTakeResources(EResourcesType ResourcesType)
 		break;
 	case EResourcesType::Lamp:
 		return ResoursesData.ValueLamp < MaxResoursesData.MaxLamp;
+		break;
+	case EResourcesType::Mine:
+		return ResoursesData.ValueMine < MaxResoursesData.MaxMine;
 		break;
 	default:
 		return false;

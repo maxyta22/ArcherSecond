@@ -29,6 +29,8 @@ struct FResoursesData
 		int ValueBattery;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int ValueLamp;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int ValueMine;
 };
 
 USTRUCT(BlueprintType)
@@ -52,6 +54,8 @@ struct FMaxResoursesData
 		int MaxBattery;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int MaxLamp;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int MaxMine;
 };
 
 USTRUCT(BlueprintType)
