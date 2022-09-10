@@ -9,6 +9,7 @@
 #include "Components/StatsComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "NiagaraFunctionLibrary.h"
+#include "Particles/ParticleSystemComponent.h"
 #include "PhysicalMaterials/PhysicalMaterial.h"
 #include "Sound/SoundCue.h"
 
@@ -63,16 +64,24 @@ void AArcherPRTProjectile::TryTakeProjectile(APlayerCharacter* Pawn)
 
 void AArcherPRTProjectile::SpawnHitEffect(FHitResult Hit)
 {
-	auto ImpactEffect = DefaultImpactEffect;
+	auto ImpactNiagaraEffect = DefaultNiagaraImpactEffect;
+	auto ImpactCascadeEffect = DefaultCascadeImpactEffect;
 	auto ImpactSound = DefaultImpactSound;
 
 	if (Hit.PhysMaterial.IsValid())
 	{
 		const auto PhysMat = Hit.PhysMaterial.Get();
-		if (ImpactEffectsMap.Contains(PhysMat))
+
+		if (NiagaraImpactEffectsMap.Contains(PhysMat))
 		{
-			ImpactEffect = ImpactEffectsMap[PhysMat];	
+			ImpactNiagaraEffect = NiagaraImpactEffectsMap[PhysMat];
 		}
+
+		if (CascadeImpactEffectsMap.Contains(PhysMat))
+		{
+			ImpactCascadeEffect = CascadeImpactEffectsMap[PhysMat];
+		}
+
 		if (ImpactSoundMap.Contains(PhysMat))
 		{
 			ImpactSound = ImpactSoundMap[PhysMat];
@@ -80,9 +89,14 @@ void AArcherPRTProjectile::SpawnHitEffect(FHitResult Hit)
 		
 	}
 
-	if (ImpactEffect)
+	if (ImpactCascadeEffect)
 	{
-		UNiagaraComponent* SpawnEffect = UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), ImpactEffect, GetActorLocation(), GetActorRotation());
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactCascadeEffect, GetActorLocation(), GetActorRotation());
+	}
+
+	if (ImpactNiagaraEffect)
+	{
+		UNiagaraComponent* SpawnNiagaraEffect = UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), ImpactNiagaraEffect, GetActorLocation(), GetActorRotation());
 	}
 	if (ImpactSound)
 	{

@@ -52,11 +52,19 @@ public:
 
 		int DamageWeapon;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Effects")
-		UNiagaraSystem* DefaultImpactEffect;
+	//Effects
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Effects")
-		TMap<UPhysicalMaterial*, UNiagaraSystem*> ImpactEffectsMap;
+		UParticleSystem* DefaultCascadeImpactEffect;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Effects")
+		TMap<UPhysicalMaterial*, UParticleSystem*> CascadeImpactEffectsMap;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Effects")
+		UNiagaraSystem* DefaultNiagaraImpactEffect;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Effects")
+		TMap<UPhysicalMaterial*, UNiagaraSystem*> NiagaraImpactEffectsMap;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Effects")
 		USoundCue* DefaultImpactSound;
