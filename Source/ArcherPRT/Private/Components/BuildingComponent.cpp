@@ -69,16 +69,19 @@ void UBuildingComponent::PreSpawnObject()
 	if (!CurrentPreSpawnObject)
 	{
 		CurrentPreSpawnObject = World->SpawnActorDeferred<ACustomInteractObjectBase>(SpawnActor, FTransform(SpawnRotation, SpawnLocation), nullptr, nullptr, ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
+		
 		if (CurrentPreSpawnObject)
 		{
 			CurrentPreSpawnObject->BuildingPlayer = Owner;
 			CurrentPreSpawnObject->FinishSpawning(FTransform(SpawnRotation, SpawnLocation));
 		}
 	}
-	
+	else
+	{
+		CurrentPreSpawnObject->SetActorLocationAndRotation(SpawnLocation, SpawnRotation, true);
+		CurrentPreSpawnObject->SetBuildingMaterial();
+	}
 
-	CurrentPreSpawnObject->SetActorLocationAndRotation(SpawnLocation, SpawnRotation, true);
-	CurrentPreSpawnObject->SetBuildingMaterial();
 	
 
 }
