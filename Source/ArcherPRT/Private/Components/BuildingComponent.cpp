@@ -8,6 +8,7 @@
 #include "Components/ActorComponent.h"
 #include "Components/ArrowComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "GameFramework/Actor.h"
 
 
 
@@ -57,32 +58,35 @@ void UBuildingComponent::PreSpawnObject()
 	// Calculate Z Point
 	FVector StartTrace = Owner->GetActorLocation() + Owner->GetActorForwardVector() * SpawnOffset;
 	FVector EndTrace = StartTrace + Owner->GetActorUpVector()*-1 * 5000;
+
+	FCollisionObjectQueryParams ObjectQueryParams;
+	ObjectQueryParams.AllStaticObjects;
+
+	FCollisionQueryParams QueryParams;
+	QueryParams.AddIgnoredActor(CurrentPreSpawnObject);
+	
 	FHitResult TraceResult;
 
-	GetWorld()->LineTraceSingleByChannel(TraceResult, StartTrace, EndTrace, ECollisionChannel::ECC_Visibility);
+	GetWorld()->LineTraceSingleByObjectType(TraceResult, StartTrace, EndTrace, ObjectQueryParams, QueryParams);
 
 	const FVector SpawnLocation = TraceResult.Location;
 
 	const FRotator SpawnRotation = Owner->GetActorRotation();
 	const TSubclassOf<AActor> SpawnActor = AvaliableRecipes[SelectedIndex].GetDefaultObject()->Object;
 
-	if (!CurrentPreSpawnObject)
-	{
-		CurrentPreSpawnObject = World->SpawnActorDeferred<ACustomInteractObjectBase>(SpawnActor, FTransform(SpawnRotation, SpawnLocation), nullptr, nullptr, ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
-		
-		if (CurrentPreSpawnObject)
-		{
-			CurrentPreSpawnObject->BuildingPlayer = Owner;
-			CurrentPreSpawnObject->FinishSpawning(FTransform(SpawnRotation, SpawnLocation));
-		}
+	if (CurrentPreSpawnObject)
+	{	
+		CurrentPreSpawnObject->SetActorLocationAndRotation(SpawnLocation, SpawnRotation, true);
+		CurrentPreSpawnObject->SetBuildingMaterial();	
 	}
 	else
 	{
-		CurrentPreSpawnObject->SetActorLocationAndRotation(SpawnLocation, SpawnRotation, true);
-		CurrentPreSpawnObject->SetBuildingMaterial();
-	}
+		CurrentPreSpawnObject = World->SpawnActorDeferred<ACustomInteractObjectBase>(SpawnActor, FTransform(SpawnRotation, SpawnLocation), nullptr, nullptr, ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
+		
+		CurrentPreSpawnObject->BuildingPlayer = Owner;
+		CurrentPreSpawnObject->FinishSpawning(FTransform(SpawnRotation, SpawnLocation));
 
-	
+	}
 
 }
 
