@@ -86,11 +86,12 @@ void APlayerCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerIn
 
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
-	PlayerInputComponent->BindAction("Fire", IE_Pressed, WeaponComponent, &UWeaponComponent::OnAiming_ServerRPC);
+	PlayerInputComponent->BindAction("Fire", IE_Pressed, WeaponComponent, &UWeaponComponent::OnAiming);
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &APlayerCharacter::PressedAttackButon);
-	PlayerInputComponent->BindAction("Fire", IE_Released, WeaponComponent, &UWeaponComponent::OnFire_ServerRPC);
-	PlayerInputComponent->BindAction("Fire", IE_Released, WeaponComponent, &UWeaponComponent::OffAiming_ServerRPC);
+	PlayerInputComponent->BindAction("Fire", IE_Released, WeaponComponent, &UWeaponComponent::OnFire);
+	PlayerInputComponent->BindAction("Fire", IE_Released, WeaponComponent, &UWeaponComponent::OffAiming);
 	PlayerInputComponent->BindAction("Fire", IE_Released, this, &APlayerCharacter::ReleasedAttackButton);
+	PlayerInputComponent->BindAction("Fire", IE_Pressed, BuildingComponent, &UBuildingComponent::TrySpawnObject);
 	PlayerInputComponent->BindAction("SwitchAmmo", IE_Pressed, WeaponComponent, &UWeaponComponent::SwitchAmmoInCurrentEquipWeapon);
 	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &APlayerCharacter::TryPerformInteract);
 	PlayerInputComponent->BindAction("TryCraftItem", IE_Pressed, CraftComponent, &UCraftComponent::TryCraftItem);
@@ -139,15 +140,8 @@ void APlayerCharacter::LookUpAtRate(float Rate)
 void APlayerCharacter::TryPerformInteract()
 {
 	
-	if (BuildingComponent->BuildingModeActivated())
-	{
-		BuildingComponent->TrySpawnObject();
-		return;
-	}
-
-
 	AInteractObjectBase* InteractObject;
-	AArcherPRTProjectile* Projectile;
+
 		
 	if (CurrentInteractTarget.Num() == 0) return;
 
@@ -157,14 +151,6 @@ void APlayerCharacter::TryPerformInteract()
 		if (InteractObject)
 		{
 			InteractObject->TryUseInteractObject(this);
-			return;
-		}
-
-		
-		Projectile = Cast<AArcherPRTProjectile>(CheckActor);
-		if (Projectile)
-		{
-			Projectile->TryTakeProjectile(this);
 			return;
 		}
 	}
@@ -197,15 +183,9 @@ void APlayerCharacter::ShowInfoObject(AActor* InfoObject)
 	{
 		AInteractObjectBase* InteractObject;
 		InteractObject = Cast<AInteractObjectBase>(InfoObject);
-		AArcherPRTProjectile* Projectile;
-		Projectile = Cast<AArcherPRTProjectile>(InfoObject);
 		if (InteractObject)
 		{
 			InteractObject->ShowInfo();
-		}
-		if (Projectile)
-		{
-			Projectile->ShowInfo();
 		}
 	}
 }
@@ -221,10 +201,6 @@ void APlayerCharacter::HideInfoObject(AActor* InfoObject)
 		if (InteractObject)
 		{
 			InteractObject->HideInfo();
-		}
-		if (Projectile)
-		{
-			Projectile->HideInfo();
 		}
 	}
 }

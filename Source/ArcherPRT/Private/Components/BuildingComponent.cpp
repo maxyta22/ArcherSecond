@@ -92,6 +92,7 @@ void UBuildingComponent::PreSpawnObject()
 
 void UBuildingComponent::TrySpawnObject()
 {
+
 	UWorld* const World = GetWorld();
 	if (!World) return;
 	const auto Owner = Cast<APlayerCharacter>(GetOwner());

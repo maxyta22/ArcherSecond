@@ -31,7 +31,8 @@ public:
 
 	void TrySpawnObject();
 
-	bool BuildingModeActivated() const {return bBuildingMode;}
+	UFUNCTION(BlueprintPure)
+		bool BuildingModeActivated() const {return bBuildingMode;}
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AvaliableObjects")
 		TArray<TSubclassOf<URecipeBase>> AvaliableRecipes;

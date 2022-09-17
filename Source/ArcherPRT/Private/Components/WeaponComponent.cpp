@@ -10,7 +10,7 @@
 #include "Player/PlayerCharacter.h"
 #include "AI/AICharacter.h"
 #include "DrawDebugHelpers.h"
-#include "Net/UnrealNetwork.h"
+#include "Components/BuildingComponent.h"
 #include "Camera/CameraComponent.h"
 
 UWeaponComponent::UWeaponComponent()
@@ -86,28 +86,26 @@ void UWeaponComponent::TraceAim()
 
 }
 
-void UWeaponComponent::OnAiming_ServerRPC_Implementation()
+void UWeaponComponent::OnAiming()
 {
 	//Check Have Ammo
 	if (!CanMakeShot()) return;
 	bAimingInProgress = true;
 }
 
-void UWeaponComponent::OffAiming_ServerRPC_Implementation()
+void UWeaponComponent::OffAiming()
 {
 	bAimingInProgress = false;
 }
 
-void UWeaponComponent::OnFire_ServerRPC_Implementation()
+void UWeaponComponent::OnFire()
 {
-	if (!CurrentEquipWeapon) return;
 	if (!GetWorld()) return;
 	if (!GetOwner()) return;
-
-	UWorld* const World = GetWorld();
-	if (!World) return;
 	const auto Owner = Cast<APlayerCharacter>(GetOwner());
 	if (!Owner) return;
+	if (Owner->BuildingComponent->BuildingModeActivated()) return;
+	if (!CurrentEquipWeapon) return;
 
 	if (Owner->CraftComponent->CraftInProgress()) return;
 

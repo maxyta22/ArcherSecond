@@ -35,17 +35,9 @@ public:
 	UFUNCTION()
 		void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 
-	void TryTakeProjectile(APlayerCharacter* Pawn);
-
 	USphereComponent* GetCollisionComp() const { return CollisionComp; }
 
 	UProjectileMovementComponent* GetProjectileMovement() const { return ProjectileMovement; }
-
-	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "Description")
-		void ShowInfo();
-
-	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "Description")
-		void HideInfo();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 		int DamageProjectile = 0;

@@ -52,15 +52,6 @@ AArcherPRTProjectile::AArcherPRTProjectile()
 
 }
 
-void AArcherPRTProjectile::TryTakeProjectile(APlayerCharacter* Pawn)
-{
-	if (Pawn->InventoryComponent->CheckCanTakeAmmo(EAmmoType::WoodArrow))
-	{
-		Pawn->InventoryComponent->AddAmmo(EAmmoType::WoodArrow, 1);
-		Destroy();
-	}
-	
-}
 
 void AArcherPRTProjectile::SpawnHitEffect(FHitResult Hit)
 {
@@ -132,6 +123,7 @@ void AArcherPRTProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActo
 			}	
 			Destroy();		
 		}
-		//Destroy();
+
+		Destroy();
 	}
 }

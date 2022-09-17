@@ -48,16 +48,16 @@ public:
 
 	//Aiming
 
-	UFUNCTION(Server, Reliable)
-		void OnAiming_ServerRPC();
+	UFUNCTION()
+		void OnAiming();
 
-	UFUNCTION(Server, Reliable)
-		void OffAiming_ServerRPC();
+	UFUNCTION()
+		void OffAiming();
 
 	//Fire
 
-	UFUNCTION(Server, Reliable)
-	void OnFire_ServerRPC();
+	
+	void OnFire();
 
 	void MakeShot();
 
