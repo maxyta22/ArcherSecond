@@ -20,6 +20,7 @@ class UCapsuleComponent;
 class UInventoryComponent;
 class UBuildingComponent;
 class UCraftComponent;
+class UArrowComponent;
 
 
 UCLASS(config = Game)
@@ -31,6 +32,10 @@ public:
 
 	APlayerCharacter();
 
+	virtual void BeginPlay() override;
+
+	virtual void Tick(float DeltaTime) override;
+
 	//Components
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
@@ -41,6 +46,9 @@ public:
 
 	UPROPERTY(VisibleAnywhere, Category = "Interact Trigger")
 		UCapsuleComponent* InteractCapsuleComponent;
+
+	UPROPERTY(VisibleAnywhere, Category = "Interact")
+		UArrowComponent* InteractTraceDirection;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory")
 		UInventoryComponent* InventoryComponent;
@@ -75,6 +83,8 @@ public:
 
 	void HideInfoObject(AActor* InfoObject);
 
+	void CheckInteractObjects(bool TryInteract = false);
+
 	//Blueprint Event for BP 
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Attack")
@@ -87,10 +97,6 @@ public:
 		void AfterBeginCraft();
 
 protected:
-
-	virtual void BeginPlay() override;
-
-	virtual void EventTick();
 
 	void MoveForward(float Val);
 

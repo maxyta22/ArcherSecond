@@ -19,8 +19,8 @@
 #include "Components/InventoryComponent.h"
 #include "Components/BuildingComponent.h"
 #include "Components/WeaponComponent.h"
-#include "Net/UnrealNetwork.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Components/ArrowComponent.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogPlayerCharacter, Warning, All);
 
@@ -47,6 +47,10 @@ APlayerCharacter::APlayerCharacter()
 	InteractCapsuleComponent->OnComponentBeginOverlap.AddDynamic(this, &APlayerCharacter::OnOverlapBeginInteractCapsule);
 	InteractCapsuleComponent->OnComponentEndOverlap.AddDynamic(this, &APlayerCharacter::OnOverlapEndInteractCapsule);
 
+	//Create InteractTraceDirection
+	InteractTraceDirection = CreateDefaultSubobject<UArrowComponent>(TEXT("InteractTraceDirection"));
+	InteractTraceDirection->SetupAttachment(FirstPersonCameraComponent);
+
 	//Create InventoryComponent
 	InventoryComponent = CreateDefaultSubobject<UInventoryComponent>(TEXT("InventoryComponent"));
 
@@ -70,13 +74,13 @@ APlayerCharacter::APlayerCharacter()
 
 void APlayerCharacter::BeginPlay()
 {
-	
 	Super::BeginPlay();
-
 }
 
-void APlayerCharacter::EventTick()
+void APlayerCharacter::Tick(float DeltaTime)
 {
+	Super::Tick(DeltaTime);
+	CheckInteractObjects();
 }
 
 void APlayerCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
@@ -137,26 +141,6 @@ void APlayerCharacter::LookUpAtRate(float Rate)
 	AddControllerPitchInput(Rate * BaseLookUpRate * GetWorld()->GetDeltaSeconds());
 }
 
-void APlayerCharacter::TryPerformInteract()
-{
-	
-	AInteractObjectBase* InteractObject;
-
-		
-	if (CurrentInteractTarget.Num() == 0) return;
-
-	for (AActor* CheckActor : CurrentInteractTarget)
-	{
-		InteractObject = Cast<AInteractObjectBase>(CheckActor);
-		if (InteractObject)
-		{
-			InteractObject->TryUseInteractObject(this);
-			return;
-		}
-	}
-	
-}
-
 void APlayerCharacter::OnOverlapBeginInteractCapsule(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 
@@ -179,30 +163,55 @@ void APlayerCharacter::OnOverlapEndInteractCapsule(UPrimitiveComponent* Overlapp
 
 void APlayerCharacter::ShowInfoObject(AActor* InfoObject)
 {
-	if (GEngine)
-	{
-		AInteractObjectBase* InteractObject;
-		InteractObject = Cast<AInteractObjectBase>(InfoObject);
-		if (InteractObject)
-		{
-			InteractObject->ShowInfo();
-		}
-	}
+	return;
 }
 
 void APlayerCharacter::HideInfoObject(AActor* InfoObject)
 {
-	if (GEngine)
+	return;
+}
+
+void APlayerCharacter::CheckInteractObjects(bool TryInteract)
+{
+	AInteractObjectBase* InteractObject;
+	TArray<AActor*> HitActors;
+	TArray<FHitResult> HitResult;
+	TArray<TEnumAsByte<EObjectTypeQuery>> ObjectsTypeQuery;
+	ObjectsTypeQuery.Add(UEngineTypes::ConvertToObjectType(ECC_WorldStatic));
+	ObjectsTypeQuery.Add(UEngineTypes::ConvertToObjectType(ECC_WorldDynamic));
+	TArray<AActor*, FDefaultAllocator> IgnoreActors;
+
+	const auto StartTrace = InteractTraceDirection->GetComponentLocation();
+	const auto EndTrace = StartTrace + (InteractTraceDirection->GetForwardVector() * 200);
+	UKismetSystemLibrary::SphereTraceMultiForObjects(GetWorld(), StartTrace, EndTrace, 10, ObjectsTypeQuery, true, IgnoreActors, EDrawDebugTrace::None, HitResult, true, FLinearColor::Green, FLinearColor::Red, 5.0);
+
+	if (HitResult.Num() == 0) return;
+
+	for (size_t i = 0; i < HitResult.Num(); i++)
 	{
-		AInteractObjectBase* InteractObject;
-		InteractObject = Cast<AInteractObjectBase>(InfoObject);
-		AArcherPRTProjectile* Projectile;
-		Projectile = Cast<AArcherPRTProjectile>(InfoObject);
+		HitActors.AddUnique(HitResult[i].GetActor());
+	}
+
+	for (size_t i = 0; i < HitActors.Num(); i++)
+	{
+		InteractObject = Cast<AInteractObjectBase>(HitActors[i]);
 		if (InteractObject)
 		{
-			InteractObject->HideInfo();
+			if (TryInteract)
+			{
+				InteractObject->TryUseInteractObject(this);
+			}
+
+			InteractObject->ShowInfo();
+			
 		}
+
 	}
+}
+
+void APlayerCharacter::TryPerformInteract()
+{
+	CheckInteractObjects(true);
 }
 
 
