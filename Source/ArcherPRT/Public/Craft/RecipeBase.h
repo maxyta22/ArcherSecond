@@ -23,7 +23,7 @@ public:
 		TMap<EResourcesType, int> RecipeMap;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Result")
-		EAmmoType Ammo;
+		EResourcesType Resources;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Result")
 		TSubclassOf<AInteractObjectBase> Object;

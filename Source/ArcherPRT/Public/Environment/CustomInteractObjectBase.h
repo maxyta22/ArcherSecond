@@ -21,7 +21,7 @@ public:
 	ACustomInteractObjectBase();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		TMap<EResourcesType, int> ResoursesForInteract;
+		TMap<EResourcesType, int> ResourcesForInteract;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool ReturnResources;

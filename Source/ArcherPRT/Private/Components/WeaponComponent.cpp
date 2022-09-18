@@ -188,41 +188,19 @@ void UWeaponComponent::LoopByAmmo(bool SpendAmmo, int& AmountAmmo, int& MaxAmmo)
 	const auto Owner = Cast<APlayerCharacter>(GetOwner());
 	if (!Owner) return;
 
-	TArray<EAmmoType> KeysFromMap;
+	TArray<EResourcesType> KeysFromMap;
 	CurrentEquipWeapon.GetDefaultObject()->ProjectileAmmoMap.GetKeys(KeysFromMap);
 
 	switch (KeysFromMap[SelectedUseAmmoIndex])
 	{
-	case EAmmoType::WoodArrow:
+	case EResourcesType::Arrow:
 		
-		AmountAmmo = Owner->InventoryComponent->GetValueAmmo(EAmmoType::WoodArrow);
-		MaxAmmo = Owner->InventoryComponent->GetMaxAmmo(EAmmoType::WoodArrow);
-		
-		if (SpendAmmo)
-		{
-			Owner->InventoryComponent->AddAmmo(EAmmoType::WoodArrow, -1);
-		}
-		break;
-
-	case EAmmoType::RockArrow:
-
-		AmountAmmo = Owner->InventoryComponent->GetValueAmmo(EAmmoType::RockArrow);
-		MaxAmmo = Owner->InventoryComponent->GetMaxAmmo(EAmmoType::RockArrow);
+		AmountAmmo = Owner->InventoryComponent->GetValueResources(EResourcesType::Arrow);
+		MaxAmmo = Owner->InventoryComponent->GetMaxResources(EResourcesType::Arrow);
 		
 		if (SpendAmmo)
 		{
-			Owner->InventoryComponent->AddAmmo(EAmmoType::RockArrow, -1);
-		}
-		break;
-
-	case EAmmoType::MetalArrow:
-
-		AmountAmmo = Owner->InventoryComponent->GetValueAmmo(EAmmoType::MetalArrow);
-		MaxAmmo = Owner->InventoryComponent->GetMaxAmmo(EAmmoType::MetalArrow);
-
-		if (SpendAmmo)
-		{
-			Owner->InventoryComponent->AddAmmo(EAmmoType::MetalArrow, -1);
+			Owner->InventoryComponent->AddResources(EResourcesType::Arrow, -1);
 		}
 		break;
 	}		

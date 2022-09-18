@@ -6,6 +6,7 @@
 #include "Player/PlayerCharacter.h"
 #include "GameFramework/Actor.h"
 #include "Craft/RecipeBase.h"
+#include "Math/UnrealMathUtility.h"
 
 
 UInventoryComponent::UInventoryComponent()
@@ -32,9 +33,29 @@ bool UInventoryComponent::LoopOnResourcesByMap(TMap<EResourcesType, int> Resourc
 	{
 		switch (KeysFromMap[i])
 		{
+
+		case EResourcesType::Arrow:
+
+			if (Pawn->InventoryComponent->GetValueResources(EResourcesType::Arrow) >= ResourcesMap[KeysFromMap[i]])
+			{
+				SuccessPosition++;
+			}
+
+			if (SpendResources)
+			{
+				Pawn->InventoryComponent->AddResources(EResourcesType::Arrow, ResourcesMap[KeysFromMap[i]] * -1);
+			}
+
+			if (AddResources)
+			{
+				Pawn->InventoryComponent->AddResources(EResourcesType::Arrow, ResourcesMap[KeysFromMap[i]]);
+			}
+
+			break;
+
 		case EResourcesType::Wood:
 
-			if (Pawn->InventoryComponent->GetValueResourses(EResourcesType::Wood) >= ResourcesMap[KeysFromMap[i]])
+			if (Pawn->InventoryComponent->GetValueResources(EResourcesType::Wood) >= ResourcesMap[KeysFromMap[i]])
 			{
 				SuccessPosition++;
 			}
@@ -53,7 +74,7 @@ bool UInventoryComponent::LoopOnResourcesByMap(TMap<EResourcesType, int> Resourc
 
 		case EResourcesType::Rock:
 
-			if (Pawn->InventoryComponent->GetValueResourses(EResourcesType::Rock) >= ResourcesMap[KeysFromMap[i]])
+			if (Pawn->InventoryComponent->GetValueResources(EResourcesType::Rock) >= ResourcesMap[KeysFromMap[i]])
 			{
 				SuccessPosition++;
 			}
@@ -72,7 +93,7 @@ bool UInventoryComponent::LoopOnResourcesByMap(TMap<EResourcesType, int> Resourc
 
 		case EResourcesType::Grass:
 
-			if (Pawn->InventoryComponent->GetValueResourses(EResourcesType::Grass) >= ResourcesMap[KeysFromMap[i]])
+			if (Pawn->InventoryComponent->GetValueResources(EResourcesType::Grass) >= ResourcesMap[KeysFromMap[i]])
 			{
 				SuccessPosition++;
 			}
@@ -91,7 +112,7 @@ bool UInventoryComponent::LoopOnResourcesByMap(TMap<EResourcesType, int> Resourc
 
 		case EResourcesType::Metal:
 
-			if (Pawn->InventoryComponent->GetValueResourses(EResourcesType::Metal) >= ResourcesMap[KeysFromMap[i]])
+			if (Pawn->InventoryComponent->GetValueResources(EResourcesType::Metal) >= ResourcesMap[KeysFromMap[i]])
 			{
 				SuccessPosition++;
 			}
@@ -110,7 +131,7 @@ bool UInventoryComponent::LoopOnResourcesByMap(TMap<EResourcesType, int> Resourc
 
 		case EResourcesType::Food:
 
-			if (Pawn->InventoryComponent->GetValueResourses(EResourcesType::Food) >= ResourcesMap[KeysFromMap[i]])
+			if (Pawn->InventoryComponent->GetValueResources(EResourcesType::Food) >= ResourcesMap[KeysFromMap[i]])
 			{
 				SuccessPosition++;
 			}
@@ -129,7 +150,7 @@ bool UInventoryComponent::LoopOnResourcesByMap(TMap<EResourcesType, int> Resourc
 
 		case EResourcesType::Battery:
 
-			if (Pawn->InventoryComponent->GetValueResourses(EResourcesType::Battery) >= ResourcesMap[KeysFromMap[i]])
+			if (Pawn->InventoryComponent->GetValueResources(EResourcesType::Battery) >= ResourcesMap[KeysFromMap[i]])
 			{
 				SuccessPosition++;
 			}
@@ -148,7 +169,7 @@ bool UInventoryComponent::LoopOnResourcesByMap(TMap<EResourcesType, int> Resourc
 
 		case EResourcesType::Lamp:
 
-			if (Pawn->InventoryComponent->GetValueResourses(EResourcesType::Lamp) >= ResourcesMap[KeysFromMap[i]])
+			if (Pawn->InventoryComponent->GetValueResources(EResourcesType::Lamp) >= ResourcesMap[KeysFromMap[i]])
 			{
 				SuccessPosition++;
 			}
@@ -168,7 +189,7 @@ bool UInventoryComponent::LoopOnResourcesByMap(TMap<EResourcesType, int> Resourc
 
 		case EResourcesType::Mine:
 
-			if (Pawn->InventoryComponent->GetValueResourses(EResourcesType::Mine) >= ResourcesMap[KeysFromMap[i]])
+			if (Pawn->InventoryComponent->GetValueResources(EResourcesType::Mine) >= ResourcesMap[KeysFromMap[i]])
 			{
 				SuccessPosition++;
 			}
@@ -195,36 +216,39 @@ bool UInventoryComponent::LoopOnResourcesByMap(TMap<EResourcesType, int> Resourc
 	return false;
 }
 
-int UInventoryComponent::GetValueResourses(EResourcesType ResourcesType)
+int UInventoryComponent::GetValueResources(EResourcesType ResourcesType)
 {
 	switch (ResourcesType)
 	{
 	case EResourcesType::None:
 			return 0;
 		break;
+	case EResourcesType::Arrow:
+		return ResourcesData.ValueArrow;
+		break;
 	case EResourcesType::Wood:
-			return ResoursesData.ValueWood;
+			return ResourcesData.ValueWood;
 		break;
 	case EResourcesType::Rock:
-			return ResoursesData.ValueRock;
+			return ResourcesData.ValueRock;
 		break;
 	case EResourcesType::Grass:
-			return ResoursesData.ValueGrass;
+			return ResourcesData.ValueGrass;
 		break;
 	case EResourcesType::Metal:
-			return ResoursesData.ValueMetal;
+			return ResourcesData.ValueMetal;
 		break;
 	case EResourcesType::Food:
-			return ResoursesData.ValueFood;
+			return ResourcesData.ValueFood;
 		break;
 	case EResourcesType::Battery:
-		return ResoursesData.ValueBattery;
+		return ResourcesData.ValueBattery;
 		break;
 	case EResourcesType::Lamp:
-		return ResoursesData.ValueLamp;
+		return ResourcesData.ValueLamp;
 		break;
 	case EResourcesType::Mine:
-		return ResoursesData.ValueMine;
+		return ResourcesData.ValueMine;
 		break;
 	default:
 			return 0;
@@ -232,36 +256,39 @@ int UInventoryComponent::GetValueResourses(EResourcesType ResourcesType)
 	}
 }
 
-int UInventoryComponent::GetMaxResourses(EResourcesType ResourcesType)
+int UInventoryComponent::GetMaxResources(EResourcesType ResourcesType)
 {
 	switch (ResourcesType)
 	{
 	case EResourcesType::None:
 		return 0;
 		break;
+	case EResourcesType::Arrow:
+		return MaxResourcesData.MaxArrow;
+		break;
 	case EResourcesType::Wood:
-		return MaxResoursesData.MaxWood;
+		return MaxResourcesData.MaxWood;
 		break;
 	case EResourcesType::Rock:
-		return MaxResoursesData.MaxRock;
+		return MaxResourcesData.MaxRock;
 		break;
 	case EResourcesType::Grass:
-		return MaxResoursesData.MaxGrass;
+		return MaxResourcesData.MaxGrass;
 		break;
 	case EResourcesType::Metal:
-		return MaxResoursesData.MaxMetal;
+		return MaxResourcesData.MaxMetal;
 		break;
 	case EResourcesType::Food:
-		return MaxResoursesData.MaxFood;
+		return MaxResourcesData.MaxFood;
 		break;
 	case EResourcesType::Battery:
-		return MaxResoursesData.MaxBattery;
+		return MaxResourcesData.MaxBattery;
 		break;
 	case EResourcesType::Lamp:
-		return MaxResoursesData.MaxLamp;
+		return MaxResourcesData.MaxLamp;
 		break;
 	case EResourcesType::Mine:
-		return MaxResoursesData.MaxMine;
+		return MaxResourcesData.MaxMine;
 		break;
 	default:
 		return 0;
@@ -269,35 +296,38 @@ int UInventoryComponent::GetMaxResourses(EResourcesType ResourcesType)
 	}
 }
 
-void UInventoryComponent::SetMaxResourses(EResourcesType ResourcesType, int Value)
+void UInventoryComponent::SetMaxResources(EResourcesType ResourcesType, int Value)
 {
 	switch (ResourcesType)
 	{
 	case EResourcesType::None:
 		break;
+	case EResourcesType::Arrow:
+		MaxResourcesData.MaxArrow = Value;
+		break;
 	case EResourcesType::Wood:
-		MaxResoursesData.MaxWood = Value;
+		MaxResourcesData.MaxWood = Value;
 		break;
 	case EResourcesType::Rock:
-		MaxResoursesData.MaxRock = Value;
+		MaxResourcesData.MaxRock = Value;
 		break;
 	case EResourcesType::Grass:
-		MaxResoursesData.MaxGrass = Value;
+		MaxResourcesData.MaxGrass = Value;
 		break;
 	case EResourcesType::Metal:
-		MaxResoursesData.MaxMetal = Value;
+		MaxResourcesData.MaxMetal = Value;
 		break;
 	case EResourcesType::Food:
-		MaxResoursesData.MaxFood = Value;
+		MaxResourcesData.MaxFood = Value;
 		break;
 	case EResourcesType::Battery:
-		MaxResoursesData.MaxBattery = Value;
+		MaxResourcesData.MaxBattery = Value;
 		break;
 	case EResourcesType::Lamp:
-		MaxResoursesData.MaxLamp = Value;
+		MaxResourcesData.MaxLamp = Value;
 		break;
 	case EResourcesType::Mine:
-		MaxResoursesData.MaxMine = Value;
+		MaxResourcesData.MaxMine = Value;
 		break;
 	default:
 		break;
@@ -309,31 +339,33 @@ void UInventoryComponent::AddResources(EResourcesType ResourcesType, int Value)
 	switch (ResourcesType)
 	{
 	case EResourcesType::None:
-			
+			break;
+	case EResourcesType::Arrow:
+		ResourcesData.ValueArrow = FMath::Clamp(ResourcesData.ValueArrow + Value, 0, MaxResourcesData.MaxArrow);
 		break;
 	case EResourcesType::Wood:
-			ResoursesData.ValueWood = ResoursesData.ValueWood + Value;
+			ResourcesData.ValueWood = FMath::Clamp(ResourcesData.ValueWood + Value, 0, MaxResourcesData.MaxWood);
 		break;
 	case EResourcesType::Rock:
-			ResoursesData.ValueRock = ResoursesData.ValueRock + Value;
+			ResourcesData.ValueRock = FMath::Clamp(ResourcesData.ValueRock + Value, 0, MaxResourcesData.MaxRock);
 		break;
 	case EResourcesType::Grass:
-			ResoursesData.ValueGrass = ResoursesData.ValueGrass + Value;
+			ResourcesData.ValueGrass = FMath::Clamp(ResourcesData.ValueGrass + Value, 0, MaxResourcesData.MaxGrass);
 		break;
 	case EResourcesType::Metal:
-			ResoursesData.ValueMetal = ResoursesData.ValueMetal + Value;
+			ResourcesData.ValueMetal = FMath::Clamp(ResourcesData.ValueMetal + Value, 0, MaxResourcesData.MaxMetal);
 		break;
 	case EResourcesType::Food:
-			ResoursesData.ValueFood = ResoursesData.ValueFood + Value;
+			ResourcesData.ValueFood = FMath::Clamp(ResourcesData.ValueFood + Value, 0, MaxResourcesData.MaxFood);
 		break;
 	case EResourcesType::Battery:
-		ResoursesData.ValueBattery = ResoursesData.ValueBattery + Value;
+		ResourcesData.ValueBattery = FMath::Clamp(ResourcesData.ValueBattery + Value, 0, MaxResourcesData.MaxBattery);
 		break;
 	case EResourcesType::Lamp:
-		ResoursesData.ValueLamp = ResoursesData.ValueLamp + Value;
+		ResourcesData.ValueLamp = FMath::Clamp(ResourcesData.ValueLamp + Value, 0, MaxResourcesData.MaxLamp);
 		break;
 	case EResourcesType::Mine:
-		ResoursesData.ValueMine = ResoursesData.ValueMine + Value;
+		ResourcesData.ValueMine = FMath::Clamp(ResourcesData.ValueMine + Value, 0, MaxResourcesData.MaxMine);
 		break;
 	default:
 			
@@ -348,29 +380,32 @@ bool UInventoryComponent::CheckCanTakeResources(EResourcesType ResourcesType)
 	case EResourcesType::None:
 		return false;
 		break;
+	case EResourcesType::Arrow:
+		return ResourcesData.ValueArrow < MaxResourcesData.MaxArrow;
+		break;
 	case EResourcesType::Wood:
-		return ResoursesData.ValueWood < MaxResoursesData.MaxWood;
+		return ResourcesData.ValueWood < MaxResourcesData.MaxWood;
 		break;
 	case EResourcesType::Rock:
-		return ResoursesData.ValueRock < MaxResoursesData.MaxRock;
+		return ResourcesData.ValueRock < MaxResourcesData.MaxRock;
 		break;
 	case EResourcesType::Grass:
-		return ResoursesData.ValueGrass < MaxResoursesData.MaxGrass;
+		return ResourcesData.ValueGrass < MaxResourcesData.MaxGrass;
 		break;
 	case EResourcesType::Metal:
-		return ResoursesData.ValueMetal < MaxResoursesData.MaxMetal;
+		return ResourcesData.ValueMetal < MaxResourcesData.MaxMetal;
 		break;
 	case EResourcesType::Food:
-		return ResoursesData.ValueFood < MaxResoursesData.MaxFood;
+		return ResourcesData.ValueFood < MaxResourcesData.MaxFood;
 		break;
 	case EResourcesType::Battery:
-		return ResoursesData.ValueBattery < MaxResoursesData.MaxBattery;
+		return ResourcesData.ValueBattery < MaxResourcesData.MaxBattery;
 		break;
 	case EResourcesType::Lamp:
-		return ResoursesData.ValueLamp < MaxResoursesData.MaxLamp;
+		return ResourcesData.ValueLamp < MaxResourcesData.MaxLamp;
 		break;
 	case EResourcesType::Mine:
-		return ResoursesData.ValueMine < MaxResoursesData.MaxMine;
+		return ResourcesData.ValueMine < MaxResourcesData.MaxMine;
 		break;
 	default:
 		return false;
@@ -378,131 +413,11 @@ bool UInventoryComponent::CheckCanTakeResources(EResourcesType ResourcesType)
 	}
 }
 
-int UInventoryComponent::GetValueAmmo(EAmmoType AmmoType)
-{
-	switch (AmmoType)
-	{
-	case EAmmoType::None:
-			return 0;
-		break;
-	case EAmmoType::WoodArrow:
-			return AmmoData.ValueWoodArrow;
-		break;
-	case EAmmoType::RockArrow:
-			return AmmoData.ValueRockArrow;
-		break;
-	case EAmmoType::MetalArrow:
-			return AmmoData.ValueMetalArrow;
-		break;
-	default:
-			return 0;
-		break;
-	}
-}
 
-int UInventoryComponent::GetMaxAmmo(EAmmoType AmmoType)
-{
-	switch (AmmoType)
-	{
-	case EAmmoType::None:
-			return 0;
-		break;
-	case EAmmoType::WoodArrow:
-			return MaxAmmoData.MaxWoodArrow;
-		break;
-	case EAmmoType::RockArrow:
-			return MaxAmmoData.MaxRockArrow;
-		break;
-	case EAmmoType::MetalArrow:
-			return MaxAmmoData.MaxMetalArrow;
-		break;
-	default:
-			return 0;
-		break;
-	}
-}
 
-void UInventoryComponent::SetMaxAmmo(EAmmoType AmmoType, int Value)
-{
-	switch (AmmoType)
-	{
-	case EAmmoType::None:
-		break;
-	case EAmmoType::WoodArrow:
-		MaxAmmoData.MaxWoodArrow = Value;
-		break;
-	case EAmmoType::RockArrow:
-		MaxAmmoData.MaxRockArrow = Value;
-		break;
-	case EAmmoType::MetalArrow:
-		MaxAmmoData.MaxMetalArrow = Value;
-		break;
-	default:
-		break;
-	}
-}
 
-void UInventoryComponent::SetAmmo(EAmmoType AmmoType, int Value)
-{
-	switch (AmmoType)
-	{
-	case EAmmoType::None:
-		break;
-	case EAmmoType::WoodArrow:
-		AmmoData.ValueWoodArrow = Value;;
-		break;
-	case EAmmoType::RockArrow:
-		AmmoData.ValueRockArrow = Value;
-		break;
-	case EAmmoType::MetalArrow:
-		AmmoData.ValueMetalArrow = Value;
-		break;
-	default:
-		break;
-	}
-}
 
-void UInventoryComponent::AddAmmo(EAmmoType AmmoType, int Value)
-{
-	switch (AmmoType)
-	{
-	case EAmmoType::None:
-		break;
-	case EAmmoType::WoodArrow:
-		AmmoData.ValueWoodArrow = FMath::Clamp(AmmoData.ValueWoodArrow + Value, 0, MaxAmmoData.MaxWoodArrow);
-		break;
-	case EAmmoType::RockArrow:
-		AmmoData.ValueRockArrow = FMath::Clamp(AmmoData.ValueRockArrow + Value, 0, MaxAmmoData.MaxRockArrow);
-		break;
-	case EAmmoType::MetalArrow:
-		AmmoData.ValueMetalArrow = FMath::Clamp(AmmoData.ValueMetalArrow + Value, 0, MaxAmmoData.MaxMetalArrow);
-		break;
-	default:
-		break;
-	}
-}
 
-bool UInventoryComponent::CheckCanTakeAmmo(EAmmoType AmmoType)
-{
-	switch (AmmoType)
-	{
-	case EAmmoType::None:
-		return false;
-		break;
-	case EAmmoType::WoodArrow:
-		return AmmoData.ValueWoodArrow < MaxAmmoData.MaxWoodArrow;
-		break;
-	case EAmmoType::RockArrow:
-		return AmmoData.ValueRockArrow < MaxAmmoData.MaxRockArrow;
-		break;
-	case EAmmoType::MetalArrow:
-		return AmmoData.ValueMetalArrow < MaxAmmoData.MaxMetalArrow;
-		break;
-	default:
-		return false;
-		break;
-	}
-}
 
 
 

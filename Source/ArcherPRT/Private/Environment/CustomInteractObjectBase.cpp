@@ -67,13 +67,13 @@ void ACustomInteractObjectBase::TryUseInteractObject(APlayerCharacter* Pawn)
 
 	if (!Pawn) return;
 
-	if (ResoursesForInteract.Num()>0)
+	if (ResourcesForInteract.Num()>0)
 	{
 		if (!Activate)
 		{
-			if (Pawn->InventoryComponent->LoopOnResourcesByMap(ResoursesForInteract))
+			if (Pawn->InventoryComponent->LoopOnResourcesByMap(ResourcesForInteract))
 			{
-				Pawn->InventoryComponent->LoopOnResourcesByMap(ResoursesForInteract, true);
+				Pawn->InventoryComponent->LoopOnResourcesByMap(ResourcesForInteract, true);
 				Activate = true;
 				AfterWasSuccessUseInteractObject();
 			}
@@ -82,7 +82,7 @@ void ACustomInteractObjectBase::TryUseInteractObject(APlayerCharacter* Pawn)
 		{
 			if (ReturnResources)
 			{
-				Pawn->InventoryComponent->LoopOnResourcesByMap(ResoursesForInteract, false, true);
+				Pawn->InventoryComponent->LoopOnResourcesByMap(ResourcesForInteract, false, true);
 			}
 			Activate = false;
 			AfterWasSuccessUseInteractObject();

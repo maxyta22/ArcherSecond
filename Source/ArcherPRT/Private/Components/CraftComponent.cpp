@@ -28,10 +28,10 @@ void UCraftComponent::TryCraftItem()
 	if (!RecipeDataBase[SelectedIndex]) return;
 
 	const TSubclassOf<URecipeBase>  CurrentRecipe = RecipeDataBase[SelectedIndex];
-	const EAmmoType Result = CurrentRecipe.GetDefaultObject()->Ammo;
+	const EResourcesType Result = CurrentRecipe.GetDefaultObject()->Resources;
 	const TMap<EResourcesType, int> NeededResources = CurrentRecipe.GetDefaultObject()->RecipeMap;
 	
-	if (Pawn->InventoryComponent->CheckCanTakeAmmo(Result)
+	if (Pawn->InventoryComponent->CheckCanTakeResources(Result)
 		&& Pawn->InventoryComponent->LoopOnResourcesByMap(NeededResources)
 		&& !Pawn->WeaponComponent->AimingInProgress() 
 		&& !CraftInProgress())
@@ -68,29 +68,13 @@ void UCraftComponent::GetRecipeResult(TSubclassOf<URecipeBase> Recipe)
 {
 	const auto Pawn = Cast<APlayerCharacter>(GetOwner());
 
-	const auto Ammo = Recipe.GetDefaultObject()->Ammo;
+	const auto Ammo = Recipe.GetDefaultObject()->Resources;
 
 	switch (Ammo)
 	{
-	case EAmmoType::WoodArrow:
+	case EResourcesType::Arrow:
 
-		Pawn->InventoryComponent->AddAmmo(EAmmoType::WoodArrow, 3);
-
-		break;
-
-	case EAmmoType::RockArrow:
-
-		Pawn->InventoryComponent->AddAmmo(EAmmoType::RockArrow, 1);
-
-		break;
-
-	case EAmmoType::MetalArrow:
-
-		Pawn->InventoryComponent->AddAmmo(EAmmoType::MetalArrow, 1);
-
-		break;
-
-	default:
+		Pawn->InventoryComponent->AddResources(EResourcesType::Arrow, 3);
 		break;
 	}
 }

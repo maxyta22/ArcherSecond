@@ -6,19 +6,11 @@
 
 class ARCHERPRT_API ArcherPRTData;
 
-UENUM(BlueprintType, Category = "Ammo")
-enum class EAmmoType : uint8
-{
-	None,
-	WoodArrow,
-	RockArrow,
-	MetalArrow,
-};
-
 UENUM(BlueprintType, Category = "Resources")
 enum class EResourcesType : uint8
 {
 	None,
+	Arrow,
 	Wood,
 	Rock,
 	Grass,

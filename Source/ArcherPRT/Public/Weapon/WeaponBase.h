@@ -24,7 +24,7 @@ public:
 		FText WeaponName;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Gameplay)
-		TMap<EAmmoType, TSubclassOf<AArcherPRTProjectile>> ProjectileAmmoMap;
+		TMap<EResourcesType, TSubclassOf<AArcherPRTProjectile>> ProjectileAmmoMap;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 		USoundBase* FireSound;

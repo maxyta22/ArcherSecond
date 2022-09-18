@@ -9,12 +9,17 @@
 
 
 USTRUCT(BlueprintType)
-struct FResoursesData
+struct FResourcesData
 {
 	GENERATED_USTRUCT_BODY()
 
 	public:
 
+	//Ammo
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int ValueArrow;
+
+	//Resources
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int ValueWood;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -34,12 +39,17 @@ struct FResoursesData
 };
 
 USTRUCT(BlueprintType)
-struct FMaxResoursesData
+struct FMaxResourcesData
 {
 	GENERATED_USTRUCT_BODY()
 
 	public:
 
+	//Ammo
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int MaxArrow;
+
+	//Resources
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int MaxWood;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -58,35 +68,6 @@ struct FMaxResoursesData
 		int MaxMine;
 };
 
-USTRUCT(BlueprintType)
-struct FAmmoData
-{
-	GENERATED_USTRUCT_BODY()
-
-	public:
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		int ValueWoodArrow;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		int ValueRockArrow;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		int ValueMetalArrow;
-};
-
-USTRUCT(BlueprintType)
-struct FMaxAmmoData
-{
-	GENERATED_USTRUCT_BODY()
-
-	public:
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		int MaxWoodArrow;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		int MaxRockArrow;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		int MaxMetalArrow;
-};
 
 UCLASS(ClassGroup = (Custom), blueprinttype, blueprintable, meta = (BlueprintSpawnableComponent))
 class ARCHERPRT_API UInventoryComponent : public UActorComponent
@@ -100,16 +81,10 @@ public:
 	//-----------------------------------------------------------------------------------//
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		FResoursesData Resources;
+		FResourcesData Resources;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		FMaxResoursesData MaxResources;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		FAmmoData  Ammo;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		FMaxAmmoData  MaxAmmo;
+		FMaxResourcesData MaxResources;
 
 	//------------------------------------------------------------------------------------//
 
@@ -118,48 +93,23 @@ public:
 
 	// Get Inventory Contents resources
 	UFUNCTION(BlueprintPure, Category = "resources")
-		int GetValueResourses(EResourcesType ResourcesType);
+		int GetValueResources(EResourcesType ResourcesType);
 
 	// Add Inventory Contents resources
 	UFUNCTION(BlueprintCallable, Category = "resources")
 		void AddResources(EResourcesType ResourcesType, int Value);
 
-	// GetMaxResourses
+	// GetMaxResources
 	UFUNCTION(BlueprintPure, Category = "Resources")
-		int GetMaxResourses(EResourcesType ResourcesType);
+		int GetMaxResources(EResourcesType ResourcesType);
 
-	// SetMaxResourses
+	// SetMaxResources
 	UFUNCTION(BlueprintCallable, Category = "Resources")
-		void SetMaxResourses(EResourcesType ResourcesType, int Value);
-
-	// Get Inventory Contents Ammo
-	UFUNCTION(BlueprintPure, Category = "Ammo")
-		int GetValueAmmo(EAmmoType AmmoType);
-
-	//Get Max Ammo
-	UFUNCTION(BlueprintPure, Category = "Ammo")
-		int GetMaxAmmo(EAmmoType AmmoType);
-
-	//Set Max Ammo
-	UFUNCTION(BlueprintCallable, Category = "Ammo")
-		void SetMaxAmmo(EAmmoType AmmoType, int Value);
-
-	UFUNCTION(BlueprintCallable, Category = "Ammo")
-		void SetAmmo(EAmmoType AmmoType, int Value);
-
-	// Add Inventory Contents Ammo
-	UFUNCTION(BlueprintCallable, Category = "Ammo")
-		void AddAmmo(EAmmoType AmmoType, int Value);
+		void SetMaxResources(EResourcesType ResourcesType, int Value);
 
 	// Check Can Take Resources
 	UFUNCTION(BlueprintPure, Category = "Resources")
 		bool CheckCanTakeResources(EResourcesType ResourcesType);
-
-	UFUNCTION(BlueprintPure, Category = "Resources")
-		bool CheckCanTakeAmmo(EAmmoType AmmoType);
-
-	
-	
 
 protected:	
 	
@@ -167,10 +117,8 @@ protected:
 
 private:
 	
-	FResoursesData ResoursesData;
-	FMaxResoursesData MaxResoursesData;
-	FAmmoData AmmoData;
-	FMaxAmmoData MaxAmmoData;
+	FResourcesData ResourcesData;
+	FMaxResourcesData MaxResourcesData;
 
 		
 		

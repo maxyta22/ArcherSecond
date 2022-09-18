@@ -15,10 +15,10 @@ class ARCHERPRT_API APickupResourcesBase : public AInteractObjectBase
 
 public:
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ResoursesType")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ResourcesType")
 		EResourcesType ResourcesType = EResourcesType::Wood;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ResoursesValue")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ResourcesValue")
 		int Value = 1;
 
 	UPROPERTY(EditInstanceOnly, BlueprintReadWrite)
