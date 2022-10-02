@@ -59,6 +59,15 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Behavior")
 		float SpeedRotationOnTarget = 10.0f;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Behavior")
+		float DistanceForChase = 700.0f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Behavior")
+		float ChaseSpeed = 500.0f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Behavior")
+		float WalkSpeed = 100.0f;
+
 	// Drop Settings
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Drop")
