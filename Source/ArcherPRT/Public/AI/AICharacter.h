@@ -68,6 +68,8 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Behavior")
 		float WalkSpeed = 100.0f;
 
+		bool CanPerformOnHitReaction = true;
+
 	// Drop Settings
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Drop")
@@ -85,7 +87,10 @@ public:
 		void AfterReactionToAiming();
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Behavior")
-		void AfterHitReaction();
+		void AfterOnHit();
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Behavior")
+		void PerformOnHitReaction();
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Behavior")
 		void AfterEnemyFound();
@@ -107,7 +112,7 @@ protected:
 
 	virtual void OnDeath() override;
 
-	virtual void OnHitReaction() override;
+	virtual void OnHit() override;
 
 
 private:

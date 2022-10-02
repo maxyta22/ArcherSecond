@@ -158,13 +158,17 @@ void AAICharacter::OnDeath()
 
 }
 
-void AAICharacter::OnHitReaction()
+void AAICharacter::OnHit()
 {
-	Super::OnHitReaction();
+	Super::OnHit();
 
 	if (StatsComponent->IsDead()) return;
 
-	AfterHitReaction();
-
+	AfterOnHit();
+	if (CanPerformOnHitReaction)
+	{
+		PerformOnHitReaction();
+	}
 	
+
 }

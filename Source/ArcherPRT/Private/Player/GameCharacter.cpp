@@ -81,7 +81,7 @@ void AGameCharacter::Landed(const FHitResult& Hit)
 
 }
 
-void AGameCharacter::OnHitReaction()
+void AGameCharacter::OnHit()
 {
 }
 
@@ -119,14 +119,14 @@ void AGameCharacter::MakeStrike(float StrikeDistance, float MinAngle, float MaxA
 					if (DamagedActor->IsA(APlayerCharacter::StaticClass()))
 					{
 						UGameplayStatics::ApplyDamage(DamagedActor, StrikeDamage, Controller, this, StrikeDamageType);
-						DamagedActor->OnHitReaction();
+						DamagedActor->OnHit();
 						IgnoreActorsDamage.Add(DamagedActor);
 					}
 				}
 				else
 				{
 					UGameplayStatics::ApplyDamage(DamagedActor, StrikeDamage, Controller, this, StrikeDamageType);
-					DamagedActor->OnHitReaction();
+					DamagedActor->OnHit();
 					IgnoreActorsDamage.Add(DamagedActor);
 				}
 

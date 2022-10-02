@@ -69,7 +69,7 @@ public:
 
 	//Hit Reaction
 
-	virtual void OnHitReaction();
+	virtual void OnHit();
 
 	//Landed
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
