@@ -28,13 +28,16 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category = "Weapon")
 		TSubclassOf<UWeaponBase> CurrentEquipWeapon;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
+		TArray<TSubclassOf<UWeaponBase>> AvailableWeapons;
+
 	UPROPERTY(BlueprintReadOnly, Category = "Weapon")
 		int SelectedUseAmmoIndex = 0;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 		bool bDrawDebug;
 
-	UPROPERTY(BlueprintReadWrite, Replicated, Category = "Internal")
+	UPROPERTY(BlueprintReadWrite, Category = "Internal")
 		float SpreadShot;
 
 	UFUNCTION(BlueprintCallable)
@@ -67,6 +70,7 @@ public:
 
 	void TraceAim();
 
+	UFUNCTION(BlueprintCallable)
 	void EquipWeapon(TSubclassOf<UWeaponBase> Weapon);
 
 	void LoopByAmmo(bool SpendAmmo, int &AmountAmmo, int &MaxAmmo) const;
@@ -82,7 +86,6 @@ protected:
 
 private:
 
-	UPROPERTY(Replicated)
 	bool bAimingInProgress;
 
 	AAICharacter* CurrentAimingEnemy;

@@ -23,7 +23,10 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Gameplay)
 		FText WeaponName;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Gameplay)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
+		bool bMeleeWeapon;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (EditCondition = "!bMeleeWeapon"), Category = Gameplay)
 		TMap<EResourcesType, TSubclassOf<AArcherPRTProjectile>> ProjectileAmmoMap;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)

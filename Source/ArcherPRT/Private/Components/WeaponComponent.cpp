@@ -24,7 +24,6 @@ void UWeaponComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	EquipWeapon(DefaultWeapon);
-	
 }
 
 void UWeaponComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
@@ -109,14 +108,20 @@ void UWeaponComponent::OnFire()
 
 	if (Owner->CraftComponent->CraftInProgress()) return;
 
-	if (CurrentEquipWeapon.GetDefaultObject()->ProjectileAmmoMap.Num() == 0) return;
+	if (!CurrentEquipWeapon.GetDefaultObject()->bMeleeWeapon)
 
-	//Check Have Ammo
-	if (!CanMakeShot()) return;
+	{
+		if (CurrentEquipWeapon.GetDefaultObject()->ProjectileAmmoMap.Num() == 0) return;
+		//Check Have Ammo
+		if (!CanMakeShot()) return;
+	}
 
 	Owner->PlayAnimMontage(CurrentEquipWeapon.GetDefaultObject()->FireAnimation);
 
-	//MakeShot();
+	if (CurrentEquipWeapon.GetDefaultObject()->FireSound != nullptr)
+	{
+		UGameplayStatics::PlaySoundAtLocation(this, CurrentEquipWeapon.GetDefaultObject()->FireSound, Owner->GetActorLocation());
+	}
 
 }
 
@@ -166,12 +171,6 @@ void UWeaponComponent::SuccessMakeShot()
 	if (!World) return;
 	const auto Owner = Cast<APlayerCharacter>(GetOwner());
 	if (!Owner) return;
-
-	// try and play the sound if specified
-	if (CurrentEquipWeapon.GetDefaultObject()->FireSound != nullptr)
-	{
-		UGameplayStatics::PlaySoundAtLocation(this, CurrentEquipWeapon.GetDefaultObject()->FireSound, Owner->GetActorLocation());
-	}
 }
 
 void UWeaponComponent::LoopByAmmo(bool SpendAmmo, int& AmountAmmo, int& MaxAmmo) const
@@ -182,6 +181,9 @@ void UWeaponComponent::LoopByAmmo(bool SpendAmmo, int& AmountAmmo, int& MaxAmmo)
 	if (!Owner) return;
 
 	TArray<EResourcesType> KeysFromMap;
+
+	if (CurrentEquipWeapon.GetDefaultObject()->ProjectileAmmoMap.Num() == 0) return;
+
 	CurrentEquipWeapon.GetDefaultObject()->ProjectileAmmoMap.GetKeys(KeysFromMap);
 
 	switch (KeysFromMap[SelectedUseAmmoIndex])
@@ -249,11 +251,4 @@ void UWeaponComponent::SwitchAmmoInCurrentEquipWeapon()
 
 }
 
-void UWeaponComponent::GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& OutLifetimeProps) const
-{
-	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-	DOREPLIFETIME(UWeaponComponent, SpreadShot);
-	DOREPLIFETIME(UWeaponComponent, bAimingInProgress);
-
-}
 
