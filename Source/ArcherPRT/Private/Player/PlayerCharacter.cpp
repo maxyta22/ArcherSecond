@@ -38,7 +38,7 @@ APlayerCharacter::APlayerCharacter()
 	//FirstPersonCameraComponent->SetupAttachment(GetCapsuleComponent());
 	FirstPersonCameraComponent->SetupAttachment(GetMesh(), "camera_socket");
 	FirstPersonCameraComponent->SetRelativeLocation(FVector(-39.56f, 1.75f, 64.f)); // Position the camera
-	FirstPersonCameraComponent->bUsePawnControlRotation = true;
+	FirstPersonCameraComponent->bUsePawnControlRotation = true; // Set false If Use Camera Animation
 
 	//Create InteractCapsule
 	InteractCapsuleComponent = CreateDefaultSubobject<UCapsuleComponent>(TEXT("InteractCapsule"));
@@ -59,16 +59,6 @@ APlayerCharacter::APlayerCharacter()
 
 	//Create BuildingComponent
 	BuildingComponent = CreateDefaultSubobject<UBuildingComponent>(TEXT("BuildingComponent"));
-
-	// Create a mesh component that will be used when being viewed from a '1st person' view (when controlling this pawn)
-	HandMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("CharacterMesh1P"));
-	HandMesh->SetOnlyOwnerSee(true);
-	HandMesh->SetupAttachment(FirstPersonCameraComponent);
-	HandMesh->bCastDynamicShadow = false;
-	HandMesh->CastShadow = false;
-	HandMesh->SetRelativeRotation(FRotator(1.9f, -19.19f, 5.2f));
-	HandMesh->SetRelativeLocation(FVector(-0.5f, -4.4f, -155.7f));
-
 
 }
 
@@ -92,7 +82,7 @@ void APlayerCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerIn
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, WeaponComponent, &UWeaponComponent::OnAiming);
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &APlayerCharacter::PressedAttackButon);
-	PlayerInputComponent->BindAction("Fire", IE_Released, WeaponComponent, &UWeaponComponent::OnFire);
+	PlayerInputComponent->BindAction("Fire", IE_Pressed, WeaponComponent, &UWeaponComponent::OnFire);
 	PlayerInputComponent->BindAction("Fire", IE_Released, WeaponComponent, &UWeaponComponent::OffAiming);
 	PlayerInputComponent->BindAction("Fire", IE_Released, this, &APlayerCharacter::ReleasedAttackButton);
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, BuildingComponent, &UBuildingComponent::TrySpawnObject);

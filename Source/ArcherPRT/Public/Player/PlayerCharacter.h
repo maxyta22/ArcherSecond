@@ -41,9 +41,6 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 		UCameraComponent* FirstPersonCameraComponent;
 
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = Mesh)
-		USkeletalMeshComponent* HandMesh;
-
 	UPROPERTY(VisibleAnywhere, Category = "Interact Trigger")
 		UCapsuleComponent* InteractCapsuleComponent;
 
@@ -66,8 +63,6 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
 		float BaseLookUpRate;
-
-	USkeletalMeshComponent* GetHandMesh() const { return HandMesh; }
 
 	UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
 
