@@ -64,8 +64,6 @@ public:
 
 	void MakeShot();
 
-	void SuccessMakeShot();
-
 	void SwitchAmmoInCurrentEquipWeapon();
 
 	void TraceAim();

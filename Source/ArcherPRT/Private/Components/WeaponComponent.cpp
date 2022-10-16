@@ -32,15 +32,6 @@ void UWeaponComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 	TraceAim();
 }
 
-void UWeaponComponent::FinishFire()
-{
-	UWorld* const World = GetWorld();
-	if (!World) return;
-	const auto Owner = Cast<APlayerCharacter>(GetOwner());
-	if (!Owner) return;
-	bFireInProgress = false;
-}
-
 void UWeaponComponent::EquipWeapon(TSubclassOf<UWeaponBase> Weapon) 
 {
 	CurrentEquipWeapon = Weapon;	
@@ -125,8 +116,42 @@ void UWeaponComponent::OnFire()
 		UGameplayStatics::PlaySoundAtLocation(this, CurrentEquipWeapon.GetDefaultObject()->FireSound, Owner->GetActorLocation());
 	}
 
-	GetWorld()->GetTimerManager().SetTimer(FireInProgressTimer, this, &UWeaponComponent::FinishFire, CurrentEquipWeapon.GetDefaultObject()->FireAnimation->SequenceLength, false);
+	const auto TimeFire = CurrentEquipWeapon.GetDefaultObject()->bUseLenghtFireAnimationForFireRate ? CurrentEquipWeapon.GetDefaultObject()->FireAnimation->SequenceLength : CurrentEquipWeapon.GetDefaultObject()->RateOfFire;
 
+	GetWorld()->GetTimerManager().SetTimer(FireInProgressTimer, this, &UWeaponComponent::FinishFire, TimeFire, false);
+
+}
+
+bool UWeaponComponent::CanMakeShot() const
+{
+	int AmountAmmo;
+	int MaxAmmo;
+
+	LoopByAmmo(false, AmountAmmo, MaxAmmo);
+
+	return AmountAmmo > 0;
+}
+
+bool UWeaponComponent::CanFire() const
+{
+	if (!GetWorld()) return false;
+	if (!GetOwner()) return false;
+	const auto Owner = Cast<APlayerCharacter>(GetOwner());
+	if (!Owner) return false;
+	if (bFireInProgress) return false;
+	if (!CurrentEquipWeapon) return false;
+	if (Owner->BuildingComponent->BuildingModeActivated()) return false;
+	if (Owner->CraftComponent->CraftInProgress()) return false;
+	return true;
+}
+
+void UWeaponComponent::FinishFire()
+{
+	UWorld* const World = GetWorld();
+	if (!World) return;
+	const auto Owner = Cast<APlayerCharacter>(GetOwner());
+	if (!Owner) return;
+	bFireInProgress = false;
 }
 
 void UWeaponComponent::MakeShot()
@@ -168,11 +193,7 @@ void UWeaponComponent::MakeShot()
 		
 	}
 
-	SuccessMakeShot();
-}
-
-void UWeaponComponent::SuccessMakeShot()
-{
+	
 }
 
 void UWeaponComponent::LoopByAmmo(bool SpendAmmo, int& AmountAmmo, int& MaxAmmo) const
@@ -201,29 +222,6 @@ void UWeaponComponent::LoopByAmmo(bool SpendAmmo, int& AmountAmmo, int& MaxAmmo)
 		}
 		break;
 	}		
-}
-
-bool UWeaponComponent::CanMakeShot() const 
-{
-	int AmountAmmo;
-	int MaxAmmo;
-
-	LoopByAmmo(false, AmountAmmo, MaxAmmo);
-
-	return AmountAmmo>0;
-}
-
-bool UWeaponComponent::CanFire() const
-{
-	if (!GetWorld()) return false;
-	if (!GetOwner()) return false;
-	const auto Owner = Cast<APlayerCharacter>(GetOwner());
-	if (!Owner) return false;
-	if (bFireInProgress) return false;
-	if (!CurrentEquipWeapon) return false;
-	if (Owner->BuildingComponent->BuildingModeActivated()) return false;
-	if (Owner->CraftComponent->CraftInProgress()) return false;
-	return true;
 }
 
 int UWeaponComponent::GetAmountAmmo() const

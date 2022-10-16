@@ -39,6 +39,9 @@ public:
 		FName MuzzleSocketName = "Muzzle";
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
+		bool bUseLenghtFireAnimationForFireRate;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (EditCondition = "!bUseLenghtFireAnimationForFireRate"), Category = Gameplay)
 		float RateOfFire;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
