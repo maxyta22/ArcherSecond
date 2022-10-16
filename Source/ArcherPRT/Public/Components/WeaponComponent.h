@@ -77,6 +77,8 @@ public:
 
 	bool CanMakeShot() const;
 
+	bool CanFire() const;
+
 	
 protected:
 	
@@ -86,7 +88,13 @@ protected:
 
 private:
 
+	void FinishFire();
+
 	bool bAimingInProgress;
+
+	bool bFireInProgress;
+
+	FTimerHandle FireInProgressTimer;
 
 	AAICharacter* CurrentAimingEnemy;
 

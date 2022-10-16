@@ -12,6 +12,7 @@
 #include "DrawDebugHelpers.h"
 #include "Components/BuildingComponent.h"
 #include "Camera/CameraComponent.h"
+#include "Player/PlayerCharacter.h"
 
 UWeaponComponent::UWeaponComponent()
 
@@ -29,6 +30,15 @@ void UWeaponComponent::BeginPlay()
 void UWeaponComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	TraceAim();
+}
+
+void UWeaponComponent::FinishFire()
+{
+	UWorld* const World = GetWorld();
+	if (!World) return;
+	const auto Owner = Cast<APlayerCharacter>(GetOwner());
+	if (!Owner) return;
+	bFireInProgress = false;
 }
 
 void UWeaponComponent::EquipWeapon(TSubclassOf<UWeaponBase> Weapon) 
@@ -103,18 +113,10 @@ void UWeaponComponent::OnFire()
 	if (!GetOwner()) return;
 	const auto Owner = Cast<APlayerCharacter>(GetOwner());
 	if (!Owner) return;
-	if (Owner->BuildingComponent->BuildingModeActivated()) return;
-	if (!CurrentEquipWeapon) return;
+	
+	if (!CanFire()) return;
 
-	if (Owner->CraftComponent->CraftInProgress()) return;
-
-	if (!CurrentEquipWeapon.GetDefaultObject()->bMeleeWeapon)
-
-	{
-		if (CurrentEquipWeapon.GetDefaultObject()->ProjectileAmmoMap.Num() == 0) return;
-		//Check Have Ammo
-		if (!CanMakeShot()) return;
-	}
+	bFireInProgress = true;
 
 	Owner->PlayAnimMontage(CurrentEquipWeapon.GetDefaultObject()->FireAnimation);
 
@@ -123,10 +125,14 @@ void UWeaponComponent::OnFire()
 		UGameplayStatics::PlaySoundAtLocation(this, CurrentEquipWeapon.GetDefaultObject()->FireSound, Owner->GetActorLocation());
 	}
 
+	GetWorld()->GetTimerManager().SetTimer(FireInProgressTimer, this, &UWeaponComponent::FinishFire, CurrentEquipWeapon.GetDefaultObject()->FireAnimation->SequenceLength, false);
+
 }
 
 void UWeaponComponent::MakeShot()
 {
+	if (!CanMakeShot()) return;
+
 	UWorld* const World = GetWorld();
 	if (!World) return;
 	const auto Owner = Cast<APlayerCharacter>(GetOwner());
@@ -167,10 +173,6 @@ void UWeaponComponent::MakeShot()
 
 void UWeaponComponent::SuccessMakeShot()
 {
-	UWorld* const World = GetWorld();
-	if (!World) return;
-	const auto Owner = Cast<APlayerCharacter>(GetOwner());
-	if (!Owner) return;
 }
 
 void UWeaponComponent::LoopByAmmo(bool SpendAmmo, int& AmountAmmo, int& MaxAmmo) const
@@ -209,6 +211,19 @@ bool UWeaponComponent::CanMakeShot() const
 	LoopByAmmo(false, AmountAmmo, MaxAmmo);
 
 	return AmountAmmo>0;
+}
+
+bool UWeaponComponent::CanFire() const
+{
+	if (!GetWorld()) return false;
+	if (!GetOwner()) return false;
+	const auto Owner = Cast<APlayerCharacter>(GetOwner());
+	if (!Owner) return false;
+	if (bFireInProgress) return false;
+	if (!CurrentEquipWeapon) return false;
+	if (Owner->BuildingComponent->BuildingModeActivated()) return false;
+	if (Owner->CraftComponent->CraftInProgress()) return false;
+	return true;
 }
 
 int UWeaponComponent::GetAmountAmmo() const

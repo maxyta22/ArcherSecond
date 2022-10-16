@@ -39,6 +39,9 @@ public:
 		FName MuzzleSocketName = "Muzzle";
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
+		float RateOfFire;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 		int Damage = 10;
 
 	
