@@ -19,6 +19,11 @@ AArcherPRTProjectile::AArcherPRTProjectile()
 	CollisionComp = CreateDefaultSubobject<USphereComponent>(TEXT("SphereComp"));
 	CollisionComp->InitSphereRadius(5.0f);
 	CollisionComp->BodyInstance.SetCollisionProfileName("Projectile");
+	CollisionComp->SetCollisionResponseToAllChannels(ECR_Ignore);
+	CollisionComp->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
+	CollisionComp->SetCollisionResponseToChannel(ECC_Pawn, ECR_Block);
+	CollisionComp->SetCollisionResponseToChannel(ECC_Destructible, ECR_Block);
+
 	// set up a notification for when this component hits something blocking
 	CollisionComp->OnComponentHit.AddDynamic(this, &AArcherPRTProjectile::OnHit);
 	// Can Return PhysMat
