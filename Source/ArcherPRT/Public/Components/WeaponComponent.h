@@ -112,6 +112,8 @@ private:
 
 	int CountAccamulateProjectile = 1;
 
+	FVector EndPointOnAimTrace;
+
 	FTimerHandle FireInProgressTimer;
 
 	FTimerHandle AccamulateProjectileTimer;

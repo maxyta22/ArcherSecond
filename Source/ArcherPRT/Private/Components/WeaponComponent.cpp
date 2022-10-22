@@ -7,6 +7,7 @@
 #include "Player/GameCharacter.h"
 #include "Projectile/ArcherPRTProjectile.h"
 #include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "Player/PlayerCharacter.h"
 #include "AI/AICharacter.h"
 #include "DrawDebugHelpers.h"
@@ -62,6 +63,8 @@ void UWeaponComponent::TraceAim()
 	
 	if (TraceResult.bBlockingHit)
 	{
+		EndPointOnAimTrace = TraceResult.Location;
+
 		const auto Result = Cast<AAICharacter>(TraceResult.GetActor());
 		if (Result)
 		{
@@ -78,6 +81,8 @@ void UWeaponComponent::TraceAim()
 	}
 	else
 	{
+		EndPointOnAimTrace = EndTraceAim;
+
 		if (CurrentAimingEnemy)
 		{
 			CurrentAimingEnemy->FinishAccumulateToAiming();
@@ -186,11 +191,9 @@ void UWeaponComponent::MakeShot()
 
 	for (size_t i = 0; i < CountAccamulateProjectile; i++)
 	{
-
-		//FActorSpawnParameters ActorSpawnParams;
-		//ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
 		const FVector SpawnLocation = Owner->GetMesh()->GetSocketLocation(CurrentEquipWeapon.GetDefaultObject()->MuzzleSocketName);
-		const FVector ShootDirection = FMath::VRandCone(Owner->GetControlRotation().Vector(), SpreadShot);
+		const FVector AimDirection = UKismetMathLibrary::GetDirectionUnitVector(SpawnLocation, EndPointOnAimTrace);
+		const FVector ShootDirection = FMath::VRandCone(AimDirection, SpreadShot);
 		const FRotator SpawnRotation = ShootDirection.Rotation();
 
 		//SpawnProjectile
