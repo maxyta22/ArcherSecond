@@ -122,6 +122,35 @@ void UWeaponComponent::OnFire()
 
 }
 
+void UWeaponComponent::FinishFire()
+{
+	UWorld* const World = GetWorld();
+	if (!World) return;
+	const auto Owner = Cast<APlayerCharacter>(GetOwner());
+	if (!Owner) return;
+	bFireInProgress = false;
+	CountAccamulateProjectile = 1;
+	SpreadShot = 0.0f;
+}
+
+void UWeaponComponent::FinishAltFire()
+{
+	GetWorld()->GetTimerManager().ClearTimer(AccamulateProjectileTimer);
+	OnFire();
+}
+
+void UWeaponComponent::OnAltFire()
+{
+	if (!GetWorld()) return;
+	if (!GetOwner()) return;
+	const auto Owner = Cast<APlayerCharacter>(GetOwner());
+	if (!Owner) return;
+
+	if (!CanFire()) return;
+
+	GetWorld()->GetTimerManager().SetTimer(AccamulateProjectileTimer, this, &UWeaponComponent::MakeAccamulateProjectile, TimeAccamulateProjectiles, true);
+}
+
 bool UWeaponComponent::CanMakeShot() const
 {
 	int AmountAmmo;
@@ -145,15 +174,6 @@ bool UWeaponComponent::CanFire() const
 	return true;
 }
 
-void UWeaponComponent::FinishFire()
-{
-	UWorld* const World = GetWorld();
-	if (!World) return;
-	const auto Owner = Cast<APlayerCharacter>(GetOwner());
-	if (!Owner) return;
-	bFireInProgress = false;
-}
-
 void UWeaponComponent::MakeShot()
 {
 	if (!CanMakeShot()) return;
@@ -163,36 +183,36 @@ void UWeaponComponent::MakeShot()
 	const auto Owner = Cast<APlayerCharacter>(GetOwner());
 	if (!Owner) return;
 
-	//Init Local Var
-	FActorSpawnParameters ActorSpawnParams;
-	ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
-	const FVector SpawnLocation = Owner->GetMesh()->GetSocketLocation(CurrentEquipWeapon.GetDefaultObject()->MuzzleSocketName);
-	//const FVector ShootDirection = FMath::VRandCone(Owner->GetFirstPersonCameraComponent()->GetForwardVector(), SpreadShot);
-	//const FVector ShootDirection = FMath::VRandCone(Owner->GetControlRotation().Vector(), SpreadShot);
-	const FVector ShootDirection = Owner->GetControlRotation().Vector();
-	const FRotator SpawnRotation = ShootDirection.Rotation();
 
-
-	//SpawnProjectile
-	TArray<TSubclassOf<AArcherPRTProjectile>> ValueFromMap;
-	CurrentEquipWeapon.GetDefaultObject()->ProjectileAmmoMap.GenerateValueArray(ValueFromMap);
-	//AArcherPRTProjectile* CurrentProjectile = World->SpawnActor<AArcherPRTProjectile>(ValueFromMap[SelectedUseAmmoIndex], SpawnLocation, SpawnRotation, ActorSpawnParams);
-	AArcherPRTProjectile* CurrentProjectile = World->SpawnActorDeferred<AArcherPRTProjectile>(ValueFromMap[SelectedUseAmmoIndex], FTransform(SpawnRotation, SpawnLocation));
-	if (CurrentProjectile)
+	for (size_t i = 0; i < CountAccamulateProjectile; i++)
 	{
-		CurrentProjectile->DamageWeapon = CurrentEquipWeapon.GetDefaultObject()->Damage;
-		CurrentProjectile->SetInstigator(Owner);
-		
-		CurrentProjectile->FinishSpawning(FTransform(SpawnRotation, SpawnLocation));
 
-		//Spend Ammo
-		int AmountAmmo;
-		int MaxAmmo;
+		//FActorSpawnParameters ActorSpawnParams;
+		//ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
+		const FVector SpawnLocation = Owner->GetMesh()->GetSocketLocation(CurrentEquipWeapon.GetDefaultObject()->MuzzleSocketName);
+		const FVector ShootDirection = FMath::VRandCone(Owner->GetControlRotation().Vector(), SpreadShot);
+		const FRotator SpawnRotation = ShootDirection.Rotation();
 
-		LoopByAmmo(true, AmountAmmo, MaxAmmo);
-		
+		//SpawnProjectile
+		TArray<TSubclassOf<AArcherPRTProjectile>> ValueFromMap;
+		CurrentEquipWeapon.GetDefaultObject()->ProjectileAmmoMap.GenerateValueArray(ValueFromMap);
+		AArcherPRTProjectile* CurrentProjectile = World->SpawnActorDeferred<AArcherPRTProjectile>(ValueFromMap[SelectedUseAmmoIndex], FTransform(SpawnRotation, SpawnLocation));
+
+		if (CurrentProjectile)
+		{
+			CurrentProjectile->DamageWeapon = CurrentEquipWeapon.GetDefaultObject()->Damage;
+			CurrentProjectile->SetInstigator(Owner);
+			CurrentProjectile->FinishSpawning(FTransform(SpawnRotation, SpawnLocation));
+
+			//Spend Ammo
+			int AmountAmmo;
+			int MaxAmmo;
+
+			LoopByAmmo(true, AmountAmmo, MaxAmmo);
+
+		}
+
 	}
-
 	
 }
 
@@ -262,6 +282,12 @@ void UWeaponComponent::SwitchAmmoInCurrentEquipWeapon()
 	else
 		SelectedUseAmmoIndex = FMath::Clamp(SelectedUseAmmoIndex + 1, 0, CurrentEquipWeapon.GetDefaultObject()->ProjectileAmmoMap.Num()-1);
 
+}
+
+void UWeaponComponent::MakeAccamulateProjectile()
+{
+	SpreadShot = SpreadShotGun;
+	CountAccamulateProjectile = FMath::Clamp(CountAccamulateProjectile+1, 1, MaxAccamulateProjectiles);
 }
 
 

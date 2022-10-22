@@ -21,6 +21,9 @@ class ARCHERPRT_API UWeaponComponent : public UActorComponent
 public:	
 	
 	UWeaponComponent();
+
+	UPROPERTY(EditDefaultsOnly, Category = "Debug")
+		bool bDrawDebug;
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 		TSubclassOf<UWeaponBase> DefaultWeapon;
@@ -34,17 +37,24 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category = "Weapon")
 		int SelectedUseAmmoIndex = 0;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
-		bool bDrawDebug;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ShotGun")
+		int MaxAccamulateProjectiles;
 
-	UPROPERTY(BlueprintReadWrite, Category = "Internal")
-		float SpreadShot;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ShotGun")
+		float TimeAccamulateProjectiles;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ShotGun")
+		float SpreadShotGun;
+
 
 	UFUNCTION(BlueprintCallable)
 		int GetAmountAmmo() const;
 
 	UFUNCTION(BlueprintCallable)
 		int GetMaxAmmo() const;
+
+	UFUNCTION(BlueprintCallable)
+		int GetCurrentAccamulateProjectiles() const { return CountAccamulateProjectile; };
 
 	UFUNCTION(BlueprintPure, Category = "Check")
 		bool AimingInProgress() const { return bAimingInProgress; };
@@ -61,6 +71,10 @@ public:
 
 	
 	void OnFire();
+
+	void OnAltFire();
+
+	void FinishAltFire();
 
 	void MakeShot();
 
@@ -88,11 +102,19 @@ private:
 
 	void FinishFire();
 
+	void MakeAccamulateProjectile();
+
+	float SpreadShot;
+
 	bool bAimingInProgress;
 
 	bool bFireInProgress;
 
+	int CountAccamulateProjectile = 1;
+
 	FTimerHandle FireInProgressTimer;
+
+	FTimerHandle AccamulateProjectileTimer;
 
 	AAICharacter* CurrentAimingEnemy;
 
