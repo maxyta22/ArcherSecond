@@ -418,8 +418,3 @@ bool UInventoryComponent::CheckCanTakeResources(EResourcesType ResourcesType)
 
 
 
-
-
-
-
-

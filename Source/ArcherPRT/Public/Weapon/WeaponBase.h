@@ -48,6 +48,9 @@ public:
 		float RateOfFire;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
+		int Magazine = 10;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 		int Damage = 10;
 
 	

@@ -78,36 +78,27 @@ public:
 	
 	UInventoryComponent();
 
-	//-----------------------------------------------------------------------------------//
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		FResourcesData Resources;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		FMaxResourcesData MaxResources;
 
-	//------------------------------------------------------------------------------------//
-
 	UFUNCTION(BlueprintPure, Category = "resources")
 		bool LoopOnResourcesByMap(TMap<EResourcesType, int> ResourcesMap, bool SpendResources = false, bool AddResources = false);
 
-	// Get Inventory Contents resources
 	UFUNCTION(BlueprintPure, Category = "resources")
 		int GetValueResources(EResourcesType ResourcesType);
 
-	// Add Inventory Contents resources
 	UFUNCTION(BlueprintCallable, Category = "resources")
 		void AddResources(EResourcesType ResourcesType, int Value);
 
-	// GetMaxResources
 	UFUNCTION(BlueprintPure, Category = "Resources")
 		int GetMaxResources(EResourcesType ResourcesType);
 
-	// SetMaxResources
 	UFUNCTION(BlueprintCallable, Category = "Resources")
 		void SetMaxResources(EResourcesType ResourcesType, int Value);
 
-	// Check Can Take Resources
 	UFUNCTION(BlueprintPure, Category = "Resources")
 		bool CheckCanTakeResources(EResourcesType ResourcesType);
 

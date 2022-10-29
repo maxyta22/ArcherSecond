@@ -110,6 +110,8 @@ private:
 
 	void MakeAccamulateProjectile();
 
+	int CurrentCountBulletsInMagazine;
+
 	float SpreadShot;
 
 	bool bAimingInProgress;
