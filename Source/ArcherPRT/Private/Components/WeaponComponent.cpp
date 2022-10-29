@@ -253,6 +253,14 @@ void UWeaponComponent::LoopByAmmo(bool SpendAmmo, int& AmountAmmo, int& MaxAmmo)
 	}		
 }
 
+int UWeaponComponent::GetAmountAmmoInMagazine() const
+{
+	if (!GetOwner()) return 0;
+
+	return AmountAmmoInMagazine;
+
+}
+
 int UWeaponComponent::GetAmountAmmo() const
 {
 	if (!GetOwner()) return 0;
@@ -329,7 +337,15 @@ void UWeaponComponent::PerformReloadingWeapon()
 
 void UWeaponComponent::FinishReloadingWeapon()
 {
+
+	if (!GetOwner()) return;
+
+	const auto Owner = Cast<APlayerCharacter>(GetOwner());
+	if (!Owner) return;
+
 	bReloadingWeaponInProgress = false;
+
+	AmountAmmoInMagazine = CurrentEquipWeapon.GetDefaultObject()->Magazine;
 
 }
 

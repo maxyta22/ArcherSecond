@@ -46,6 +46,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ShotGun")
 		float SpreadShotGun;
 
+	UFUNCTION(BlueprintCallable)
+		int GetAmountAmmoInMagazine() const;
 
 	UFUNCTION(BlueprintCallable)
 		int GetAmountAmmo() const;
@@ -110,7 +112,7 @@ private:
 
 	void MakeAccamulateProjectile();
 
-	int CurrentCountBulletsInMagazine;
+	int AmountAmmoInMagazine;
 
 	float SpreadShot;
 
