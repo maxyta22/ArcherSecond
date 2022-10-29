@@ -59,17 +59,8 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Check")
 		bool AimingInProgress() const { return bAimingInProgress; };
 
-	//Aiming
-
-	UFUNCTION()
-		void OnAiming();
-
-	UFUNCTION()
-		void OffAiming();
-
 	//Fire
 
-	
 	void OnFire();
 
 	void OnAltFire();
@@ -78,18 +69,33 @@ public:
 
 	void MakeShot();
 
-	void SwitchAmmoInCurrentEquipWeapon();
+	bool CanMakeShot() const;
+
+	bool CanFire() const;
+
+	//Reloading Weapon
+
+	void TryReloadingWeapon();
+
+	void PerformReloadingWeapon();
+
+	void FinishReloadingWeapon();
+
+	bool CanReloadingWeapon() const;
+
+
 
 	void TraceAim();
+
+	void SwitchAmmoInCurrentEquipWeapon();
 
 	UFUNCTION(BlueprintCallable)
 	void EquipWeapon(TSubclassOf<UWeaponBase> Weapon);
 
 	void LoopByAmmo(bool SpendAmmo, int &AmountAmmo, int &MaxAmmo) const;
 
-	bool CanMakeShot() const;
 
-	bool CanFire() const;
+
 
 	
 protected:
@@ -110,11 +116,15 @@ private:
 
 	bool bFireInProgress;
 
+	bool bReloadingWeaponInProgress;
+
 	int CountAccamulateProjectile = 1;
 
 	FVector EndPointOnAimTrace;
 
 	FTimerHandle FireInProgressTimer;
+
+	FTimerHandle ReloadingWeaponInProgressTimer;
 
 	FTimerHandle AccamulateProjectileTimer;
 

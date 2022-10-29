@@ -36,6 +36,9 @@ public:
 		UAnimMontage* FireAnimation;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
+		UAnimMontage* ReloadingAnimation;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 		FName MuzzleSocketName = "Muzzle";
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)

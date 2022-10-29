@@ -91,18 +91,6 @@ void UWeaponComponent::TraceAim()
 
 }
 
-void UWeaponComponent::OnAiming()
-{
-	//Check Have Ammo
-	if (!CanMakeShot()) return;
-	bAimingInProgress = true;
-}
-
-void UWeaponComponent::OffAiming()
-{
-	bAimingInProgress = false;
-}
-
 void UWeaponComponent::OnFire()
 {
 	if (!GetWorld()) return;
@@ -112,18 +100,21 @@ void UWeaponComponent::OnFire()
 	
 	if (!CanFire()) return;
 
-	bFireInProgress = true;
 
-	Owner->PlayAnimMontage(CurrentEquipWeapon.GetDefaultObject()->FireAnimation);
+	if (CurrentEquipWeapon.GetDefaultObject()->FireAnimation)
+	{
+		bFireInProgress = true;
+		Owner->PlayAnimMontage(CurrentEquipWeapon.GetDefaultObject()->FireAnimation);
+		const auto TimeFire = CurrentEquipWeapon.GetDefaultObject()->bUseLenghtFireAnimationForFireRate ? CurrentEquipWeapon.GetDefaultObject()->FireAnimation->SequenceLength : CurrentEquipWeapon.GetDefaultObject()->RateOfFire;
+		GetWorld()->GetTimerManager().SetTimer(FireInProgressTimer, this, &UWeaponComponent::FinishFire, TimeFire, false);
+	}
 
 	if (CurrentEquipWeapon.GetDefaultObject()->FireSound != nullptr)
 	{
 		UGameplayStatics::PlaySoundAtLocation(this, CurrentEquipWeapon.GetDefaultObject()->FireSound, Owner->GetActorLocation());
 	}
 
-	const auto TimeFire = CurrentEquipWeapon.GetDefaultObject()->bUseLenghtFireAnimationForFireRate ? CurrentEquipWeapon.GetDefaultObject()->FireAnimation->SequenceLength : CurrentEquipWeapon.GetDefaultObject()->RateOfFire;
 
-	GetWorld()->GetTimerManager().SetTimer(FireInProgressTimer, this, &UWeaponComponent::FinishFire, TimeFire, false);
 
 }
 
@@ -173,6 +164,21 @@ bool UWeaponComponent::CanFire() const
 	const auto Owner = Cast<APlayerCharacter>(GetOwner());
 	if (!Owner) return false;
 	if (bFireInProgress) return false;
+	if (bReloadingWeaponInProgress) return false;
+	if (!CurrentEquipWeapon) return false;
+	if (Owner->BuildingComponent->BuildingModeActivated()) return false;
+	if (Owner->CraftComponent->CraftInProgress()) return false;
+	return true;
+}
+
+bool UWeaponComponent::CanReloadingWeapon() const
+{
+	if (!GetWorld()) return false;
+	if (!GetOwner()) return false;
+	const auto Owner = Cast<APlayerCharacter>(GetOwner());
+	if (!Owner) return false;
+	if (bFireInProgress) return false;
+	if (bReloadingWeaponInProgress) return false;
 	if (!CurrentEquipWeapon) return false;
 	if (Owner->BuildingComponent->BuildingModeActivated()) return false;
 	if (Owner->CraftComponent->CraftInProgress()) return false;
@@ -293,4 +299,37 @@ void UWeaponComponent::MakeAccamulateProjectile()
 	CountAccamulateProjectile = FMath::Clamp(CountAccamulateProjectile+1, 1, MaxAccamulateProjectiles);
 }
 
+void UWeaponComponent::TryReloadingWeapon()
+{
+	if (CanReloadingWeapon())
+	{
+		PerformReloadingWeapon();
+	}
+	
+
+}
+
+void UWeaponComponent::PerformReloadingWeapon()
+{
+	if (!GetWorld()) return;
+	if (!GetOwner()) return;
+	const auto Owner = Cast<APlayerCharacter>(GetOwner());
+	if (!Owner) return;
+
+
+	if (CurrentEquipWeapon.GetDefaultObject()->ReloadingAnimation)
+	{
+		bReloadingWeaponInProgress = true;
+		Owner->PlayAnimMontage(CurrentEquipWeapon.GetDefaultObject()->ReloadingAnimation);
+		const auto TimeReloading = CurrentEquipWeapon.GetDefaultObject()->ReloadingAnimation->SequenceLength;
+		GetWorld()->GetTimerManager().SetTimer(ReloadingWeaponInProgressTimer, this, &UWeaponComponent::FinishReloadingWeapon, TimeReloading, false);
+	}
+
+}
+
+void UWeaponComponent::FinishReloadingWeapon()
+{
+	bReloadingWeaponInProgress = false;
+
+}
 
