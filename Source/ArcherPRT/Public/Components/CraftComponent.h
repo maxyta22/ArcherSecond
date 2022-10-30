@@ -34,8 +34,9 @@ public:
 
 	UFUNCTION(BlueprintPure)
 		float GetCraftTimeRemaining();
-
-	void TryCraftItem();
+		
+	UFUNCTION(BlueprintCallable)
+		void TryCraftItem();
 
 	void AbortCraftProcess();
 

@@ -36,9 +36,17 @@ void UCraftComponent::TryCraftItem()
 		&& !Pawn->WeaponComponent->AimingInProgress() 
 		&& !CraftInProgress())
 	{
+
+		// Use this code when craft in pause
+		Pawn->InventoryComponent->LoopOnResourcesByMap(RecipeDataBase[SelectedIndex].GetDefaultObject()->RecipeMap, true, false);
+		GetRecipeResult(RecipeDataBase[SelectedIndex]);
+
+		//Use this when craft in gameplay time
+		/* 
 		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Green, TEXT("Start Craft"));
 		GetWorld()->GetTimerManager().SetTimer(CraftInProgressTimer, this, &UCraftComponent::CraftSucceess, TimeCraft, false);
 		Pawn->AfterBeginCraft();
+		*/
 	}
 }
 
@@ -56,7 +64,8 @@ void UCraftComponent::CraftSucceess()
 	GetWorld()->GetTimerManager().ClearTimer(CraftInProgressTimer);
 	Pawn->InventoryComponent->LoopOnResourcesByMap(RecipeDataBase[SelectedIndex].GetDefaultObject()->RecipeMap, true, false);
 	GetRecipeResult(RecipeDataBase[SelectedIndex]);
-	GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Green, TEXT("CraftSuccess"));
+
+	//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Green, TEXT("CraftSuccess"));
 }
 
 float UCraftComponent::GetCraftTimeRemaining()
