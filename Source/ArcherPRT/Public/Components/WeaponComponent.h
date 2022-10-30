@@ -94,12 +94,6 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void EquipWeapon(TSubclassOf<UWeaponBase> Weapon);
 
-	void LoopByAmmo(bool SpendAmmo, int &AmountAmmo, int &MaxAmmo) const;
-
-
-
-
-	
 protected:
 	
 	virtual void BeginPlay() override;

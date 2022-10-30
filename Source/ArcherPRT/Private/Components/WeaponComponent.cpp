@@ -149,12 +149,7 @@ void UWeaponComponent::OnAltFire()
 
 bool UWeaponComponent::CanMakeShot() const
 {
-	int AmountAmmo;
-	int MaxAmmo;
-
-	LoopByAmmo(false, AmountAmmo, MaxAmmo);
-
-	return AmountAmmo > 0;
+	return AmountAmmoInMagazine > 0;
 }
 
 bool UWeaponComponent::CanFire() const
@@ -182,6 +177,8 @@ bool UWeaponComponent::CanReloadingWeapon() const
 	if (!CurrentEquipWeapon) return false;
 	if (Owner->BuildingComponent->BuildingModeActivated()) return false;
 	if (Owner->CraftComponent->CraftInProgress()) return false;
+	if (Owner->InventoryComponent->GetValueResources(EResourcesType::Arrow) <= 0) return false;
+	if (AmountAmmoInMagazine == CurrentEquipWeapon.GetDefaultObject()->Magazine) return false;
 	return true;
 }
 
@@ -213,44 +210,13 @@ void UWeaponComponent::MakeShot()
 			CurrentProjectile->SetInstigator(Owner);
 			CurrentProjectile->FinishSpawning(FTransform(SpawnRotation, SpawnLocation));
 
-			//Spend Ammo
-			int AmountAmmo;
-			int MaxAmmo;
+			AmountAmmoInMagazine--;
 
-			LoopByAmmo(true, AmountAmmo, MaxAmmo);
 
 		}
 
 	}
 	
-}
-
-void UWeaponComponent::LoopByAmmo(bool SpendAmmo, int& AmountAmmo, int& MaxAmmo) const
-{
-	if (!GetOwner()) return;
-
-	const auto Owner = Cast<APlayerCharacter>(GetOwner());
-	if (!Owner) return;
-
-	TArray<EResourcesType> KeysFromMap;
-
-	if (CurrentEquipWeapon.GetDefaultObject()->ProjectileAmmoMap.Num() == 0) return;
-
-	CurrentEquipWeapon.GetDefaultObject()->ProjectileAmmoMap.GetKeys(KeysFromMap);
-
-	switch (KeysFromMap[SelectedUseAmmoIndex])
-	{
-	case EResourcesType::Arrow:
-		
-		AmountAmmo = Owner->InventoryComponent->GetValueResources(EResourcesType::Arrow);
-		MaxAmmo = Owner->InventoryComponent->GetMaxResources(EResourcesType::Arrow);
-		
-		if (SpendAmmo)
-		{
-			Owner->InventoryComponent->AddResources(EResourcesType::Arrow, -1);
-		}
-		break;
-	}		
 }
 
 int UWeaponComponent::GetAmountAmmoInMagazine() const
@@ -268,10 +234,9 @@ int UWeaponComponent::GetAmountAmmo() const
 	const auto Owner = Cast<APlayerCharacter>(GetOwner());
 	if (!Owner) return 0;
 
-	int AmountAmmo;
-	int MaxAmmo;
+	const auto AmountAmmo = Owner->InventoryComponent->GetValueResources(EResourcesType::Arrow);
+	const auto MaxAmmo = Owner->InventoryComponent->GetMaxResources(EResourcesType::Arrow);
 
-	LoopByAmmo(false, AmountAmmo, MaxAmmo);
 	return AmountAmmo;
 }
 
@@ -282,10 +247,8 @@ int UWeaponComponent::GetMaxAmmo() const
 	const auto Owner = Cast<APlayerCharacter>(GetOwner());
 	if (!Owner) return 0;
 
-	int AmountAmmo;
-	int MaxAmmo;
-
-	LoopByAmmo(false, AmountAmmo, MaxAmmo);
+	const auto AmountAmmo = Owner->InventoryComponent->GetValueResources(EResourcesType::Arrow);
+	const auto MaxAmmo = Owner->InventoryComponent->GetMaxResources(EResourcesType::Arrow);
 	return MaxAmmo;
 }
 
@@ -345,7 +308,18 @@ void UWeaponComponent::FinishReloadingWeapon()
 
 	bReloadingWeaponInProgress = false;
 
-	AmountAmmoInMagazine = CurrentEquipWeapon.GetDefaultObject()->Magazine;
+	int NeedAmmo = CurrentEquipWeapon.GetDefaultObject()->Magazine - AmountAmmoInMagazine;
 
+	if (Owner->InventoryComponent->GetValueResources(EResourcesType::Arrow) < CurrentEquipWeapon.GetDefaultObject()->Magazine - AmountAmmoInMagazine)
+	{
+		NeedAmmo = Owner->InventoryComponent->GetValueResources(EResourcesType::Arrow);
+	}
+	
+
+	Owner->InventoryComponent->AddResources(EResourcesType::Arrow, -NeedAmmo);
+
+	AmountAmmoInMagazine = AmountAmmoInMagazine+NeedAmmo;
+
+	
 }
 
