@@ -102,10 +102,10 @@ public:
 		void AfterReactionToAiming();
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Behavior")
-		void AfterOnHit();
+		void AfterOnHit(FVector HitDirection);
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Behavior")
-		void PerformOnHitReaction();
+		void PerformOnHitReaction(FVector HitDirection);
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Behavior")
 		void AfterEnemyFound();
@@ -127,7 +127,7 @@ protected:
 
 	virtual void OnDeath() override;
 
-	virtual void OnHit() override;
+	virtual void OnHit(FVector HitDirection) override;
 
 
 private:

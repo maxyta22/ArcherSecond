@@ -60,7 +60,7 @@ public:
 
 	//Hit Reaction
 
-	virtual void OnHit();
+	virtual void OnHit(FVector HitDirection);
 
 	//Landed
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
