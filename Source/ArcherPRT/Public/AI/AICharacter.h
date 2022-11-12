@@ -36,6 +36,26 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Animation")
 		UAnimMontage* MainAttack;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Animation")
+		TArray<UAnimMontage*> DeathMontages;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Animation")
+		TArray<UAnimMontage*> AttackMontages;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Animation")
+		TArray<UAnimMontage*> HitReactionMontages;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Animation")
+		TArray<UAnimMontage*> ChargeMontages;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Animation")
+		TArray<UAnimMontage*> EvadeMontages;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Animation")
+		TArray<UAnimMontage*> WakeUpMontages;
+
+		
+
 	//AI
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Behavior")
