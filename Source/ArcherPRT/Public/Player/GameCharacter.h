@@ -47,15 +47,6 @@ public:
 		UAbilitySystemComponent* AbilitySystemComponent;
 
 
-	//Animation
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Animation")
-		UAnimMontage* DeathAnimMontage;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Animation")
-		UAnimMontage* HitReaction;
-
-
 	//Take Damage
 	
 	UFUNCTION()

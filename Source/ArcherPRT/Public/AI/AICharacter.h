@@ -30,11 +30,6 @@ public:
 
 	//Animation
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Animation", meta = (Tooltip = "Make Attack after hit reaction"))
-		UAnimMontage* CloseAttackAfterHitReaction;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Animation")
-		UAnimMontage* MainAttack;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Animation")
 		TArray<UAnimMontage*> DeathMontages;

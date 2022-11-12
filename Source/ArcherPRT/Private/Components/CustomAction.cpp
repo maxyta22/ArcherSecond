@@ -35,8 +35,6 @@ void UCustomAction::TryPerformPlayAnimMontage_Server_Implementation(UAnimMontage
 	const auto Pawn = Cast<AAICharacter>(GetOwner());
 	if (!Pawn) return;
 
-	if (Pawn->StatsComponent->IsDead() && Montage!=Pawn->DeathAnimMontage) return;
-
 	const auto AIController = Cast<APRTAIController>(Pawn->GetController());
 	if (!AIController) return;
 
