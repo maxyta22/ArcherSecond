@@ -127,7 +127,7 @@ protected:
 
 	virtual void OnDeath() override;
 
-	virtual void OnHit(FVector HitDirection) override;
+	virtual void OnHit(FVector HitDirection, UPrimitiveComponent* HitComponent) override;
 
 
 private:

@@ -115,10 +115,10 @@ void AArcherPRTProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActo
 		
 		if (Pawn)
 		{
-			if (Hit.GetComponent()->ComponentHasTag("Head"))
+			if (Hit.GetComponent()->ComponentHasTag("WeakPoint"))
 			{
 				Pawn->TakeDamage(DamageWeapon + DamageProjectile, FDamageEvent(), GetInstigatorController(), this);
-				Pawn->OnHit(GetActorForwardVector());
+				Pawn->OnHit(GetActorForwardVector(), Hit.GetComponent());
 
 				GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Red, TEXT("HEAD SHOT"));
 			}

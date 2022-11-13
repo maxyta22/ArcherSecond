@@ -158,9 +158,9 @@ void AAICharacter::OnDeath()
 
 }
 
-void AAICharacter::OnHit(FVector HitDirection)
+void AAICharacter::OnHit(FVector HitDirection, UPrimitiveComponent* HitComponent)
 {
-	Super::OnHit(HitDirection);
+	Super::OnHit(HitDirection, HitComponent);
 
 	if (StatsComponent->IsDead()) return;
 
