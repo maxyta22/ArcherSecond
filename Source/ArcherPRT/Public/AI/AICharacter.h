@@ -102,10 +102,10 @@ public:
 		void AfterReactionToAiming();
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Behavior")
-		void AfterOnHit(FVector HitDirection);
+		void AfterOnHit(FVector HitDirection, UPrimitiveComponent* HitComponent);
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Behavior")
-		void PerformOnHitReaction(FVector HitDirection);
+		void PerformOnHitReaction(FVector HitDirection, UPrimitiveComponent* HitComponent);
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Behavior")
 		void AfterEnemyFound();

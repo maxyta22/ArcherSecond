@@ -164,10 +164,10 @@ void AAICharacter::OnHit(FVector HitDirection, UPrimitiveComponent* HitComponent
 
 	if (StatsComponent->IsDead()) return;
 
-	AfterOnHit(HitDirection);
+	AfterOnHit(HitDirection, HitComponent);
 	if (CanPerformOnHitReaction)
 	{
-		PerformOnHitReaction(HitDirection);
+		PerformOnHitReaction(HitDirection, HitComponent);
 	}
 	
 
