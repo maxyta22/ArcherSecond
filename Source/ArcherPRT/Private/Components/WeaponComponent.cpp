@@ -53,7 +53,7 @@ void UWeaponComponent::TraceAim()
 	if (!Owner) return;
 	
 	FVector StartTraceAim = Owner->GetFirstPersonCameraComponent()->GetComponentLocation() + Owner->GetFirstPersonCameraComponent()->GetForwardVector() * 50;
-	FVector EndTraceAim = StartTraceAim + Owner->GetFirstPersonCameraComponent()->GetForwardVector() * 1000;
+	FVector EndTraceAim = StartTraceAim + Owner->GetFirstPersonCameraComponent()->GetForwardVector() * LenghtAimTrace;
 	FHitResult TraceResult;
 
 	GetWorld()->LineTraceSingleByChannel(TraceResult, StartTraceAim, EndTraceAim, ECollisionChannel::ECC_Visibility);
@@ -64,6 +64,7 @@ void UWeaponComponent::TraceAim()
 		DrawDebugLine(GetWorld(), StartTraceAim, EndTraceAim, FColor::Yellow, false, 0, 0, 0);
 	}
 
+	EndPointAimTraceHitResult = TraceResult;
 	
 	if (TraceResult.bBlockingHit)
 	{
