@@ -73,6 +73,9 @@ public:
 
 	void MakeStrike(float StrikeDistance, float MinAngle, float MaxAngle);
 
+	UFUNCTION(BlueprintImplementableEvent, Category = "Strike")
+	void StrikeInProgress();
+
 	void ClearIgnoreActorsDamageStrike();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Strike")

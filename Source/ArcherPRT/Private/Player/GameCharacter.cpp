@@ -89,6 +89,8 @@ void AGameCharacter::MakeStrike(float StrikeDistance, float MinAngle, float MaxA
 {
 	if (!GetWorld()) return;
 
+	StrikeInProgress();
+
 	TArray<FOverlapResult> OverlapResult;
 	FCollisionObjectQueryParams ObjectQueryParam;
 	ObjectQueryParam.AllObjects;
