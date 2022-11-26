@@ -64,6 +64,12 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Check")
 		bool AimingInProgress() const { return bAimingInProgress; };
 
+	UFUNCTION(BlueprintPure, Category = "Check")
+		bool BlockInProgress() const { return bBlockInProgress; };
+
+	UFUNCTION(BlueprintPure, Category = "Check")
+		bool FireInProgress() const { return bFireInProgress; };
+
 	UFUNCTION(BlueprintPure, Category = "Aim")
 		FVector GetEndPointOnAimTrace() const { return EndPointOnAimTrace; }
 
@@ -122,6 +128,8 @@ private:
 	bool bAimingInProgress;
 
 	bool bFireInProgress;
+
+	bool bBlockInProgress;
 
 	bool bReloadingWeaponInProgress;
 

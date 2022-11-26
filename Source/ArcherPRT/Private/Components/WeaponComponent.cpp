@@ -119,8 +119,6 @@ void UWeaponComponent::OnFire()
 		UGameplayStatics::PlaySoundAtLocation(this, CurrentEquipWeapon.GetDefaultObject()->FireSound, Owner->GetActorLocation());
 	}
 
-
-
 }
 
 void UWeaponComponent::FinishFire()
@@ -134,12 +132,6 @@ void UWeaponComponent::FinishFire()
 	SpreadShot = 0.0f;
 }
 
-void UWeaponComponent::FinishAltFire()
-{
-	GetWorld()->GetTimerManager().ClearTimer(AccamulateProjectileTimer);
-	OnFire();
-}
-
 void UWeaponComponent::OnAltFire()
 {
 	if (!GetWorld()) return;
@@ -147,9 +139,16 @@ void UWeaponComponent::OnAltFire()
 	const auto Owner = Cast<APlayerCharacter>(GetOwner());
 	if (!Owner) return;
 
-	if (!CanFire()) return;
+	bBlockInProgress = true;
 
-	GetWorld()->GetTimerManager().SetTimer(AccamulateProjectileTimer, this, &UWeaponComponent::MakeAccamulateProjectile, TimeAccamulateProjectiles, true);
+	//GetWorld()->GetTimerManager().SetTimer(AccamulateProjectileTimer, this, &UWeaponComponent::MakeAccamulateProjectile, TimeAccamulateProjectiles, true);
+}
+
+void UWeaponComponent::FinishAltFire()
+{
+	//GetWorld()->GetTimerManager().ClearTimer(AccamulateProjectileTimer);
+	//OnFire();
+	bBlockInProgress = false;
 }
 
 bool UWeaponComponent::CanMakeShot() const
