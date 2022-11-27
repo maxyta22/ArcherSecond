@@ -115,7 +115,19 @@ void APlayerCharacter::MakeStrike(float StrikeDistance, float MinAngle, float Ma
 
 	FVector StartTrace = GetFirstPersonCameraComponent()->GetComponentLocation() + GetFirstPersonCameraComponent()->GetForwardVector() * 50;
 	FVector EndTrace = StartTrace + GetFirstPersonCameraComponent()->GetForwardVector() * StrikeDistance;
-	FHitResult TraceResult;
+
+	TArray < TEnumAsByte < EObjectTypeQuery > >  ObjectTypes;
+	ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECC_Destructible));
+	ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECC_WorldStatic));
+	ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECC_Pawn));
+
+
+	TArray < AActor* > ActorsToIgnore;
+	ActorsToIgnore.Add(this);
+
+	TArray < FHitResult > OutHits;
+
+	UKismetSystemLibrary::SphereTraceMultiForObjects(GetWorld(), StartTrace, EndTrace, 3, ObjectTypes, true, ActorsToIgnore, EDrawDebugTrace::ForDuration, OutHits, true, FLinearColor::Red, FLinearColor::Green, 0.5f);
 
 }
 
