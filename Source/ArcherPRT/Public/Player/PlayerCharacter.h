@@ -91,6 +91,7 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, Category = "Craft")
 		void AfterBeginCraft();
 
+
 protected:
 
 	void MoveForward(float Val);
@@ -102,6 +103,8 @@ protected:
 	void LookUpAtRate(float Rate);
 
 	void TryPerformInteract();
+
+	virtual void MakeStrike(float StrikeDistance, float MinAngle, float MaxAngle) override;
 	
 	virtual void SetupPlayerInputComponent(UInputComponent* InputComponent) override;
 

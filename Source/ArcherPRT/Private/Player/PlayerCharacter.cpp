@@ -107,6 +107,18 @@ void APlayerCharacter::OnDeath()
 	GetCharacterMovement()->DisableMovement();	
 }
 
+void APlayerCharacter::MakeStrike(float StrikeDistance, float MinAngle, float MaxAngle)
+{
+	if (!GetWorld()) return;
+
+	StrikeInProgress();
+
+	FVector StartTrace = GetFirstPersonCameraComponent()->GetComponentLocation() + GetFirstPersonCameraComponent()->GetForwardVector() * 50;
+	FVector EndTrace = StartTrace + GetFirstPersonCameraComponent()->GetForwardVector() * StrikeDistance;
+	FHitResult TraceResult;
+
+}
+
 void APlayerCharacter::MoveForward(float Value)
 {
 	if (Value != 0.0f)

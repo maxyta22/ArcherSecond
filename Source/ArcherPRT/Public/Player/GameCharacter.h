@@ -71,7 +71,7 @@ public:
 
 	//Make Strike
 
-	void MakeStrike(float StrikeDistance, float MinAngle, float MaxAngle);
+	virtual void MakeStrike(float StrikeDistance, float MinAngle, float MaxAngle);
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Strike")
 	void StrikeInProgress();
