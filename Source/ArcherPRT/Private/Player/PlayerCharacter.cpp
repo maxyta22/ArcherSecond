@@ -83,6 +83,7 @@ void APlayerCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerIn
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &APlayerCharacter::PressedAttackButon);
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, WeaponComponent, &UWeaponComponent::OnFire);
 	PlayerInputComponent->BindAction("Fire", IE_Released, this, &APlayerCharacter::ReleasedAttackButton);
+	PlayerInputComponent->BindAction("Fire", IE_Released, WeaponComponent, &UWeaponComponent::TryFire);
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, BuildingComponent, &UBuildingComponent::TrySpawnObject);
 	PlayerInputComponent->BindAction("AltFire", IE_Pressed, WeaponComponent, &UWeaponComponent::OnAltFire);
 	PlayerInputComponent->BindAction("AltFire", IE_Released, WeaponComponent, &UWeaponComponent::FinishAltFire);

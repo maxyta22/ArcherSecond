@@ -86,6 +86,8 @@ public:
 
 	void MakeShot();
 
+	void TryFire();
+
 	bool CanMakeShot() const;
 
 	bool CanFire() const;

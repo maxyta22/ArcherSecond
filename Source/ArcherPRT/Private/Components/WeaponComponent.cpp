@@ -105,8 +105,28 @@ void UWeaponComponent::OnFire()
 	
 	if (!CanFire()) return;
 
+	// MeleeWeapon
 	if (CurrentEquipWeapon == AvailableWeapons[0]) return;
 
+	//RangeWeapon
+	if (CurrentEquipWeapon == AvailableWeapons[1])
+	{
+		GetWorld()->GetTimerManager().SetTimer(AccamulateProjectileTimer, this, &UWeaponComponent::MakeAccamulateProjectile, TimeAccamulateProjectiles, true);
+	}
+	
+}
+
+void UWeaponComponent::TryFire()
+{
+
+	if (!GetWorld()) return;
+	if (!GetOwner()) return;
+	const auto Owner = Cast<APlayerCharacter>(GetOwner());
+	if (!Owner) return;
+
+	if (!CanFire()) return;
+
+	GetWorld()->GetTimerManager().ClearTimer(AccamulateProjectileTimer);
 
 	if (CurrentEquipWeapon.GetDefaultObject()->FireAnimation)
 	{
@@ -142,14 +162,10 @@ void UWeaponComponent::OnAltFire()
 	if (!Owner) return;
 
 	bBlockInProgress = true;
-
-	//GetWorld()->GetTimerManager().SetTimer(AccamulateProjectileTimer, this, &UWeaponComponent::MakeAccamulateProjectile, TimeAccamulateProjectiles, true);
 }
 
 void UWeaponComponent::FinishAltFire()
 {
-	//GetWorld()->GetTimerManager().ClearTimer(AccamulateProjectileTimer);
-	//OnFire();
 	bBlockInProgress = false;
 }
 
