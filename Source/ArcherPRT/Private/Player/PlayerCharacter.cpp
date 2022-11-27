@@ -129,6 +129,30 @@ void APlayerCharacter::MakeStrike(float StrikeDistance, float MinAngle, float Ma
 
 	UKismetSystemLibrary::SphereTraceMultiForObjects(GetWorld(), StartTrace, EndTrace, 3, ObjectTypes, true, ActorsToIgnore, EDrawDebugTrace::ForDuration, OutHits, true, FLinearColor::Red, FLinearColor::Green, 0.5f);
 
+	for (FHitResult& HitResult : OutHits)
+	{
+		if (HitResult.bBlockingHit)
+		{
+			if (HitResult.GetActor() != nullptr && HitResult.GetComponent() != nullptr)
+			{
+				const auto Pawn = Cast<AGameCharacter>(HitResult.GetActor());
+				if (Pawn)
+				{
+					if (HitResult.GetComponent()->ComponentHasTag("WeakPoint"))
+					{
+						Pawn->TakeDamage(StrikeDamage, FDamageEvent(), GetInstigatorController(), this);
+						Pawn->OnHit(GetActorForwardVector(), HitResult.GetComponent());
+					}
+					else
+					{
+						Pawn->TakeDamage(StrikeDamage, FDamageEvent(), GetInstigatorController(), this);
+					}
+					ActorsToIgnore.Add(Pawn);
+				}
+			}
+		}
+	}
+
 }
 
 void APlayerCharacter::MoveForward(float Value)
