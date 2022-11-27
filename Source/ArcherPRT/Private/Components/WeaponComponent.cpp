@@ -105,6 +105,8 @@ void UWeaponComponent::OnFire()
 	
 	if (!CanFire()) return;
 
+	if (CurrentEquipWeapon == AvailableWeapons[0]) return;
+
 
 	if (CurrentEquipWeapon.GetDefaultObject()->FireAnimation)
 	{
