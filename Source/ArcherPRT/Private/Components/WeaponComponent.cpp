@@ -111,6 +111,11 @@ void UWeaponComponent::OnFire()
 	//RangeWeapon
 	if (CurrentEquipWeapon == AvailableWeapons[1])
 	{
+		if (!CanMakeShot())
+		{
+			Owner->PlayAnimMontage(CurrentEquipWeapon.GetDefaultObject()->EmptyAnimation);
+			return;
+		}
 		GetWorld()->GetTimerManager().SetTimer(AccamulateProjectileTimer, this, &UWeaponComponent::MakeAccamulateProjectile, TimeAccamulateProjectiles, true);
 	}
 	
@@ -125,6 +130,8 @@ void UWeaponComponent::TryFire()
 	if (!Owner) return;
 
 	if (!CanFire()) return;
+
+	if (!CanMakeShot()) return;
 
 	GetWorld()->GetTimerManager().ClearTimer(AccamulateProjectileTimer);
 
