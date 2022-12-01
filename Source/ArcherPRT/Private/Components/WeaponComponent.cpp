@@ -113,9 +113,12 @@ void UWeaponComponent::OnFire()
 	{
 		if (!CanMakeShot())
 		{
-			Owner->PlayAnimMontage(CurrentEquipWeapon.GetDefaultObject()->EmptyAnimation);
+			Owner->PlayAnimMontage(CurrentEquipWeapon.GetDefaultObject()->EmptyAmmoAnimation);
 			return;
 		}
+
+		Owner->PlayAnimMontage(CurrentEquipWeapon.GetDefaultObject()->ChargeAmmoAnimation);
+
 		GetWorld()->GetTimerManager().SetTimer(AccamulateProjectileTimer, this, &UWeaponComponent::MakeAccamulateProjectile, TimeAccamulateProjectiles, true);
 	}
 	

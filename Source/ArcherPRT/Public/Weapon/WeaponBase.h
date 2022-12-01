@@ -32,14 +32,20 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 		USoundBase* FireSound;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Animations)
 		UAnimMontage* FireAnimation;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Animations)
 		UAnimMontage* ReloadingAnimation;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
-		UAnimMontage* EmptyAnimation;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Animations)
+		UAnimMontage* EmptyAmmoAnimation;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Animations)
+		UAnimMontage* ChargeAmmoAnimation;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Animations)
+		UAnimMontage* FullChargedAnimation;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 		FName MuzzleSocketName = "Muzzle";
