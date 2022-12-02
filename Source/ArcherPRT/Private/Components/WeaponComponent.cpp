@@ -106,21 +106,26 @@ void UWeaponComponent::OnFire()
 	if (!CanFire()) return;
 
 	// MeleeWeapon
-	if (CurrentEquipWeapon == AvailableWeapons[0]) return;
+	//if (CurrentEquipWeapon == AvailableWeapons[0]) return;
 
-	//RangeWeapon
+	// RangeWeapon
+	//if (CurrentEquipWeapon == AvailableWeapons[1])
+	
+	if (!CanMakeShot() && CurrentEquipWeapon == AvailableWeapons[1])
+	{
+		Owner->PlayAnimMontage(CurrentEquipWeapon.GetDefaultObject()->EmptyAmmoAnimation);
+		return;
+	}
+
 	if (CurrentEquipWeapon == AvailableWeapons[1])
 	{
-		if (!CanMakeShot())
-		{
-			Owner->PlayAnimMontage(CurrentEquipWeapon.GetDefaultObject()->EmptyAmmoAnimation);
-			return;
-		}
-
-		Owner->PlayAnimMontage(CurrentEquipWeapon.GetDefaultObject()->ChargeAmmoAnimation);
-
 		GetWorld()->GetTimerManager().SetTimer(AccamulateProjectileTimer, this, &UWeaponComponent::MakeAccamulateProjectile, TimeAccamulateProjectiles, true);
 	}
+
+	Owner->PlayAnimMontage(CurrentEquipWeapon.GetDefaultObject()->ChargeAnimation);
+
+	
+	
 	
 }
 

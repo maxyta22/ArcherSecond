@@ -42,7 +42,7 @@ public:
 		UAnimMontage* EmptyAmmoAnimation;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Animations)
-		UAnimMontage* ChargeAmmoAnimation;
+		UAnimMontage* ChargeAnimation;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Animations)
 		UAnimMontage* FullChargedAnimation;
