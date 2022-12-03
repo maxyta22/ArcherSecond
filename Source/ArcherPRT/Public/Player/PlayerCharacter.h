@@ -88,6 +88,12 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, Category = "Attack")
 		void ReleasedAttackButton();
 
+	UFUNCTION(BlueprintImplementableEvent, Category = "Attack")
+		void OnFire();
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Attack")
+		void TryFire();
+
 	UFUNCTION(BlueprintImplementableEvent, Category = "Craft")
 		void AfterBeginCraft();
 

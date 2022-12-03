@@ -88,6 +88,9 @@ public:
 
 	void TryFire();
 
+	UFUNCTION(BlueprintCallable)
+	void FinishFire();
+
 	bool CanMakeShot() const;
 
 	bool CanFire() const;
@@ -101,7 +104,6 @@ public:
 	void FinishReloadingWeapon();
 
 	bool CanReloadingWeapon() const;
-
 
 
 	void TraceAim();
@@ -119,7 +121,6 @@ protected:
 
 private:
 
-	void FinishFire();
 
 	void MakeAccamulateProjectile();
 

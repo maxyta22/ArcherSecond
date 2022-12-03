@@ -104,28 +104,22 @@ void UWeaponComponent::OnFire()
 	if (!Owner) return;
 	
 	if (!CanFire()) return;
-
-	// MeleeWeapon
-	//if (CurrentEquipWeapon == AvailableWeapons[0]) return;
-
-	// RangeWeapon
-	//if (CurrentEquipWeapon == AvailableWeapons[1])
 	
-	if (!CanMakeShot() && CurrentEquipWeapon == AvailableWeapons[1])
+	/*if (!CanMakeShot() && CurrentEquipWeapon == AvailableWeapons[1])
 	{
 		Owner->PlayAnimMontage(CurrentEquipWeapon.GetDefaultObject()->EmptyAmmoAnimation);
 		return;
-	}
+	}*/
 
 	if (CurrentEquipWeapon == AvailableWeapons[1])
 	{
 		GetWorld()->GetTimerManager().SetTimer(AccamulateProjectileTimer, this, &UWeaponComponent::MakeAccamulateProjectile, TimeAccamulateProjectiles, true);
 	}
-
-	Owner->PlayAnimMontage(CurrentEquipWeapon.GetDefaultObject()->ChargeAnimation);
-
 	
-	
+	Owner->OnFire();
+
+
+	//Owner->PlayAnimMontage(CurrentEquipWeapon.GetDefaultObject()->ChargeAnimation);
 	
 }
 
@@ -143,7 +137,9 @@ void UWeaponComponent::TryFire()
 
 	GetWorld()->GetTimerManager().ClearTimer(AccamulateProjectileTimer);
 
-	if (CurrentEquipWeapon.GetDefaultObject()->FireAnimation)
+	Owner->TryFire();
+
+	/*if (CurrentEquipWeapon.GetDefaultObject()->FireAnimation)
 	{
 		bFireInProgress = true;
 		Owner->PlayAnimMontage(CurrentEquipWeapon.GetDefaultObject()->FireAnimation);
@@ -155,6 +151,7 @@ void UWeaponComponent::TryFire()
 	{
 		UGameplayStatics::PlaySoundAtLocation(this, CurrentEquipWeapon.GetDefaultObject()->FireSound, Owner->GetActorLocation());
 	}
+	*/
 
 }
 
@@ -248,8 +245,6 @@ void UWeaponComponent::MakeShot()
 			CurrentProjectile->FinishSpawning(FTransform(SpawnRotation, SpawnLocation));
 
 			AmountAmmoInMagazine--;
-
-
 		}
 
 	}
