@@ -91,7 +91,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void FinishFire();
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintPure)
 	bool HaveAmmo() { return AmountAmmoInMagazine > 0; };
 
 	bool CanFire() const;
