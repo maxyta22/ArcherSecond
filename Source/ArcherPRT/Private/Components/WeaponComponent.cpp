@@ -111,7 +111,7 @@ void UWeaponComponent::OnFire()
 		return;
 	}*/
 
-	if (CurrentEquipWeapon == AvailableWeapons[1] )
+	if (CurrentEquipWeapon == AvailableWeapons[1] && HaveAmmo())
 	{
 		GetWorld()->GetTimerManager().SetTimer(AccamulateProjectileTimer, this, &UWeaponComponent::MakeAccamulateProjectile, TimeAccamulateProjectiles, true);
 	}
