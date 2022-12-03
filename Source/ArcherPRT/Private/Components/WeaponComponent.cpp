@@ -111,7 +111,7 @@ void UWeaponComponent::OnFire()
 		return;
 	}*/
 
-	if (CurrentEquipWeapon == AvailableWeapons[1])
+	if (CurrentEquipWeapon == AvailableWeapons[1] )
 	{
 		GetWorld()->GetTimerManager().SetTimer(AccamulateProjectileTimer, this, &UWeaponComponent::MakeAccamulateProjectile, TimeAccamulateProjectiles, true);
 	}
@@ -133,7 +133,7 @@ void UWeaponComponent::TryFire()
 
 	if (!CanFire()) return;
 
-	if (!CanMakeShot()) return;
+	if (!HaveAmmo()) return;
 
 	GetWorld()->GetTimerManager().ClearTimer(AccamulateProjectileTimer);
 
@@ -181,11 +181,6 @@ void UWeaponComponent::FinishAltFire()
 	bBlockInProgress = false;
 }
 
-bool UWeaponComponent::CanMakeShot() const
-{
-	return AmountAmmoInMagazine > 0;
-}
-
 bool UWeaponComponent::CanFire() const
 {
 	if (!GetWorld()) return false;
@@ -218,7 +213,7 @@ bool UWeaponComponent::CanReloadingWeapon() const
 
 void UWeaponComponent::MakeShot()
 {
-	if (!CanMakeShot()) return;
+	if (!HaveAmmo()) return;
 
 	UWorld* const World = GetWorld();
 	if (!World) return;
