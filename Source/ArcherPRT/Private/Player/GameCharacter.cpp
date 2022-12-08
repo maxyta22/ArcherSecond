@@ -136,9 +136,7 @@ void AGameCharacter::MakeStrike(float StrikeDistance, float MinAngle, float MaxA
 							{
 								UGameplayStatics::PlaySoundAtLocation(GetWorld(), HitOnBlockSound, GetActorLocation(), 1.0, 1.0, 0.0);
 							}
-							
 						}
-						
 						IgnoreActorsDamage.Add(DamagedActor);
 					}
 				}
