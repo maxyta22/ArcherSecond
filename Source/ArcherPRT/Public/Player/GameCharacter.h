@@ -82,6 +82,12 @@ public:
 		float StrikeDamage = 10;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Strike")
+		USoundBase* HitOnSuccessSound;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Strike")
+		USoundBase* HitOnBlockSound;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Strike")
 		TSubclassOf<UDamageType> StrikeDamageType;
 
 	

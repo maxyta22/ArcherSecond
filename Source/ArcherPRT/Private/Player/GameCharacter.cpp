@@ -118,10 +118,27 @@ void AGameCharacter::MakeStrike(float StrikeDistance, float MinAngle, float MaxA
 			{
 				if (IsA(AAICharacter::StaticClass()))
 				{
-					if (DamagedActor->IsA(APlayerCharacter::StaticClass()))
+					const auto DamagedPlayerCharacter = Cast<APlayerCharacter>(DamagedActor);
+					if (DamagedPlayerCharacter)
 					{
-						UGameplayStatics::ApplyDamage(DamagedActor, StrikeDamage, Controller, this, StrikeDamageType);
-						DamagedActor->OnHit(GetActorForwardVector(), nullptr);
+						if (!DamagedPlayerCharacter->WeaponComponent->BlockInProgress())
+						{
+							UGameplayStatics::ApplyDamage(DamagedActor, StrikeDamage, Controller, this, StrikeDamageType);
+							DamagedActor->OnHit(GetActorForwardVector(), nullptr);
+							if (HitOnSuccessSound)
+							{
+								UGameplayStatics::PlaySoundAtLocation(GetWorld(), HitOnSuccessSound, GetActorLocation(), 1.0, 1.0, 0.0);
+							}
+						}
+						else
+						{
+							if (HitOnBlockSound)
+							{
+								UGameplayStatics::PlaySoundAtLocation(GetWorld(), HitOnBlockSound, GetActorLocation(), 1.0, 1.0, 0.0);
+							}
+							
+						}
+						
 						IgnoreActorsDamage.Add(DamagedActor);
 					}
 				}
