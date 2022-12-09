@@ -2,6 +2,7 @@
 
 #include "AI/AICharacter.h"
 #include "AI/PRTAIController.h"
+#include "Player/PlayerCharacter.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "BrainComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -14,6 +15,8 @@
 #include "Environment/PickupResourcesBase.h"
 #include "MathUtils.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Kismet/GameplayStatics.h"
+#include "Components/WeaponComponent.h"
 
 
 AAICharacter::AAICharacter()
@@ -171,4 +174,56 @@ void AAICharacter::OnHit(FVector HitDirection, UPrimitiveComponent* HitComponent
 	}
 	
 
+}
+
+void AAICharacter::MakeStrike(float StrikeDistance, float MinAngle, float MaxAngle)
+{
+	if (!GetWorld()) return;
+
+	StrikeInProgress();
+
+	TArray<FOverlapResult> OverlapResult;
+	FCollisionObjectQueryParams ObjectQueryParam;
+	ObjectQueryParam.AllObjects;
+	FQuat Rot;
+	FCollisionShape CollisionShape;
+	CollisionShape.SetSphere(StrikeDistance);
+	AGameCharacter* DamagedActor;
+
+	GetWorld()->OverlapMultiByObjectType(OverlapResult, GetActorLocation(), Rot, ObjectQueryParam, CollisionShape);
+
+	for (int32 i = 0; i < OverlapResult.Num(); i++)
+	{
+		DamagedActor = Cast<AGameCharacter>(OverlapResult[i].GetActor());
+
+		if ((DamagedActor) && (DamagedActor) && (DamagedActor != this) && (!IgnoreActorsDamage.Contains(DamagedActor)))
+		{
+			const auto Angle = UMathUtils::FindAngleBetweenForwardVectorAndTarget(GetActorLocation(), GetActorForwardVector(), DamagedActor->GetActorLocation());
+
+			if ((Angle >= MinAngle) && (Angle <= MaxAngle))
+			{
+				const auto DamagedPlayerCharacter = Cast<APlayerCharacter>(DamagedActor);
+				if (DamagedPlayerCharacter)
+				{
+					if (!DamagedPlayerCharacter->WeaponComponent->BlockInProgress())
+					{
+						UGameplayStatics::ApplyDamage(DamagedActor, StrikeDamage, Controller, this, StrikeDamageType);
+						DamagedActor->OnHit(GetActorForwardVector(), nullptr);
+						if (HitOnSuccessSound)
+						{
+							UGameplayStatics::PlaySoundAtLocation(GetWorld(), HitOnSuccessSound, GetActorLocation(), 1.0, 1.0, 0.0);
+						}
+					}
+					else
+					{
+						if (HitOnBlockSound)
+						{
+							UGameplayStatics::PlaySoundAtLocation(GetWorld(), HitOnBlockSound, GetActorLocation(), 1.0, 1.0, 0.0);
+						}
+					}
+					IgnoreActorsDamage.Add(DamagedActor);
+				}
+			}
+		}
+	}
 }

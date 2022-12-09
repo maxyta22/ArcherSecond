@@ -133,7 +133,7 @@ void APlayerCharacter::MakeStrike(float StrikeDistance, float MinAngle, float Ma
 	{
 		if (HitResult.bBlockingHit)
 		{
-			if (HitResult.GetActor() != nullptr && HitResult.GetComponent() != nullptr)
+			if (HitResult.GetActor() != nullptr && HitResult.GetComponent() != nullptr && !IgnoreActorsDamage.Contains(HitResult.GetActor()))
 			{
 				const auto Pawn = Cast<AGameCharacter>(HitResult.GetActor());
 				if (Pawn)

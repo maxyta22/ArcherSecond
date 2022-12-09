@@ -85,71 +85,9 @@ void AGameCharacter::OnHit(FVector HitDirection, UPrimitiveComponent* HitCompone
 {
 }
 
+
 void AGameCharacter::MakeStrike(float StrikeDistance, float MinAngle, float MaxAngle)
 {
-	if (!GetWorld()) return;
-
-	StrikeInProgress();
-
-	TArray<FOverlapResult> OverlapResult;
-	FCollisionObjectQueryParams ObjectQueryParam;
-	ObjectQueryParam.AllObjects;
-	FQuat Rot;
-	FCollisionShape CollisionShape;
-	CollisionShape.SetSphere(StrikeDistance);
-	AGameCharacter* DamagedActor;
-
-	GetWorld()->OverlapMultiByObjectType(OverlapResult, GetActorLocation(), Rot, ObjectQueryParam, CollisionShape);
-
-	for (int32 i = 0; i < OverlapResult.Num(); i++)
-	{
-		DamagedActor = Cast<AGameCharacter>(OverlapResult[i].GetActor());
-
-		if (
-			(DamagedActor)
-			&& (DamagedActor)
-			&& (DamagedActor != this)
-			&& (!IgnoreActorsDamage.Contains(DamagedActor))
-			)
-		{
-			const auto Angle = UMathUtils::FindAngleBetweenForwardVectorAndTarget(GetActorLocation(), GetActorForwardVector(), DamagedActor->GetActorLocation());
-
-			if ((Angle >= MinAngle) && (Angle <= MaxAngle))
-			{
-				if (IsA(AAICharacter::StaticClass()))
-				{
-					const auto DamagedPlayerCharacter = Cast<APlayerCharacter>(DamagedActor);
-					if (DamagedPlayerCharacter)
-					{
-						if (!DamagedPlayerCharacter->WeaponComponent->BlockInProgress())
-						{
-							UGameplayStatics::ApplyDamage(DamagedActor, StrikeDamage, Controller, this, StrikeDamageType);
-							DamagedActor->OnHit(GetActorForwardVector(), nullptr);
-							if (HitOnSuccessSound)
-							{
-								UGameplayStatics::PlaySoundAtLocation(GetWorld(), HitOnSuccessSound, GetActorLocation(), 1.0, 1.0, 0.0);
-							}
-						}
-						else
-						{
-							if (HitOnBlockSound)
-							{
-								UGameplayStatics::PlaySoundAtLocation(GetWorld(), HitOnBlockSound, GetActorLocation(), 1.0, 1.0, 0.0);
-							}
-						}
-						IgnoreActorsDamage.Add(DamagedActor);
-					}
-				}
-				else
-				{
-					UGameplayStatics::ApplyDamage(DamagedActor, StrikeDamage, Controller, this, StrikeDamageType);
-					DamagedActor->OnHit(GetActorForwardVector(), nullptr);
-					IgnoreActorsDamage.Add(DamagedActor);
-				}
-
-			}
-		}
-	}
 }
 
 void AGameCharacter::ClearIgnoreActorsDamageStrike()

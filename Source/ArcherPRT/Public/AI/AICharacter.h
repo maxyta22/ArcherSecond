@@ -129,6 +129,8 @@ protected:
 
 	virtual void OnHit(FVector HitDirection, UPrimitiveComponent* HitComponent) override;
 
+	virtual void MakeStrike(float StrikeDistance, float MinAngle, float MaxAngle) override;
+
 
 private:
 

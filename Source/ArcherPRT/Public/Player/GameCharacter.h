@@ -97,11 +97,13 @@ protected:
 
 	virtual void Landed(const FHitResult& Hit);
 
+	TArray<AActor*> IgnoreActorsDamage;
+
 private:
 
 	void OnHealChanged(float Health);
 
-	TArray<AActor*> IgnoreActorsDamage;
+	
 
 	
 
