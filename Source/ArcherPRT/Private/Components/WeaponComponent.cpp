@@ -133,7 +133,6 @@ void UWeaponComponent::TryFire()
 
 	if (!CanFire()) return;
 
-	if (!HaveAmmo()) return;
 
 	GetWorld()->GetTimerManager().ClearTimer(AccamulateProjectileTimer);
 
