@@ -39,6 +39,7 @@ void UWeaponComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 
 void UWeaponComponent::EquipWeapon(TSubclassOf<UWeaponBase> Weapon) 
 {
+	FinishFire();
 	CurrentEquipWeapon = Weapon;	
 }
 
@@ -133,8 +134,7 @@ void UWeaponComponent::TryFire()
 
 	if (!CanFire()) return;
 
-
-	GetWorld()->GetTimerManager().ClearTimer(AccamulateProjectileTimer);
+	if (CurrentEquipWeapon == AvailableWeapons[1] && !HaveAmmo()) return;
 
 	Owner->TryFire();
 
@@ -160,6 +160,7 @@ void UWeaponComponent::FinishFire()
 	if (!World) return;
 	const auto Owner = Cast<APlayerCharacter>(GetOwner());
 	if (!Owner) return;
+	GetWorld()->GetTimerManager().ClearTimer(AccamulateProjectileTimer);
 	bFireInProgress = false;
 	CountAccamulateProjectile = 1;
 	SpreadShot = 0.0f;
