@@ -20,3 +20,41 @@ float UMathUtils::FindAngleBetweenForwardVectorAndTarget(FVector Center, FVector
 
 	return Angle;
 }
+
+FName UMathUtils::GetNameSocketByType(ETypeSocketForBugs TypeSocketForBugs)
+{
+	switch (TypeSocketForBugs)
+	{
+	case ETypeSocketForBugs::HeadSocket:
+		return "Head_Socket";
+		break;
+	case ETypeSocketForBugs::SpineSocket:
+		return "Spine_Socket";
+		break;
+	case ETypeSocketForBugs::LeftShoulderSocket:
+		return "Left_Shoulder_Socket";
+		break;
+	case ETypeSocketForBugs::LeftArmSocket:
+		return "Left_Arm_Socket";
+		break;
+	case ETypeSocketForBugs::RightShoulderSocket:
+		return "Right_Shoulder_Socket";
+		break;
+	case ETypeSocketForBugs::RightArmSocket:
+		return "Right_Arm_Socket";
+		break;
+	case ETypeSocketForBugs::LeftLegSocket:
+		return "Left_Leg_Socket";
+		break;
+	case ETypeSocketForBugs::RightLegSocket:
+		return "Right_Leg_Sockett";
+		break;
+	case ETypeSocketForBugs::RightKneeSocket:
+		return "Right_Knee_Socket";
+		break;
+	case ETypeSocketForBugs::LeftKneeSocket:
+		return "Left_Knee_Socket";
+		break;
+	}
+	return FName();
+}
