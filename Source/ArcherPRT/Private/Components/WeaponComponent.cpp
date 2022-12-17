@@ -188,21 +188,21 @@ bool UWeaponComponent::CanFire() const
 	const auto Owner = Cast<APlayerCharacter>(GetOwner());
 	if (!Owner) return false;
 	if (bFireInProgress) return false;
-	if (bReloadingWeaponInProgress) return false;
+	if (bReloadWeaponInProgress) return false;
 	if (!CurrentEquipWeapon) return false;
 	if (Owner->BuildingComponent->BuildingModeActivated()) return false;
 	if (Owner->CraftComponent->CraftInProgress()) return false;
 	return true;
 }
 
-bool UWeaponComponent::CanReloadingWeapon() const
+bool UWeaponComponent::CanReloadWeapon() const
 {
 	if (!GetWorld()) return false;
 	if (!GetOwner()) return false;
 	const auto Owner = Cast<APlayerCharacter>(GetOwner());
 	if (!Owner) return false;
 	if (bFireInProgress) return false;
-	if (bReloadingWeaponInProgress) return false;
+	if (bReloadWeaponInProgress) return false;
 	if (!CurrentEquipWeapon) return false;
 	if (Owner->BuildingComponent->BuildingModeActivated()) return false;
 	if (Owner->CraftComponent->CraftInProgress()) return false;
@@ -302,17 +302,17 @@ void UWeaponComponent::MakeAccamulateProjectile()
 
 }
 
-void UWeaponComponent::TryReloadingWeapon()
+void UWeaponComponent::TryReloadWeapon()
 {
-	if (CanReloadingWeapon())
+	if (CanReloadWeapon())
 	{
-		PerformReloadingWeapon();
+		PerformReloadWeapon();
 	}
 	
 
 }
 
-void UWeaponComponent::PerformReloadingWeapon()
+void UWeaponComponent::PerformReloadWeapon()
 {
 	if (!GetWorld()) return;
 	if (!GetOwner()) return;
@@ -322,15 +322,16 @@ void UWeaponComponent::PerformReloadingWeapon()
 
 	if (CurrentEquipWeapon.GetDefaultObject()->ReloadingAnimation)
 	{
-		bReloadingWeaponInProgress = true;
+		Owner->OnReloadWeapon();
+		bReloadWeaponInProgress = true;
 		Owner->PlayAnimMontage(CurrentEquipWeapon.GetDefaultObject()->ReloadingAnimation);
-		const auto TimeReloading = CurrentEquipWeapon.GetDefaultObject()->ReloadingAnimation->SequenceLength;
-		GetWorld()->GetTimerManager().SetTimer(ReloadingWeaponInProgressTimer, this, &UWeaponComponent::FinishReloadingWeapon, TimeReloading, false);
+		const auto TimeReload = CurrentEquipWeapon.GetDefaultObject()->ReloadingAnimation->SequenceLength;
+		GetWorld()->GetTimerManager().SetTimer(ReloadWeaponInProgressTimer, this, &UWeaponComponent::FinishReloadWeapon, TimeReload, false);
 	}
 
 }
 
-void UWeaponComponent::FinishReloadingWeapon()
+void UWeaponComponent::FinishReloadWeapon()
 {
 
 	if (!GetOwner()) return;
@@ -338,7 +339,7 @@ void UWeaponComponent::FinishReloadingWeapon()
 	const auto Owner = Cast<APlayerCharacter>(GetOwner());
 	if (!Owner) return;
 
-	bReloadingWeaponInProgress = false;
+	bReloadWeaponInProgress = false;
 
 	int NeedAmmo = CurrentEquipWeapon.GetDefaultObject()->Magazine - AmountAmmoInMagazine;
 

@@ -70,6 +70,9 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Check")
 		bool FireInProgress() const { return bFireInProgress; };
 
+	UFUNCTION(BlueprintPure, Category = "Check")
+		bool ReloadInProgress() const { return bReloadWeaponInProgress; };
+
 	UFUNCTION(BlueprintPure, Category = "Aim")
 		FVector GetEndPointOnAimTrace() const { return EndPointOnAimTrace; }
 
@@ -96,16 +99,15 @@ public:
 
 	bool CanFire() const;
 
-	//Reloading Weapon
+	//Reload Weapon
 
-	void TryReloadingWeapon();
+	void TryReloadWeapon();
 
-	void PerformReloadingWeapon();
+	void PerformReloadWeapon();
 
-	void FinishReloadingWeapon();
+	void FinishReloadWeapon();
 
-	bool CanReloadingWeapon() const;
-
+	bool CanReloadWeapon() const;
 
 	void TraceAim();
 
@@ -135,7 +137,7 @@ private:
 
 	bool bBlockInProgress;
 
-	bool bReloadingWeaponInProgress;
+	bool bReloadWeaponInProgress;
 
 	int CountAccamulateProjectile = 1;
 
@@ -145,7 +147,7 @@ private:
 
 	FTimerHandle FireInProgressTimer;
 
-	FTimerHandle ReloadingWeaponInProgressTimer;
+	FTimerHandle ReloadWeaponInProgressTimer;
 
 	FTimerHandle AccamulateProjectileTimer;
 

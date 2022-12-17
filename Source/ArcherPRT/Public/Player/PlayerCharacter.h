@@ -94,6 +94,9 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, Category = "Attack")
 		void TryFire();
 
+	UFUNCTION(BlueprintImplementableEvent, Category = "Attack")
+		void OnReloadWeapon();
+
 	UFUNCTION(BlueprintImplementableEvent, Category = "Craft")
 		void AfterBeginCraft();
 
