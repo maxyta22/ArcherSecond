@@ -85,7 +85,6 @@ void AGameCharacter::OnHit(FVector HitDirection, UPrimitiveComponent* HitCompone
 {
 }
 
-
 void AGameCharacter::MakeStrike(float StrikeDistance, float MinAngle, float MaxAngle)
 {
 }
