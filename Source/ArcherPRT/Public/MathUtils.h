@@ -16,8 +16,5 @@ class ARCHERPRT_API UMathUtils : public UBlueprintFunctionLibrary
 public:
 	UFUNCTION(BlueprintCallable, Category = "MathUtils") 
 		static float FindAngleBetweenForwardVectorAndTarget(FVector Center, FVector Forward, FVector Target);
-
-	UFUNCTION(BlueprintPure, Category = "MathUtils")
-		static FName GetNameSocketByType(ETypeSocketForBugs TypeSocketForBugs);
 	
 };

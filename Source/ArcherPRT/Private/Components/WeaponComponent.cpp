@@ -106,22 +106,19 @@ void UWeaponComponent::OnFire()
 	
 	if (!CanFire()) return;
 	
-	/*if (!CanMakeShot() && CurrentEquipWeapon == AvailableWeapons[1])
+	switch (CurrentEquipWeapon.GetDefaultObject()->WeaponType)
 	{
-		Owner->PlayAnimMontage(CurrentEquipWeapon.GetDefaultObject()->EmptyAmmoAnimation);
-		return;
-	}*/
-
-	if (CurrentEquipWeapon == AvailableWeapons[1] && HaveAmmo())
-	{
-		GetWorld()->GetTimerManager().SetTimer(AccamulateProjectileTimer, this, &UWeaponComponent::MakeAccamulateProjectile, TimeAccamulateProjectiles, true);
+		case EWeaponType::PneumaticGlove:
+			break;
+		case EWeaponType::PneumaticGun:
+			if (HaveAmmo())
+			{
+				GetWorld()->GetTimerManager().SetTimer(AccamulateProjectileTimer, this, &UWeaponComponent::MakeAccamulateProjectile, TimeAccamulateProjectiles, true);
+			}
+			break;
 	}
 	
 	Owner->OnFire();
-
-
-	//Owner->PlayAnimMontage(CurrentEquipWeapon.GetDefaultObject()->ChargeAnimation);
-	
 }
 
 void UWeaponComponent::TryFire()
@@ -134,7 +131,7 @@ void UWeaponComponent::TryFire()
 
 	if (!CanFire()) return;
 
-	if (CurrentEquipWeapon == AvailableWeapons[1] && !HaveAmmo()) return;
+	if (CurrentEquipWeapon.GetDefaultObject()->WeaponType == EWeaponType::PneumaticGun && !HaveAmmo()) return;
 
 	Owner->TryFire();
 

@@ -20,10 +20,13 @@ public:
 	
 	UWeaponBase();
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Gameplay)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Gameplay)
 		FText WeaponName;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Gameplay)
+		EWeaponType WeaponType;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Gameplay)
 		bool bMeleeWeapon;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (EditCondition = "!bMeleeWeapon"), Category = Gameplay)

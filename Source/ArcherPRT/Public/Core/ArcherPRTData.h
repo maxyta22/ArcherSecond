@@ -29,17 +29,9 @@ enum class EAIStartCondition : uint8
 	Sleep
 };
 
-UENUM(BlueprintType, Category = "TypeSocketForBugs")
-enum class ETypeSocketForBugs : uint8
+UENUM(BlueprintType, Category = "Weapons")
+enum class EWeaponType : uint8
 {
-	HeadSocket,
-	SpineSocket,
-	LeftShoulderSocket,
-	LeftArmSocket,
-	RightShoulderSocket,
-	RightArmSocket,
-	LeftLegSocket,
-	RightLegSocket,
-	RightKneeSocket,
-	LeftKneeSocket,
+	PneumaticGlove,
+	PneumaticGun,
 };
