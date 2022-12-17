@@ -165,6 +165,7 @@ void UWeaponComponent::FinishFire()
 	bFireInProgress = false;
 	bReloadWeaponInProgress = false;
 	bBlockInProgress = false;
+	bGloveAttackCharged = false;
 	CountAccamulateProjectile = 1;
 	SpreadShot = 0.0f;
 }

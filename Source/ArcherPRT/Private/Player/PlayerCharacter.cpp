@@ -19,6 +19,7 @@
 #include "Components/InventoryComponent.h"
 #include "Components/BuildingComponent.h"
 #include "Components/WeaponComponent.h"
+#include "Weapon/WeaponBase.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Components/ArrowComponent.h"
 
@@ -138,14 +139,19 @@ void APlayerCharacter::MakeStrike(float StrikeDistance, float MinAngle, float Ma
 				const auto Pawn = Cast<AGameCharacter>(HitResult.GetActor());
 				if (Pawn)
 				{
+					const float Damage = WeaponComponent->bGloveAttackCharged ?
+					WeaponComponent->CurrentEquipWeapon.GetDefaultObject()->ChargeDamage :
+					WeaponComponent->CurrentEquipWeapon.GetDefaultObject()->Damage;
+
 					if (HitResult.GetComponent()->ComponentHasTag("WeakPoint"))
 					{
-						Pawn->TakeDamage(StrikeDamage, FDamageEvent(), GetInstigatorController(), this);
+						Pawn->TakeDamage(Damage, FDamageEvent(), GetInstigatorController(), this);
 						Pawn->OnHit(GetActorForwardVector(), HitResult.GetComponent());
+						IgnoreActorsDamage.Add(Pawn);
 					}
 					else
 					{
-						Pawn->TakeDamage(StrikeDamage, FDamageEvent(), GetInstigatorController(), this);
+						Pawn->TakeDamage(Damage, FDamageEvent(), GetInstigatorController(), this);
 					}
 					ActorsToIgnore.Add(Pawn);
 				}
