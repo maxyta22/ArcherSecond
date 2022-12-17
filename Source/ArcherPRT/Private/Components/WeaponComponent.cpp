@@ -161,7 +161,10 @@ void UWeaponComponent::FinishFire()
 	const auto Owner = Cast<APlayerCharacter>(GetOwner());
 	if (!Owner) return;
 	GetWorld()->GetTimerManager().ClearTimer(AccamulateProjectileTimer);
+	GetWorld()->GetTimerManager().ClearTimer(ReloadWeaponInProgressTimer);
 	bFireInProgress = false;
+	bReloadWeaponInProgress = false;
+	bBlockInProgress = false;
 	CountAccamulateProjectile = 1;
 	SpreadShot = 0.0f;
 }
