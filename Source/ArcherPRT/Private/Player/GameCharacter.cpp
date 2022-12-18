@@ -81,7 +81,7 @@ void AGameCharacter::Landed(const FHitResult& Hit)
 
 }
 
-void AGameCharacter::OnHit(FVector HitDirection, UPrimitiveComponent* HitComponent)
+void AGameCharacter::OnHit(FVector HitDirection, UPrimitiveComponent* HitComponent, EWeaponType WeaponType, bool Charged)
 {
 }
 

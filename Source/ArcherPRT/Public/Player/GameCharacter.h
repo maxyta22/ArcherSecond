@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "Net/UnrealNetwork.h"
 #include "AbilitySystemComponent.h"
+#include "Core/ArcherPRTData.h"
 #include "GameCharacter.generated.h"
 
 class UInputComponent;
@@ -60,7 +61,7 @@ public:
 
 	//Hit Reaction
 
-	virtual void OnHit(FVector HitDirection, UPrimitiveComponent* HitComponent);
+	virtual void OnHit(FVector HitDirection, UPrimitiveComponent* HitComponent, EWeaponType WeaponType, bool Charged);
 
 	//Landed
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")

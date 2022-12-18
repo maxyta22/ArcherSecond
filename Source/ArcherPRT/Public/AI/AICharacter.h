@@ -102,10 +102,10 @@ public:
 		void AfterReactionToAiming();
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Behavior")
-		void AfterOnHit(FVector HitDirection, UPrimitiveComponent* HitComponent);
+		void AfterOnHit(FVector HitDirection, UPrimitiveComponent* HitComponent, EWeaponType WeaponType, bool Charged);
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Behavior")
-		void PerformOnHitReaction(FVector HitDirection, UPrimitiveComponent* HitComponent);
+		void PerformOnHitReaction(FVector HitDirection, UPrimitiveComponent* HitComponent, EWeaponType WeaponType, bool Charged);
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Behavior")
 		void AfterEnemyFound();
@@ -127,7 +127,7 @@ protected:
 
 	virtual void OnDeath() override;
 
-	virtual void OnHit(FVector HitDirection, UPrimitiveComponent* HitComponent) override;
+	virtual void OnHit(FVector HitDirection, UPrimitiveComponent* HitComponent, EWeaponType WeaponType, bool Charged) override;
 
 	virtual void MakeStrike(float StrikeDistance, float MinAngle, float MaxAngle) override;
 

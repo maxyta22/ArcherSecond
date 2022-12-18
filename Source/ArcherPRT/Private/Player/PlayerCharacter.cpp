@@ -130,6 +130,12 @@ void APlayerCharacter::MakeStrike(float StrikeDistance, float MinAngle, float Ma
 
 	UKismetSystemLibrary::SphereTraceMultiForObjects(GetWorld(), StartTrace, EndTrace, 3, ObjectTypes, true, ActorsToIgnore, EDrawDebugTrace::ForDuration, OutHits, true, FLinearColor::Red, FLinearColor::Green, 0.5f);
 
+	const float Damage = WeaponComponent->bGloveAttackCharged ?
+		WeaponComponent->CurrentEquipWeapon.GetDefaultObject()->ChargeDamage :
+		WeaponComponent->CurrentEquipWeapon.GetDefaultObject()->Damage;
+	const auto WeaponType = WeaponComponent->CurrentEquipWeapon.GetDefaultObject()->WeaponType;
+	const bool Charged = WeaponComponent->bGloveAttackCharged;
+
 	for (FHitResult& HitResult : OutHits)
 	{
 		if (HitResult.bBlockingHit)
@@ -139,14 +145,11 @@ void APlayerCharacter::MakeStrike(float StrikeDistance, float MinAngle, float Ma
 				const auto Pawn = Cast<AGameCharacter>(HitResult.GetActor());
 				if (Pawn)
 				{
-					const float Damage = WeaponComponent->bGloveAttackCharged ?
-					WeaponComponent->CurrentEquipWeapon.GetDefaultObject()->ChargeDamage :
-					WeaponComponent->CurrentEquipWeapon.GetDefaultObject()->Damage;
 
 					if (HitResult.GetComponent()->ComponentHasTag("WeakPoint"))
 					{
 						Pawn->TakeDamage(Damage, FDamageEvent(), GetInstigatorController(), this);
-						Pawn->OnHit(GetActorForwardVector(), HitResult.GetComponent());
+						Pawn->OnHit(GetActorForwardVector(), HitResult.GetComponent(), WeaponType, Charged);
 						IgnoreActorsDamage.Add(Pawn);
 					}
 					else
