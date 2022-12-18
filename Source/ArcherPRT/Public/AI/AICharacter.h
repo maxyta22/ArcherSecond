@@ -104,7 +104,7 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, Category = "Behavior")
 		void AfterOnHit(FVector HitDirection, UPrimitiveComponent* HitComponent, EWeaponType WeaponType, bool Charged);
 
-	UFUNCTION(BlueprintImplementableEvent, Category = "Behavior")
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "Behavior")
 		void PerformOnHitReaction(FVector HitDirection, UPrimitiveComponent* HitComponent, EWeaponType WeaponType, bool Charged);
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Behavior")

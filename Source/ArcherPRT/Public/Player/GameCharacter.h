@@ -60,7 +60,7 @@ public:
 		void AfterOnDeath();
 
 	//Hit Reaction
-
+	UFUNCTION(BlueprintCallable)
 	virtual void OnHit(FVector HitDirection, UPrimitiveComponent* HitComponent, EWeaponType WeaponType, bool Charged);
 
 	//Landed
