@@ -32,6 +32,7 @@ enum class EAIStartCondition : uint8
 UENUM(BlueprintType, Category = "Weapons")
 enum class EWeaponType : uint8
 {
+	None,
 	PneumaticGlove,
 	PneumaticGun,
 };

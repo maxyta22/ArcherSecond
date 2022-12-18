@@ -47,7 +47,7 @@ public:
 		float SpreadShotGun;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Glove")
-		bool bGloveAttackCharged;
+		bool bWeaponCharged;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Aim")
 		float LenghtAimTrace = 1000.0f;
