@@ -206,7 +206,8 @@ void AAICharacter::MakeStrike(float StrikeDistance, float MinAngle, float MaxAng
 				{
 					if (!DamagedPlayerCharacter->WeaponComponent->BlockInProgress())
 					{
-						UGameplayStatics::ApplyDamage(DamagedActor, StrikeDamage, Controller, this, StrikeDamageType);
+						DamagedActor->TakeDamage(StrikeDamage, FDamageEvent(), GetInstigatorController(), this);
+						//UGameplayStatics::ApplyDamage(DamagedActor, StrikeDamage, Controller, this, StrikeDamageType);
 						DamagedActor->OnHit(GetActorForwardVector(), nullptr,EWeaponType::None, false);
 						if (HitOnSuccessSound)
 						{
