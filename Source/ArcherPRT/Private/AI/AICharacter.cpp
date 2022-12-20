@@ -31,7 +31,7 @@ AAICharacter::AAICharacter()
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECollisionChannel::ECC_WorldDynamic, ECollisionResponse::ECR_Block);
 	
 	
-	// Setup Smooth Rotation
+	// Setup Smooth Rotation (Used Unreal Rotation when Movement (RotationRate)
 	bUseControllerRotationYaw = false;
 	if (GetCharacterMovement())
 	{
@@ -77,14 +77,14 @@ void AAICharacter::RotationOnTarget()
 	if (!AIControllerRef) return;
 	if (!AIControllerRef->GetBlackboardComponent()) return;
 	if (!AIControllerRef->GetBlackboardComponent()->GetValueAsObject("EnemyActor")) return;
-	if (SpeedRotationOnTarget == 0) return;
+	if (SpeedRotation == 0) return;
 
 	const AActor* Target = Cast<AActor>(AIControllerRef->GetBlackboardComponent()->GetValueAsObject("EnemyActor"));
 
 	if (Target)
 	{
 		const auto DesiredRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), Target->GetActorLocation());
-		const auto XYZRotation = FMath::RInterpTo(GetActorRotation(), DesiredRotation, GetWorld()->GetDeltaSeconds(), SpeedRotationOnTarget);
+		const auto XYZRotation = FMath::RInterpTo(GetActorRotation(), DesiredRotation, GetWorld()->GetDeltaSeconds(), SpeedRotation);
 		const auto ZRotation = FRotator(GetActorRotation().Pitch, XYZRotation.Yaw, GetActorRotation().Roll);
 		SetActorRotation(ZRotation);
 	}
