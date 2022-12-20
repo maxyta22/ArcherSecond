@@ -4,11 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "Animation/AnimNotifies/AnimNotifyState.h"
-#include "IverrideSpeedRotationANS.generated.h"
+#include "OverrideSpeedRotationANS.generated.h"
 
 
 UCLASS()
-class ARCHERPRT_API UIverrideSpeedRotationANS : public UAnimNotifyState
+class ARCHERPRT_API UOverrideSpeedRotationANS : public UAnimNotifyState
 {
 	GENERATED_BODY()
 

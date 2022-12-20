@@ -1,10 +1,10 @@
 // Archer Prototype. All rights reserved
 
 
-#include "Animations/IverrideSpeedRotationANS.h"
+#include "Animations/OverrideSpeedRotationANS.h"
 #include "AI/AICharacter.h"
 
-void UIverrideSpeedRotationANS::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float TotalDuration)
+void UOverrideSpeedRotationANS::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float TotalDuration)
 {
 	AAICharacter* AICharacterOwner;
 	AICharacterOwner = Cast<AAICharacter>(MeshComp->GetOwner());
@@ -13,7 +13,7 @@ void UIverrideSpeedRotationANS::NotifyBegin(USkeletalMeshComponent* MeshComp, UA
 	DefaultSpeedRotation = AICharacterOwner->SpeedRotation;
 }
 
-void UIverrideSpeedRotationANS::NotifyTick(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float FrameDeltaTime)
+void UOverrideSpeedRotationANS::NotifyTick(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float FrameDeltaTime)
 {
 
 	AAICharacter* AICharacterOwner;
@@ -25,7 +25,7 @@ void UIverrideSpeedRotationANS::NotifyTick(USkeletalMeshComponent* MeshComp, UAn
 	AICharacterOwner->SpeedRotation = MeshComp->GetAnimInstance()->GetCurveValue("OverrideSpeedRotation");
 }
 
-void UIverrideSpeedRotationANS::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation)
+void UOverrideSpeedRotationANS::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation)
 {
 	AAICharacter* AICharacterOwner;
 	AICharacterOwner = Cast<AAICharacter>(MeshComp->GetOwner());
