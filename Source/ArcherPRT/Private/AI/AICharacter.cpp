@@ -51,6 +51,7 @@ void AAICharacter::BeginPlay()
 void AAICharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	RotationOnTarget();
 }
 
 //Accumulate To Aiming 
@@ -76,6 +77,7 @@ void AAICharacter::RotationOnTarget()
 	if (!AIControllerRef) return;
 	if (!AIControllerRef->GetBlackboardComponent()) return;
 	if (!AIControllerRef->GetBlackboardComponent()->GetValueAsObject("EnemyActor")) return;
+	if (SpeedRotationOnTarget == 0) return;
 
 	const AActor* Target = Cast<AActor>(AIControllerRef->GetBlackboardComponent()->GetValueAsObject("EnemyActor"));
 
