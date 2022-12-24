@@ -104,7 +104,7 @@ void UWeaponComponent::OnFire()
 	const auto Owner = Cast<APlayerCharacter>(GetOwner());
 	if (!Owner) return;
 	if (!CanFire()) return;
-	if (FireInProgress()) return;
+	if (ChargeAttackInProgress()) return;
 	
 	switch (CurrentEquipWeapon.GetDefaultObject()->WeaponType)
 	{
@@ -118,7 +118,7 @@ void UWeaponComponent::OnFire()
 			break;
 	}
 	
-	bFireInProgress = true;
+	bChargeAttackInProgress = true;
 
 	Owner->OnFire();
 }
@@ -131,7 +131,7 @@ void UWeaponComponent::TryFire()
 	const auto Owner = Cast<APlayerCharacter>(GetOwner());
 	if (!Owner) return;
 	if (!CanFire()) return;
-	if (!FireInProgress()) return;
+	if (!ChargeAttackInProgress()) return;
 
 	if (CurrentEquipWeapon.GetDefaultObject()->WeaponType == EWeaponType::PneumaticGun && !HaveAmmo()) return;
 
@@ -148,7 +148,7 @@ void UWeaponComponent::FinishFire()
 	if (!Owner) return;
 	GetWorld()->GetTimerManager().ClearTimer(AccamulateProjectileTimer);
 	GetWorld()->GetTimerManager().ClearTimer(ReloadWeaponInProgressTimer);
-	bFireInProgress = false;
+	bChargeAttackInProgress = false;
 	bReloadWeaponInProgress = false;
 	bBlockInProgress = false;
 	bWeaponCharged = false;
@@ -190,7 +190,7 @@ bool UWeaponComponent::CanReloadWeapon() const
 	if (!GetOwner()) return false;
 	const auto Owner = Cast<APlayerCharacter>(GetOwner());
 	if (!Owner) return false;
-	if (bFireInProgress) return false;
+	if (bChargeAttackInProgress) return false;
 	if (bReloadWeaponInProgress) return false;
 	if (!CurrentEquipWeapon) return false;
 	if (Owner->BuildingComponent->BuildingModeActivated()) return false;
