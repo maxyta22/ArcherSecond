@@ -78,6 +78,7 @@ void AAICharacter::RotationOnTarget()
 	if (!AIControllerRef) return;
 	if (!AIControllerRef->GetBlackboardComponent()) return;
 	if (!AIControllerRef->GetBlackboardComponent()->GetValueAsObject("EnemyActor")) return;
+	if (SpeedRotation == 0) return;
 
 	const AActor* Target = Cast<AActor>(AIControllerRef->GetBlackboardComponent()->GetValueAsObject("EnemyActor"));
 
