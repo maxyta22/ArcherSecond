@@ -72,7 +72,7 @@ public:
 		TArray<ATargetPoint*> TargetsForPatrol;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Behavior")
-		float SpeedRotation = 10.0f;
+		float SpeedRotation = 0.0f;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Behavior")
 		float DistanceForChase = 700.0f;
