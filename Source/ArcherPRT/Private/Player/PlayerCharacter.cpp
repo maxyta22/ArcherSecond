@@ -136,7 +136,7 @@ void APlayerCharacter::MakeStrike(float StrikeDistance, float MinAngle, float Ma
 
 	TArray < FHitResult > OutHits;
 
-	UKismetSystemLibrary::SphereTraceMultiForObjects(GetWorld(), StartTrace, EndTrace, 15, ObjectTypes, true, ActorsToIgnore, EDrawDebugTrace::ForDuration, OutHits, true, FLinearColor::Red, FLinearColor::Green, 0.5f);
+	UKismetSystemLibrary::SphereTraceMultiForObjects(GetWorld(), StartTrace, EndTrace, 20, ObjectTypes, true, ActorsToIgnore, EDrawDebugTrace::ForDuration, OutHits, true, FLinearColor::Red, FLinearColor::Green, 0.5f);
 
 	const float Damage = WeaponComponent->bWeaponCharged ?
 		WeaponComponent->CurrentEquipWeapon.GetDefaultObject()->ChargeDamage :
