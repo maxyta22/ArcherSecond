@@ -134,16 +134,16 @@ void UWeaponComponent::OnFire()
 	switch (CurrentEquipWeapon.GetDefaultObject()->WeaponType)
 	{
 		case EWeaponType::PneumaticGlove:
+			bChargeAttackInProgress = true;
 			break;
 		case EWeaponType::PneumaticGun:
 			if (HaveAmmo())
 			{
+				bChargeAttackInProgress = true;
 				GetWorld()->GetTimerManager().SetTimer(AccamulateProjectileTimer, this, &UWeaponComponent::MakeAccamulateProjectile, TimeAccamulateProjectiles, true);
 			}
 			break;
 	}
-	
-	bChargeAttackInProgress = true;
 
 	Owner->OnFire();
 }

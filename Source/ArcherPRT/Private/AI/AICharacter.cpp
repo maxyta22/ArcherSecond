@@ -36,7 +36,7 @@ AAICharacter::AAICharacter()
 	if (GetCharacterMovement())
 	{
 		GetCharacterMovement()->bUseControllerDesiredRotation = false;
-		GetCharacterMovement()->bOrientRotationToMovement = false; //Setup true if need use Unreal RotationRate
+		GetCharacterMovement()->bOrientRotationToMovement = true; //Setup true if need use Unreal RotationRate
 		GetCharacterMovement()->RotationRate = FRotator(0.0f, 180.0f, 0.0f);
 	}
 }
