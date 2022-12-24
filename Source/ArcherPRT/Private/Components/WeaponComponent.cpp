@@ -103,8 +103,8 @@ void UWeaponComponent::OnFire()
 	if (!GetOwner()) return;
 	const auto Owner = Cast<APlayerCharacter>(GetOwner());
 	if (!Owner) return;
-	
 	if (!CanFire()) return;
+	if (FireInProgress()) return;
 	
 	switch (CurrentEquipWeapon.GetDefaultObject()->WeaponType)
 	{
@@ -118,6 +118,8 @@ void UWeaponComponent::OnFire()
 			break;
 	}
 	
+	bFireInProgress = true;
+
 	Owner->OnFire();
 }
 
@@ -128,26 +130,13 @@ void UWeaponComponent::TryFire()
 	if (!GetOwner()) return;
 	const auto Owner = Cast<APlayerCharacter>(GetOwner());
 	if (!Owner) return;
-
 	if (!CanFire()) return;
+	if (!FireInProgress()) return;
 
 	if (CurrentEquipWeapon.GetDefaultObject()->WeaponType == EWeaponType::PneumaticGun && !HaveAmmo()) return;
 
 	Owner->TryFire();
 
-	/*if (CurrentEquipWeapon.GetDefaultObject()->FireAnimation)
-	{
-		bFireInProgress = true;
-		Owner->PlayAnimMontage(CurrentEquipWeapon.GetDefaultObject()->FireAnimation);
-		const auto TimeFire = CurrentEquipWeapon.GetDefaultObject()->bUseLenghtFireAnimationForFireRate ? CurrentEquipWeapon.GetDefaultObject()->FireAnimation->SequenceLength : CurrentEquipWeapon.GetDefaultObject()->RateOfFire;
-		GetWorld()->GetTimerManager().SetTimer(FireInProgressTimer, this, &UWeaponComponent::FinishFire, TimeFire, false);
-	}
-
-	if (CurrentEquipWeapon.GetDefaultObject()->FireSound != nullptr)
-	{
-		UGameplayStatics::PlaySoundAtLocation(this, CurrentEquipWeapon.GetDefaultObject()->FireSound, Owner->GetActorLocation());
-	}
-	*/
 
 }
 
@@ -188,7 +177,6 @@ bool UWeaponComponent::CanFire() const
 	if (!GetOwner()) return false;
 	const auto Owner = Cast<APlayerCharacter>(GetOwner());
 	if (!Owner) return false;
-	if (bFireInProgress) return false;
 	if (bReloadWeaponInProgress) return false;
 	if (!CurrentEquipWeapon) return false;
 	if (Owner->BuildingComponent->BuildingModeActivated()) return false;

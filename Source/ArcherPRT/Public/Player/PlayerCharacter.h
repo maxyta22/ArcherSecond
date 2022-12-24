@@ -117,6 +117,8 @@ protected:
 	
 	virtual void SetupPlayerInputComponent(UInputComponent* InputComponent) override;
 
+	virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
+
 	virtual void OnDeath() override;
 
 private:

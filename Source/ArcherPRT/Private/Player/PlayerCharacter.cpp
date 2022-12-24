@@ -108,6 +108,13 @@ void APlayerCharacter::OnDeath()
 	GetCharacterMovement()->DisableMovement();	
 }
 
+float APlayerCharacter::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+	WeaponComponent->FinishFire();
+	AfterTakeDamage();
+	return Damage;
+}
+
 void APlayerCharacter::MakeStrike(float StrikeDistance, float MinAngle, float MaxAngle)
 {
 	if (!GetWorld()) return;
