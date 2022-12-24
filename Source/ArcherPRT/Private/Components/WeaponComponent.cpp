@@ -48,10 +48,35 @@ void UWeaponComponent::TraceAim()
 	if (!GetWorld()) return;
 	if (!GetOwner()) return;
 	if (!CurrentEquipWeapon) return;
-	//if (!AimingInProgress()) return;
-
 	const auto Owner = Cast<APlayerCharacter>(GetOwner());
 	if (!Owner) return;
+	
+	switch (CurrentEquipWeapon.GetDefaultObject()->WeaponType)
+	{
+	case EWeaponType::PneumaticGlove:
+		if (!ChargeAttackInProgress())
+		{
+			if (CurrentAimingEnemy)
+			{
+				CurrentAimingEnemy->FinishAccumulateToAiming();
+			}
+			return;
+		}
+		break;
+	case EWeaponType::PneumaticGun:
+		if (!HaveAmmo()) 
+		{
+			if (CurrentAimingEnemy)
+			{
+				CurrentAimingEnemy->FinishAccumulateToAiming();
+			}
+			return;
+		}
+		break;
+	}
+
+
+	
 	
 	FVector StartTraceAim = Owner->GetFirstPersonCameraComponent()->GetComponentLocation() + Owner->GetFirstPersonCameraComponent()->GetForwardVector() * 50;
 	FVector EndTraceAim = StartTraceAim + Owner->GetFirstPersonCameraComponent()->GetForwardVector() * LenghtAimTrace;
