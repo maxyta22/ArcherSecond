@@ -128,6 +128,7 @@ void APlayerCharacter::MakeStrike(float StrikeDistance, float MinAngle, float Ma
 	TArray < TEnumAsByte < EObjectTypeQuery > >  ObjectTypes;
 	ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECC_Destructible));
 	ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECC_WorldStatic));
+	ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECC_WorldDynamic));
 	ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECC_Pawn));
 
 
@@ -151,6 +152,7 @@ void APlayerCharacter::MakeStrike(float StrikeDistance, float MinAngle, float Ma
 			if (HitResult.GetActor() != nullptr && HitResult.GetComponent() != nullptr && !IgnoreActorsDamage.Contains(HitResult.GetActor()))
 			{
 				const auto Pawn = Cast<AGameCharacter>(HitResult.GetActor());
+				const auto InteractObject = Cast<AInteractObjectBase>(HitResult.GetActor());
 				if (Pawn)
 				{
 					if (HitResult.GetComponent()->ComponentHasTag("WeakPoint"))
@@ -160,6 +162,11 @@ void APlayerCharacter::MakeStrike(float StrikeDistance, float MinAngle, float Ma
 						IgnoreActorsDamage.Add(Pawn);
 					}
 					ActorsToIgnore.Add(Pawn);
+				}
+				if (InteractObject)
+				{
+					InteractObject->AfterGloveHit();
+					IgnoreActorsDamage.Add(InteractObject);
 				}
 			}
 		}

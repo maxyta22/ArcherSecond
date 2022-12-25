@@ -52,6 +52,9 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "After Events")
 		void AfterWasSuccessUseInteractObject();
 
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "After Events")
+		void AfterGloveHit();
+
 	virtual void TryUseInteractObject(APlayerCharacter* Pawn);
 
 protected:
