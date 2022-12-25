@@ -166,8 +166,6 @@ void AAICharacter::OnDeath()
 
 void AAICharacter::OnHit(FVector HitDirection, UPrimitiveComponent* HitComponent, EWeaponType WeaponType, bool Charged)
 {
-	Super::OnHit(HitDirection, HitComponent, WeaponType, Charged);
-
 	AfterOnHit(HitDirection, HitComponent, WeaponType, Charged);
 
 	if (CanPerformOnHitReaction)
