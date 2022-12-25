@@ -216,6 +216,7 @@ void AAICharacter::MakeStrike(float StrikeDistance, float MinAngle, float MaxAng
 					}
 					else
 					{
+						DamagedActor->HitOnBlockSuccess(GetActorForwardVector(), FHitResult::FHitResult(), this, EWeaponType::None, false);
 						if (HitOnBlockSound)
 						{
 							UGameplayStatics::PlaySoundAtLocation(GetWorld(), HitOnBlockSound, GetActorLocation(), 1.0, 1.0, 0.0);

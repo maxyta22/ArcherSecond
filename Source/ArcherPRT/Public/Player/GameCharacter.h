@@ -59,6 +59,9 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, Category = "AfterEvents")
 		void AfterOnDeath();
 
+	UFUNCTION(BlueprintImplementableEvent, Category = "AfterEvents")
+		void HitOnBlockSuccess(FVector HitDirection, FHitResult HitResult, AActor* Causer, EWeaponType WeaponType, bool Charged);
+
 	//Hit Reaction
 	UFUNCTION(BlueprintCallable)
 	virtual void OnHit(FVector HitDirection, FHitResult HitResult, AActor* Causer, EWeaponType WeaponType, bool Charged);
