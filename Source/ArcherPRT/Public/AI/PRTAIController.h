@@ -20,6 +20,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "AI")
 	void LockBehavior(bool Lock);
 
+	UFUNCTION(BlueprintCallable, Category = "AI")
 	void SetEnemy(AActor* Enemy);
 
 	UFUNCTION(BlueprintPure)

@@ -164,13 +164,13 @@ void AAICharacter::OnDeath()
 
 }
 
-void AAICharacter::OnHit(FVector HitDirection, FHitResult HitResult, EWeaponType WeaponType, bool Charged)
+void AAICharacter::OnHit(FVector HitDirection, FHitResult HitResult, AActor* Causer, EWeaponType WeaponType, bool Charged)
 {
-	AfterOnHit(HitDirection, HitResult, WeaponType, Charged);
+	AfterOnHit(HitDirection, HitResult, Causer, WeaponType, Charged);
 
 	if (CanPerformOnHitReaction)
 	{
-	 PerformOnHitReaction(HitDirection, HitResult, WeaponType, Charged);
+	 PerformOnHitReaction(HitDirection, HitResult, Causer, WeaponType, Charged);
 	}
 	
 
@@ -208,7 +208,7 @@ void AAICharacter::MakeStrike(float StrikeDistance, float MinAngle, float MaxAng
 					if (!DamagedPlayerCharacter->WeaponComponent->BlockInProgress())
 					{
 						DamagedActor->TakeDamage(StrikeDamage, FDamageEvent(), GetInstigatorController(), this);
-						DamagedActor->OnHit(GetActorForwardVector(), FHitResult::FHitResult(), EWeaponType::None, false);
+						DamagedActor->OnHit(GetActorForwardVector(), FHitResult::FHitResult(), this, EWeaponType::None, false);
 						if (HitOnSuccessSound)
 						{
 							UGameplayStatics::PlaySoundAtLocation(GetWorld(), HitOnSuccessSound, GetActorLocation(), 1.0, 1.0, 0.0);

@@ -61,7 +61,7 @@ public:
 
 	//Hit Reaction
 	UFUNCTION(BlueprintCallable)
-	virtual void OnHit(FVector HitDirection, FHitResult HitResult, EWeaponType WeaponType, bool Charged);
+	virtual void OnHit(FVector HitDirection, FHitResult HitResult, AActor* Causer, EWeaponType WeaponType, bool Charged);
 
 	//Landed
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
