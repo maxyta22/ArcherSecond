@@ -11,6 +11,7 @@
 #include "NiagaraFunctionLibrary.h"
 #include "Particles/ParticleSystemComponent.h"
 #include "PhysicalMaterials/PhysicalMaterial.h"
+#include "Environment/InteractObjectBase.h"
 #include "Sound/SoundCue.h"
 
 AArcherPRTProjectile::AArcherPRTProjectile() 
@@ -112,6 +113,7 @@ void AArcherPRTProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActo
 	if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr))
 	{
 		const auto Pawn = Cast<AGameCharacter>(OtherActor);
+		const auto InteractObject = Cast<AInteractObjectBase>(OtherActor);
 		
 		if (Pawn)
 		{
@@ -127,6 +129,11 @@ void AArcherPRTProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActo
 				Pawn->TakeDamage(0, FDamageEvent(), GetInstigatorController(), this);
 			}	
 			Destroy();		
+		}
+		if (InteractObject)
+		{
+			InteractObject->AfterShotHit();
+			Destroy();
 		}
 
 		Destroy();
