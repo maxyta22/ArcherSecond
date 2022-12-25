@@ -74,6 +74,9 @@ public:
 		bool ChargeAttackInProgress() const { return bChargeAttackInProgress; };
 
 	UFUNCTION(BlueprintPure, Category = "Check")
+		bool FireInProgress() const { return bFireInProgress; };
+
+	UFUNCTION(BlueprintPure, Category = "Check")
 		bool ReloadInProgress() const { return bReloadWeaponInProgress; };
 
 	UFUNCTION(BlueprintPure, Category = "Aim")
@@ -137,6 +140,8 @@ private:
 	bool bAimingInProgress;
 
 	bool bChargeAttackInProgress;
+
+	bool bFireInProgress;
 
 	bool bBlockInProgress;
 

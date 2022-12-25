@@ -130,6 +130,7 @@ void UWeaponComponent::OnFire()
 	if (!Owner) return;
 	if (!CanFire()) return;
 	if (ChargeAttackInProgress()) return;
+	if (FireInProgress()) return;
 	
 	switch (CurrentEquipWeapon.GetDefaultObject()->WeaponType)
 	{
@@ -157,9 +158,10 @@ void UWeaponComponent::TryFire()
 	if (!Owner) return;
 	if (!CanFire()) return;
 	if (!ChargeAttackInProgress()) return;
-
+	if (FireInProgress()) return;
 	if (CurrentEquipWeapon.GetDefaultObject()->WeaponType == EWeaponType::PneumaticGun && !HaveAmmo()) return;
 
+	bFireInProgress = true;
 	Owner->TryFire();
 
 
@@ -173,6 +175,7 @@ void UWeaponComponent::FinishFire()
 	if (!Owner) return;
 	GetWorld()->GetTimerManager().ClearTimer(AccamulateProjectileTimer);
 	GetWorld()->GetTimerManager().ClearTimer(ReloadWeaponInProgressTimer);
+	bFireInProgress = false;
 	bChargeAttackInProgress = false;
 	bReloadWeaponInProgress = false;
 	bBlockInProgress = false;
