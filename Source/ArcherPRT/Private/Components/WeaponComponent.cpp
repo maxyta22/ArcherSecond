@@ -183,6 +183,10 @@ void UWeaponComponent::FinishFire()
 	bWeaponCharged = false;
 	CountAccamulateProjectile = 1;
 	SpreadShot = 0.0f;
+	if (bCanBlock)
+	{
+		OnAltFire();
+	}
 }
 
 void UWeaponComponent::OnAltFire()
@@ -191,10 +195,16 @@ void UWeaponComponent::OnAltFire()
 	if (!GetOwner()) return;
 	const auto Owner = Cast<APlayerCharacter>(GetOwner());
 	if (!Owner) return;
-	if (ChargeAttackInProgress()) return;
-	if (FireInProgress()) return;
-
-	FinishFire();
+	if (ChargeAttackInProgress())
+	{
+		bCanBlock = true;
+		return;
+	}
+	if (FireInProgress())
+	{
+		bCanBlock = true;
+		return;
+	}
 
 	bBlockInProgress = true;
 }
@@ -202,6 +212,7 @@ void UWeaponComponent::OnAltFire()
 void UWeaponComponent::FinishAltFire()
 {
 	bBlockInProgress = false;
+	bCanBlock = false;
 }
 
 bool UWeaponComponent::CanFire() const
