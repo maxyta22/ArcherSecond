@@ -131,6 +131,7 @@ void UWeaponComponent::OnFire()
 	if (!CanFire()) return;
 	if (ChargeAttackInProgress()) return;
 	if (FireInProgress()) return;
+	if (BlockInProgress())return;
 	
 	switch (CurrentEquipWeapon.GetDefaultObject()->WeaponType)
 	{
@@ -190,6 +191,10 @@ void UWeaponComponent::OnAltFire()
 	if (!GetOwner()) return;
 	const auto Owner = Cast<APlayerCharacter>(GetOwner());
 	if (!Owner) return;
+	if (ChargeAttackInProgress()) return;
+	if (FireInProgress()) return;
+
+	FinishFire();
 
 	bBlockInProgress = true;
 }
