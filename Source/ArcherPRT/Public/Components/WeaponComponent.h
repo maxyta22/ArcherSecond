@@ -147,6 +147,8 @@ private:
 
 	bool bCanBlock;
 
+	bool bCanAttack;
+
 	bool bReloadWeaponInProgress;
 
 	int CountAccamulateProjectile = 1;
