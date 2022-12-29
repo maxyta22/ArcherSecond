@@ -145,9 +145,9 @@ private:
 
 	bool bBlockInProgress;
 
-	bool bCanBlock;
+	bool bPendingOnAltFire;
 
-	bool bCanAttack;
+	bool bPendingOnFire;
 
 	bool bReloadWeaponInProgress;
 

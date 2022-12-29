@@ -124,6 +124,8 @@ void UWeaponComponent::TraceAim()
 
 void UWeaponComponent::OnFire()
 {
+	bPendingOnFire = true;
+
 	if (!GetWorld()) return;
 	if (!GetOwner()) return;
 	const auto Owner = Cast<APlayerCharacter>(GetOwner());
@@ -131,11 +133,7 @@ void UWeaponComponent::OnFire()
 	if (!CanFire()) return;
 	if (FireInProgress()) return;
 	if (ChargeAttackInProgress()) return;
-	if (BlockInProgress())
-	{
-		bCanAttack = true;
-		return;
-	}
+	if (BlockInProgress()) return;
 	
 	switch (CurrentEquipWeapon.GetDefaultObject()->WeaponType)
 	{
@@ -156,6 +154,7 @@ void UWeaponComponent::OnFire()
 
 void UWeaponComponent::TryFire()
 {
+	bPendingOnFire = false;
 
 	if (!GetWorld()) return;
 	if (!GetOwner()) return;
@@ -166,6 +165,7 @@ void UWeaponComponent::TryFire()
 	if (FireInProgress()) return;
 	if (CurrentEquipWeapon.GetDefaultObject()->WeaponType == EWeaponType::PneumaticGun && !HaveAmmo()) return;
 
+	
 	bFireInProgress = true;
 	Owner->TryFire();
 
@@ -185,10 +185,16 @@ void UWeaponComponent::FinishFire()
 	bReloadWeaponInProgress = false;
 	bBlockInProgress = false;
 	bWeaponCharged = false;
-	bCanAttack = false;
 	CountAccamulateProjectile = 1;
 	SpreadShot = 0.0f;
-	if (bCanBlock)
+
+	if (bPendingOnFire)
+	{
+		OnFire();
+		return;
+	}
+					
+	if (bPendingOnAltFire)
 	{
 		OnAltFire();
 	}
@@ -196,30 +202,26 @@ void UWeaponComponent::FinishFire()
 
 void UWeaponComponent::OnAltFire()
 {
+	bPendingOnAltFire = true;
+
 	if (!GetWorld()) return;
 	if (!GetOwner()) return;
 	const auto Owner = Cast<APlayerCharacter>(GetOwner());
 	if (!Owner) return;
-	if (ChargeAttackInProgress())
-	{
-		bCanBlock = true;
-		return;
-	}
-	if (FireInProgress())
-	{
-		bCanBlock = true;
-		return;
-	}
+	if (ChargeAttackInProgress()) return;
+	if (FireInProgress()) return;
+	
 
 	bBlockInProgress = true;
 }
 
 void UWeaponComponent::FinishAltFire()
 {
+	bPendingOnAltFire = false;
 	bBlockInProgress = false;
-	bCanBlock = false;
+	
 
-	if (bCanAttack)
+	if (bPendingOnFire)
 	{
 		OnFire();
 	}
