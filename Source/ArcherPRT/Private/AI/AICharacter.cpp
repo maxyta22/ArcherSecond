@@ -60,8 +60,8 @@ void AAICharacter::StartAccumulateToAiming()
 {
 	if (!GetWorld()) return;
 	if (GetWorld()->GetTimerManager().IsTimerActive(AccumulateToAiminHandleTimer)) return;
-	if (!GetAIControollerRef()) return;
-	if (!GetAIControollerRef()->GetEnemy()) return;
+	if (!GetAIControllerRef()) return;
+	if (!GetAIControllerRef()->GetEnemy()) return;
 	GetWorld()->GetTimerManager().SetTimer(AccumulateToAiminHandleTimer, this, &AAICharacter::ReactionToAiming, TimeToReactionToAiming);
 }
 
