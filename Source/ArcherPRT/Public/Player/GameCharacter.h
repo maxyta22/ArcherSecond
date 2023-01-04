@@ -54,7 +54,7 @@ public:
 	virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "AfterEvents")
-		void AfterTakeDamage();
+		void AfterTakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser);
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "AfterEvents")
 		void AfterOnDeath();

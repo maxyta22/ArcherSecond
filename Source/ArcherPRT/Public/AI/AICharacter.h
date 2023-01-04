@@ -91,7 +91,7 @@ public:
 		TArray<TSubclassOf<APickupResourcesBase>> DropList;
 
 	UFUNCTION(BlueprintPure)
-		APRTAIController* GetAIControollerRef() { return AIControllerRef;}
+		APRTAIController* GetAIControllerRef() { return AIControllerRef;}
 
 	UFUNCTION()
 		void ToggleHitColliders(bool Activate);

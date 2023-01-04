@@ -60,8 +60,8 @@ void AAICharacter::StartAccumulateToAiming()
 {
 	if (!GetWorld()) return;
 	if (GetWorld()->GetTimerManager().IsTimerActive(AccumulateToAiminHandleTimer)) return;
-	if (!GetAIControollerRef()) return;
-	if (!GetAIControollerRef()->GetEnemy()) return;
+	if (!GetAIControllerRef()) return;
+	if (!GetAIControllerRef()->GetEnemy()) return;
 	GetWorld()->GetTimerManager().SetTimer(AccumulateToAiminHandleTimer, this, &AAICharacter::ReactionToAiming, TimeToReactionToAiming);
 }
 
@@ -148,7 +148,7 @@ void AAICharacter::ReactionToAiming()
 float AAICharacter::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
 	Super::TakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
-	AfterTakeDamage();
+	AfterTakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
 	const auto AIController = Cast<APRTAIController>(Controller);
 	if (AIController && EventInstigator)
 	{
