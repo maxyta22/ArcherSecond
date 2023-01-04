@@ -14,7 +14,7 @@ class APlayerCharacter;
 class AAICharacter;
 
 USTRUCT(BlueprintType)
-struct FShotGunPattern
+struct FShotGunPatternData
 {
 
 	GENERATED_USTRUCT_BODY();
@@ -22,7 +22,7 @@ public:
 
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		TArray<FVector> Offset;
+		TArray<FRotator> Rotation;
 
 };
 
@@ -57,7 +57,7 @@ public:
 		float TimeAccamulateProjectiles;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ShotGun")
-		TArray<FShotGunPattern> ShotGunPatterns;
+		TArray<FShotGunPatternData> ShotGunPatterns;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ShotGun")
 		float SpreadShotGunStep;

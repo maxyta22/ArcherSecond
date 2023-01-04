@@ -74,9 +74,6 @@ void UWeaponComponent::TraceAim()
 		}
 		break;
 	}
-
-
-	
 	
 	FVector StartTraceAim = Owner->GetFirstPersonCameraComponent()->GetComponentLocation() + Owner->GetFirstPersonCameraComponent()->GetForwardVector() * 50;
 	FVector EndTraceAim = StartTraceAim + Owner->GetFirstPersonCameraComponent()->GetForwardVector() * LenghtAimTrace;
@@ -268,10 +265,15 @@ void UWeaponComponent::MakeShot()
 
 	for (size_t i = 0; i < CountAccamulateProjectile; i++)
 	{
+		FRotator SpreadRotation = ShotGunPatterns[CountAccamulateProjectile-1].Rotation[i];	
 		const FVector SpawnLocation = Owner->GetMesh()->GetSocketLocation(CurrentEquipWeapon.GetDefaultObject()->MuzzleSocketName);
-		const FVector AimDirection = UKismetMathLibrary::GetDirectionUnitVector(SpawnLocation, EndPointOnAimTrace);
-		const FVector ShootDirection = FMath::VRandCone(AimDirection, SpreadShot);
-		const FRotator SpawnRotation = ShootDirection.Rotation();
+		FVector AimDirection = UKismetMathLibrary::GetDirectionUnitVector(SpawnLocation, EndPointOnAimTrace);
+		AimDirection = UKismetMathLibrary::GreaterGreater_VectorRotator(AimDirection, SpreadRotation);
+		//const FVector ShootDirection = FMath::VRandCone(AimDirection, SpreadShot);
+		//const FRotator SpawnRotation = ShootDirection.Rotation();
+		FRotator SpawnRotation = AimDirection.Rotation();
+		
+		
 
 		//SpawnProjectile
 		TArray<TSubclassOf<AArcherPRTProjectile>> ValueFromMap;
