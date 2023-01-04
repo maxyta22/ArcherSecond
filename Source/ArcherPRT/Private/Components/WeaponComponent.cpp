@@ -338,11 +338,11 @@ void UWeaponComponent::SwitchAmmoInCurrentEquipWeapon()
 
 void UWeaponComponent::MakeAccamulateProjectile()
 {
-	SpreadShot = SpreadShotGun;
-
+	
 	if (CountAccamulateProjectile < AmountAmmoInMagazine)
 	{
 		CountAccamulateProjectile = FMath::Clamp(CountAccamulateProjectile + 1, 1, MaxAccamulateProjectiles);
+		SpreadShot = FMath::Clamp(SpreadShot + SpreadShotGunStep,0,MaxSpreadShotGun);
 	}
 
 }
