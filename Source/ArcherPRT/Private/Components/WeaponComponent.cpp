@@ -290,7 +290,7 @@ void UWeaponComponent::MakeShot()
 		}
 
 	}
-	
+
 }
 
 int UWeaponComponent::GetAmountAmmoInMagazine() const
@@ -344,7 +344,7 @@ void UWeaponComponent::MakeAccamulateProjectile()
 	if (CountAccamulateProjectile < AmountAmmoInMagazine)
 	{
 		CountAccamulateProjectile = FMath::Clamp(CountAccamulateProjectile + 1, 1, MaxAccamulateProjectiles);
-		SpreadShot = FMath::Clamp(SpreadShot + SpreadShotGunStep,0,MaxSpreadShotGun);
+		//SpreadShot = FMath::Clamp(SpreadShot + SpreadShotGunStep,0,MaxSpreadShotGun);
 	}
 
 }
