@@ -44,7 +44,10 @@ public:
 		float TimeAccamulateProjectiles;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ShotGun")
-		float SpreadShotGun;
+		float SpreadShotGunStep;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ShotGun")
+		float MaxSpreadShotGun;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Glove")
 		bool bWeaponCharged;
