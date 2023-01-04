@@ -13,6 +13,19 @@ class UWeaponBase;
 class APlayerCharacter;
 class AAICharacter;
 
+USTRUCT(BlueprintType)
+struct FShotGunPattern
+{
+
+	GENERATED_USTRUCT_BODY();
+public:
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		TArray<FVector> Offset;
+
+};
+
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class ARCHERPRT_API UWeaponComponent : public UActorComponent
 {
@@ -42,6 +55,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ShotGun")
 		float TimeAccamulateProjectiles;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ShotGun")
+		TArray<FShotGunPattern> ShotGunPatterns;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ShotGun")
 		float SpreadShotGunStep;
