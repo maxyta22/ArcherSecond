@@ -15,16 +15,16 @@ class ARCHERPRT_API APickupResourcesBase : public AInteractObjectBase
 
 public:
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ResourcesType")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Resources")
 		EResourcesType ResourcesType = EResourcesType::Wood;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ResourcesValue")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (EditCondition = "!ResourcesType == EResourcesType::None"), Category = "Resources")
 		int Value = 1;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ResourcesList")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (EditCondition = "ResourcesType == EResourcesType::None"), Category = "Resources")
 		TMap<EResourcesType, int> ResourcesList;
 
-	UPROPERTY(EditInstanceOnly, BlueprintReadWrite)
+	UPROPERTY(EditInstanceOnly, BlueprintReadWrite, Category = "Resources")
 		bool bInfinity;
 
 
