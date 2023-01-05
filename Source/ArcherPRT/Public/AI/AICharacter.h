@@ -63,6 +63,9 @@ public:
 		float TimeToReactionToAiming = 2;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Behavior")
+		float ProbabilityEvade = 0.5f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Behavior")
 		float MinDistanceForAttackAfterHitReaction = 300;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Behavior")
