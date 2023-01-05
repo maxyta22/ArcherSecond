@@ -21,6 +21,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ResourcesValue")
 		int Value = 1;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ResourcesList")
+		TMap<EResourcesType, int> ResourcesList;
+
 	UPROPERTY(EditInstanceOnly, BlueprintReadWrite)
 		bool bInfinity;
 
