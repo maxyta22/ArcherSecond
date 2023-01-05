@@ -27,6 +27,9 @@ public:
 	UPROPERTY(EditInstanceOnly, BlueprintReadWrite, Category = "Resources")
 		bool bInfinity;
 
+	UFUNCTION(BlueprintCallable, Category = "resources")
+		void SetContainer(AActor* ActorContainer) { Container = ActorContainer; };
+
 
 protected:
 
@@ -35,4 +38,7 @@ protected:
 private:
 
 	void TakePickup();
+
+	AActor* Container;
+
 };
