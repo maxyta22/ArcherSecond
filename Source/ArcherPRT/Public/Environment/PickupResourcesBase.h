@@ -18,7 +18,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Resources")
 		EResourcesType ResourcesType = EResourcesType::Wood;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (EditCondition = "!ResourcesType == EResourcesType::None"), Category = "Resources")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (EditCondition = "ResourcesType != EResourcesType::None"), Category = "Resources")
 		int Value = 1;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (EditCondition = "ResourcesType == EResourcesType::None"), Category = "Resources")
