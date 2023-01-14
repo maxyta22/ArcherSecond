@@ -40,7 +40,7 @@ AActor* UPRTAIPerceptionComponent::GetNearestEnemy() const
 				{
 					if (StatsComponent && !StatsComponent->IsDead())
 					{
-						const auto CurrentDistance = (PercieveActor->GetActorLocation() - Pawn->GetActorLocation()).Size();
+						const auto CurrentDistance = Pawn->GetDistanceTo(PercieveActor);
 						if ((CurrentDistance < BestDistance) && (CurrentDistance < MaxDistanceForDetection))
 						{
 							BestDistance = CurrentDistance;
