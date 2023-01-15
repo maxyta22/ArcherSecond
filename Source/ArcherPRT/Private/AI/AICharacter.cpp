@@ -179,7 +179,7 @@ void AAICharacter::OnHit(FVector HitDirection, FHitResult HitResult, AActor* Cau
 void AAICharacter::MakeStrike(float StrikeDistance, float MinAngle, float MaxAngle)
 {
 	if (!GetWorld()) return;
-
+	if (StatsComponent->IsDead()) return;
 	StrikeInProgress();
 
 	TArray<FOverlapResult> OverlapResult;
