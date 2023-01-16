@@ -53,7 +53,7 @@ public:
 		void AfterWasSuccessUseInteractObject();
 
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "After Events")
-		void AfterGloveHit();
+		void AfterGloveHit(bool Charged);
 
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "After Events")
 		void AfterShotHit();

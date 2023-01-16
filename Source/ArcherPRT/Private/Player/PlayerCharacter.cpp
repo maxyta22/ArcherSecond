@@ -165,7 +165,7 @@ void APlayerCharacter::MakeStrike(float StrikeDistance, float MinAngle, float Ma
 				}
 				if (InteractObject)
 				{
-					InteractObject->AfterGloveHit();
+					InteractObject->AfterGloveHit(WeaponComponent->bWeaponCharged);
 					IgnoreActorsDamage.Add(InteractObject);
 				}
 			}
