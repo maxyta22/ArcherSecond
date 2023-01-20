@@ -122,7 +122,7 @@ void APlayerCharacter::MakeStrike(float StrikeDistance, float MinAngle, float Ma
 
 	StrikeInProgress();
 
-	FVector StartTrace = GetFirstPersonCameraComponent()->GetComponentLocation() + GetFirstPersonCameraComponent()->GetForwardVector() * 50;
+	FVector StartTrace = GetFirstPersonCameraComponent()->GetComponentLocation() + GetFirstPersonCameraComponent()->GetForwardVector() * WeaponComponent->GloveAttackDistance;
 	FVector EndTrace = StartTrace + GetFirstPersonCameraComponent()->GetForwardVector() * StrikeDistance;
 
 	TArray < TEnumAsByte < EObjectTypeQuery > >  ObjectTypes;
@@ -137,7 +137,7 @@ void APlayerCharacter::MakeStrike(float StrikeDistance, float MinAngle, float Ma
 
 	TArray < FHitResult > OutHits;
 
-	UKismetSystemLibrary::SphereTraceMultiForObjects(GetWorld(), StartTrace, EndTrace, 10, ObjectTypes, true, ActorsToIgnore, EDrawDebugTrace::None, OutHits, true, FLinearColor::Red, FLinearColor::Green, 0.5f);
+	UKismetSystemLibrary::SphereTraceMultiForObjects(GetWorld(), StartTrace, EndTrace, WeaponComponent->GloveAttackRadius, ObjectTypes, true, ActorsToIgnore, EDrawDebugTrace::None, OutHits, true, FLinearColor::Red, FLinearColor::Green, 0.5f);
 
 	const float Damage = WeaponComponent->bWeaponCharged ?
 		WeaponComponent->CurrentEquipWeapon.GetDefaultObject()->ChargeDamage :

@@ -68,6 +68,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Glove")
 		bool bWeaponCharged;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Glove")
+		float GloveAttackDistance;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Glove")
+		float GloveAttackRadius;
+
 	UPROPERTY(EditDefaultsOnly, Category = "Aim")
 		float LenghtAimTrace = 1000.0f;
 
