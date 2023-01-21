@@ -108,6 +108,9 @@ public:
 		void AfterReactionToAiming();
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Behavior")
+		void PerformOnStaggerReaction();
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Behavior")
 		void AfterOnHit(FVector HitDirection, FHitResult HitResult, AActor* Causer, EWeaponType WeaponType, bool Charged);
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "Behavior")

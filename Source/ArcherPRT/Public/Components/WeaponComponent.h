@@ -50,6 +50,9 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category = "Weapon")
 		int SelectedUseAmmoIndex = 0;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Internal")
+		bool bWeaponCharged;
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ShotGun")
 		int MaxAccamulateProjectiles;
 
@@ -64,9 +67,6 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ShotGun")
 		float MaxSpreadShotGun;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Glove")
-		bool bWeaponCharged;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Glove")
 		float GloveAttackDistance;
