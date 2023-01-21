@@ -13,18 +13,6 @@ class UWeaponBase;
 class APlayerCharacter;
 class AAICharacter;
 
-USTRUCT(BlueprintType)
-struct FShotGunPatternData
-{
-
-	GENERATED_USTRUCT_BODY();
-public:
-
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		TArray<FRotator> Rotation;
-
-};
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class ARCHERPRT_API UWeaponComponent : public UActorComponent
@@ -53,21 +41,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Internal")
 		bool bWeaponCharged;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ShotGun")
-		int MaxAccamulateProjectiles;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ShotGun")
-		float TimeAccamulateProjectiles;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ShotGun")
-		TArray<FShotGunPatternData> ShotGunPatterns;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ShotGun")
-		float SpreadShotGunStep;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ShotGun")
-		float MaxSpreadShotGun;
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Glove")
 		float GloveAttackDistance;
 
@@ -85,9 +58,6 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 		int GetMaxAmmo() const;
-
-	UFUNCTION(BlueprintCallable)
-		int GetCurrentAccamulateProjectiles() const { return CountAccamulateProjectile; };
 
 	UFUNCTION(BlueprintPure, Category = "Check")
 		bool AimingInProgress() const { return bAimingInProgress; };
@@ -155,9 +125,6 @@ protected:
 
 private:
 
-
-	void MakeAccamulateProjectile();
-
 	int AmountAmmoInMagazine;
 
 	float SpreadShot;
@@ -176,8 +143,6 @@ private:
 
 	bool bReloadWeaponInProgress;
 
-	int CountAccamulateProjectile = 1;
-
 	FVector EndPointOnAimTrace;
 
 	FHitResult EndPointAimTraceHitResult;
@@ -186,9 +151,6 @@ private:
 
 	FTimerHandle ReloadWeaponInProgressTimer;
 
-	FTimerHandle AccamulateProjectileTimer;
-
 	AAICharacter* CurrentAimingEnemy;
-
 
 };

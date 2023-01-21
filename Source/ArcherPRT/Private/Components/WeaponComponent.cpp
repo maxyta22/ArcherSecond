@@ -141,7 +141,7 @@ void UWeaponComponent::OnFire()
 			if (HaveAmmo())
 			{
 				bChargeAttackInProgress = true;
-				GetWorld()->GetTimerManager().SetTimer(AccamulateProjectileTimer, this, &UWeaponComponent::MakeAccamulateProjectile, TimeAccamulateProjectiles, true);
+				//GetWorld()->GetTimerManager().SetTimer(AccamulateProjectileTimer, this, &UWeaponComponent::MakeAccamulateProjectile, TimeAccamulateProjectiles, true);
 			}
 			break;
 	}
@@ -175,14 +175,12 @@ void UWeaponComponent::FinishFire()
 	if (!World) return;
 	const auto Owner = Cast<APlayerCharacter>(GetOwner());
 	if (!Owner) return;
-	GetWorld()->GetTimerManager().ClearTimer(AccamulateProjectileTimer);
 	//GetWorld()->GetTimerManager().ClearTimer(ReloadWeaponInProgressTimer);
 	//bReloadWeaponInProgress = false;
 	bFireInProgress = false;
 	bChargeAttackInProgress = false;
 	bBlockInProgress = false;
 	bWeaponCharged = false;
-	CountAccamulateProjectile = 1;
 	SpreadShot = 0.0f;
 
 	if (bPendingOnFire)
@@ -262,25 +260,17 @@ void UWeaponComponent::MakeShot()
 	const auto Owner = Cast<APlayerCharacter>(GetOwner());
 	if (!Owner) return;
 
+	const FVector SpawnLocation = Owner->GetMesh()->GetSocketLocation(CurrentEquipWeapon.GetDefaultObject()->MuzzleSocketName);
+	FVector AimDirection = UKismetMathLibrary::GetDirectionUnitVector(SpawnLocation, EndPointOnAimTrace);
+	const FVector ShootDirection = FMath::VRandCone(AimDirection, SpreadShot);
+	const FRotator SpawnRotation = ShootDirection.Rotation();
+			
+	//SpawnProjectile
+	TArray<TSubclassOf<AArcherPRTProjectile>> ValueFromMap;
+	CurrentEquipWeapon.GetDefaultObject()->ProjectileAmmoMap.GenerateValueArray(ValueFromMap);
+	AArcherPRTProjectile* CurrentProjectile = World->SpawnActorDeferred<AArcherPRTProjectile>(ValueFromMap[SelectedUseAmmoIndex], FTransform(SpawnRotation, SpawnLocation));
 
-	for (size_t i = 0; i < CountAccamulateProjectile; i++)
-	{
-		FRotator SpreadRotation = ShotGunPatterns[CountAccamulateProjectile-1].Rotation[i];	
-		const FVector SpawnLocation = Owner->GetMesh()->GetSocketLocation(CurrentEquipWeapon.GetDefaultObject()->MuzzleSocketName);
-		FVector AimDirection = UKismetMathLibrary::GetDirectionUnitVector(SpawnLocation, EndPointOnAimTrace);
-		AimDirection = UKismetMathLibrary::GreaterGreater_VectorRotator(AimDirection, SpreadRotation);
-		//const FVector ShootDirection = FMath::VRandCone(AimDirection, SpreadShot);
-		//const FRotator SpawnRotation = ShootDirection.Rotation();
-		FRotator SpawnRotation = AimDirection.Rotation();
-		
-		
-
-		//SpawnProjectile
-		TArray<TSubclassOf<AArcherPRTProjectile>> ValueFromMap;
-		CurrentEquipWeapon.GetDefaultObject()->ProjectileAmmoMap.GenerateValueArray(ValueFromMap);
-		AArcherPRTProjectile* CurrentProjectile = World->SpawnActorDeferred<AArcherPRTProjectile>(ValueFromMap[SelectedUseAmmoIndex], FTransform(SpawnRotation, SpawnLocation));
-
-		if (CurrentProjectile)
+	if (CurrentProjectile)
 		{
 			CurrentProjectile->DamageWeapon = CurrentEquipWeapon.GetDefaultObject()->Damage;
 			CurrentProjectile->SetInstigator(Owner);
@@ -288,8 +278,6 @@ void UWeaponComponent::MakeShot()
 
 			AmountAmmoInMagazine--;
 		}
-
-	}
 
 }
 
@@ -335,17 +323,6 @@ void UWeaponComponent::SwitchAmmoInCurrentEquipWeapon()
 	}
 	else
 		SelectedUseAmmoIndex = FMath::Clamp(SelectedUseAmmoIndex + 1, 0, CurrentEquipWeapon.GetDefaultObject()->ProjectileAmmoMap.Num()-1);
-
-}
-
-void UWeaponComponent::MakeAccamulateProjectile()
-{
-	
-	if (CountAccamulateProjectile < AmountAmmoInMagazine)
-	{
-		CountAccamulateProjectile = FMath::Clamp(CountAccamulateProjectile + 1, 1, MaxAccamulateProjectiles);
-		//SpreadShot = FMath::Clamp(SpreadShot + SpreadShotGunStep,0,MaxSpreadShotGun);
-	}
 
 }
 
