@@ -122,8 +122,8 @@ void APlayerCharacter::MakeStrike(float StrikeDistance, float MinAngle, float Ma
 
 	StrikeInProgress();
 
-	FVector StartTrace = GetFirstPersonCameraComponent()->GetComponentLocation() + GetFirstPersonCameraComponent()->GetForwardVector() * WeaponComponent->GloveAttackDistance;
-	FVector EndTrace = StartTrace + GetFirstPersonCameraComponent()->GetForwardVector() * StrikeDistance;
+	FVector StartTrace = GetFirstPersonCameraComponent()->GetComponentLocation() + GetFirstPersonCameraComponent()->GetForwardVector() * 50;
+	FVector EndTrace = StartTrace + GetFirstPersonCameraComponent()->GetForwardVector() * WeaponComponent->GloveAttackDistance;
 
 	TArray < TEnumAsByte < EObjectTypeQuery > >  ObjectTypes;
 	ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECC_Destructible));
