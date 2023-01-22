@@ -42,8 +42,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 		int DamageProjectile = 0;
 
-		int DamageWeapon;
-
 	//Effects
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Effects")

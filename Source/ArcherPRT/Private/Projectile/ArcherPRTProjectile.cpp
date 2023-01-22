@@ -106,9 +106,9 @@ void AArcherPRTProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActo
 {
 	if (!GetWorld())  return;
 
-	ProjectileMovement->StopMovementImmediately();
-
 	SpawnHitEffect(Hit);
+
+	//ProjectileMovement->StopMovementImmediately();
 
 	if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr))
 	{
@@ -119,7 +119,7 @@ void AArcherPRTProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActo
 		{
 			if (Hit.GetComponent()->ComponentHasTag("WeakPoint"))
 			{
-				Pawn->TakeDamage(DamageWeapon + DamageProjectile, FDamageEvent(), GetInstigatorController(), this);
+				Pawn->TakeDamage(DamageProjectile, FDamageEvent(), GetInstigatorController(), this);
 				Pawn->OnHit(GetActorForwardVector(), Hit, GetInstigator(), EWeaponType::PneumaticGun, false);
 
 				GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Red, TEXT("HEAD SHOT"));
@@ -128,12 +128,10 @@ void AArcherPRTProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActo
 			{
 				Pawn->TakeDamage(0, FDamageEvent(), GetInstigatorController(), this);
 			}	
-			Destroy();		
 		}
 		if (InteractObject)
 		{
-			InteractObject->AfterShotHit();
-			Destroy();
+			InteractObject->AfterShotHit();			
 		}
 
 		Destroy();

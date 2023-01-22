@@ -272,7 +272,7 @@ void UWeaponComponent::MakeShot()
 
 	if (CurrentProjectile)
 		{
-			CurrentProjectile->DamageWeapon = CurrentEquipWeapon.GetDefaultObject()->Damage;
+			CurrentProjectile->DamageProjectile = CurrentEquipWeapon.GetDefaultObject()->Damage;
 			CurrentProjectile->SetInstigator(Owner);
 			CurrentProjectile->FinishSpawning(FTransform(SpawnRotation, SpawnLocation));
 
