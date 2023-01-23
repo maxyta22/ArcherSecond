@@ -27,6 +27,10 @@ AArcherPRTProjectile::AArcherPRTProjectile()
 
 	// set up a notification for when this component hits something blocking
 	CollisionComp->OnComponentHit.AddDynamic(this, &AArcherPRTProjectile::OnHit);
+
+	// set up a notification for when this component overlap
+	CollisionComp->OnComponentBeginOverlap.AddDynamic(this, &AArcherPRTProjectile::OnOverlap);
+
 	// Can Return PhysMat
 	CollisionComp->bReturnMaterialOnMove = true;
 
@@ -58,8 +62,7 @@ AArcherPRTProjectile::AArcherPRTProjectile()
 
 }
 
-
-void AArcherPRTProjectile::SpawnHitEffect(FHitResult Hit)
+void AArcherPRTProjectile::SpawnImpactEffect(FHitResult Hit)
 {
 	auto ImpactNiagaraEffect = DefaultNiagaraImpactEffect;
 	auto ImpactCascadeEffect = DefaultCascadeImpactEffect;
@@ -104,36 +107,49 @@ void AArcherPRTProjectile::SpawnHitEffect(FHitResult Hit)
 
 void AArcherPRTProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult &Hit)
 {
+	OnImpact(Hit);
+}
+
+void AArcherPRTProjectile::OnOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	OnImpact(SweepResult);
+}
+
+void AArcherPRTProjectile::OnImpact(const FHitResult& Result)
+{
 	if (!GetWorld())  return;
 
-	SpawnHitEffect(Hit);
-
 	//ProjectileMovement->StopMovementImmediately();
+
+	const auto OtherActor = Result.GetActor();
+	const auto OtherComp = Result.GetComponent();
 
 	if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr))
 	{
 		const auto Pawn = Cast<AGameCharacter>(OtherActor);
 		const auto InteractObject = Cast<AInteractObjectBase>(OtherActor);
-		
+
 		if (Pawn)
 		{
-			if (Hit.GetComponent()->ComponentHasTag("WeakPoint"))
+			if (Result.GetComponent()->ComponentHasTag("WeakPoint"))
 			{
 				Pawn->TakeDamage(DamageProjectile, FDamageEvent(), GetInstigatorController(), this);
-				Pawn->OnHit(GetActorForwardVector(), Hit, GetInstigator(), EWeaponType::PneumaticGun, false);
+				Pawn->OnHit(GetActorForwardVector(), Result, GetInstigator(), EWeaponType::PneumaticGun, false);
 
 				GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Red, TEXT("HEAD SHOT"));
 			}
-			else 
+			else
 			{
 				Pawn->TakeDamage(0, FDamageEvent(), GetInstigatorController(), this);
-			}	
+			}
 		}
 		if (InteractObject)
 		{
-			InteractObject->AfterShotHit();			
+			InteractObject->AfterShotHit();
 		}
 
+		SpawnImpactEffect(Result);
 		Destroy();
 	}
 }
+
