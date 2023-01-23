@@ -52,6 +52,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 		int DamageProjectile = 0;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
+		bool FlyThroughPawn;
+
 	//Effects
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Effects")
