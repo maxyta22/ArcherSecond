@@ -35,8 +35,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
 		TArray<TSubclassOf<UWeaponBase>> AvailableWeapons;
 
-	UPROPERTY(BlueprintReadOnly, Category = "Weapon")
-		int SelectedUseAmmoIndex = 0;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Internal")
 		bool bWeaponCharged;
@@ -111,8 +109,6 @@ public:
 	bool CanReloadWeapon() const;
 
 	void TraceAim();
-
-	void SwitchAmmoInCurrentEquipWeapon();
 
 	UFUNCTION(BlueprintCallable)
 	void EquipWeapon(TSubclassOf<UWeaponBase> Weapon);

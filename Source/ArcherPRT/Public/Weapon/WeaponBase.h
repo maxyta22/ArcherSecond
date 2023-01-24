@@ -30,7 +30,10 @@ public:
 		bool bMeleeWeapon;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (EditCondition = "!bMeleeWeapon"), Category = Gameplay)
-		TMap<EResourcesType, TSubclassOf<AArcherPRTProjectile>> ProjectileAmmoMap;
+		TSubclassOf<AArcherPRTProjectile> Projectile;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (EditCondition = "!bMeleeWeapon"), Category = Gameplay)
+		TSubclassOf<AArcherPRTProjectile> ChargedProjectile;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 		USoundBase* FireSound;

@@ -266,9 +266,8 @@ void UWeaponComponent::MakeShot()
 	const FRotator SpawnRotation = ShootDirection.Rotation();
 			
 	//SpawnProjectile
-	TArray<TSubclassOf<AArcherPRTProjectile>> ValueFromMap;
-	CurrentEquipWeapon.GetDefaultObject()->ProjectileAmmoMap.GenerateValueArray(ValueFromMap);
-	AArcherPRTProjectile* CurrentProjectile = World->SpawnActorDeferred<AArcherPRTProjectile>(ValueFromMap[SelectedUseAmmoIndex], FTransform(SpawnRotation, SpawnLocation));
+	const auto SpawnedProjectile =  bWeaponCharged  ? CurrentEquipWeapon.GetDefaultObject()->ChargedProjectile : CurrentEquipWeapon.GetDefaultObject()->Projectile;
+	AArcherPRTProjectile* CurrentProjectile = World->SpawnActorDeferred<AArcherPRTProjectile>(SpawnedProjectile, FTransform(SpawnRotation, SpawnLocation));
 
 	if (CurrentProjectile)
 		{
@@ -314,17 +313,6 @@ int UWeaponComponent::GetMaxAmmo() const
 	return MaxAmmo;
 }
 
-void UWeaponComponent::SwitchAmmoInCurrentEquipWeapon()
-{
-	if (!CurrentEquipWeapon) return;
-	if (SelectedUseAmmoIndex == CurrentEquipWeapon.GetDefaultObject()->ProjectileAmmoMap.Num()-1)
-	{
-		SelectedUseAmmoIndex = 0;
-	}
-	else
-		SelectedUseAmmoIndex = FMath::Clamp(SelectedUseAmmoIndex + 1, 0, CurrentEquipWeapon.GetDefaultObject()->ProjectileAmmoMap.Num()-1);
-
-}
 
 void UWeaponComponent::TryReloadWeapon()
 {
