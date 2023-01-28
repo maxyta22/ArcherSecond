@@ -271,7 +271,7 @@ void UWeaponComponent::MakeShot()
 
 	if (CurrentProjectile)
 		{
-			CurrentProjectile->DamageProjectile = CurrentProjectile->DamageProjectile + bWeaponCharged ? CurrentEquipWeapon.GetDefaultObject()->ChargeDamage : CurrentEquipWeapon.GetDefaultObject()->Damage;
+			//CurrentProjectile->DamageProjectile = CurrentProjectile->DamageProjectile + bWeaponCharged ? CurrentEquipWeapon.GetDefaultObject()->ChargeDamage : CurrentEquipWeapon.GetDefaultObject()->Damage;
 			CurrentProjectile->SetInstigator(Owner);
 			CurrentProjectile->FinishSpawning(FTransform(SpawnRotation, SpawnLocation));
 		
