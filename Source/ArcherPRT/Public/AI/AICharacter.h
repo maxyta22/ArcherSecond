@@ -114,7 +114,7 @@ public:
 		void AfterOnHit(FVector HitDirection, FHitResult HitResult, AActor* Causer, EWeaponType WeaponType, bool Charged);
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "Behavior")
-		void PerformOnHitReaction(FVector HitDirection, FHitResult HitResult, AActor* Causer, EWeaponType WeaponType, bool Charged);
+		void PerformOnHitReaction(FVector HitDirection, FHitResult HitResult, AActor* Causer, EWeaponType WeaponType, bool Charged, bool ForceHeavyHitReactions = false);
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Behavior")
 		void AfterEnemyFound();
