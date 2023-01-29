@@ -68,7 +68,7 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Behavior")
 		float MinDistanceForAttackAfterHitReaction = 300;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Behavior")
+	UPROPERTY(EditInstanceOnly, BlueprintReadWrite, Category = "Behavior")
 		float MaxDistanceDetection = 1500.0f;
 
 	UPROPERTY(EditInstanceOnly, BlueprintReadWrite, Category = "Behavior")
