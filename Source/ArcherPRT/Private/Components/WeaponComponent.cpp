@@ -169,7 +169,7 @@ void UWeaponComponent::TryFire()
 
 }
 
-void UWeaponComponent::FinishFire()
+void UWeaponComponent::FinishFire(bool ForceFinishFire)
 {
 	UWorld* const World = GetWorld();
 	if (!World) return;
@@ -182,6 +182,12 @@ void UWeaponComponent::FinishFire()
 	bBlockInProgress = false;
 	bWeaponCharged = false;
 	SpreadShot = 0.0f;
+
+	if (ForceFinishFire)
+	{
+		bPendingOnFire = false;
+		bPendingOnAltFire = false;
+	}
 
 	if (bPendingOnFire)
 	{
@@ -312,7 +318,6 @@ int UWeaponComponent::GetMaxAmmo() const
 	const auto MaxAmmo = Owner->InventoryComponent->GetMaxResources(EResourcesType::Arrow);
 	return MaxAmmo;
 }
-
 
 void UWeaponComponent::TryReloadWeapon()
 {

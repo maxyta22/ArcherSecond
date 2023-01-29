@@ -110,7 +110,7 @@ void APlayerCharacter::OnDeath()
 float APlayerCharacter::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
 	Super::TakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
-	WeaponComponent->FinishFire();
+	WeaponComponent->FinishFire(true);
 	AfterTakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
 	return Damage;
 }
