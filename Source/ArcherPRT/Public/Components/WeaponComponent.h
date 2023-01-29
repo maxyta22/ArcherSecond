@@ -91,7 +91,7 @@ public:
 	void TryFire();
 
 	UFUNCTION(BlueprintCallable)
-	void FinishFire();
+	void FinishFire(bool ForceFinishFire = false);
 
 	UFUNCTION(BlueprintPure)
 	bool HaveAmmo() { return AmountAmmoInMagazine > 0; };
