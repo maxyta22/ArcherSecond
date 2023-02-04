@@ -12,15 +12,16 @@
 
 AActor* UPRTAIPerceptionComponent::GetNearestEnemy() const
 {
-	TArray<AActor*> PerceivedActors;
-	GetCurrentlyPerceivedActors(UAISense_Sight::StaticClass(), PerceivedActors);
-	if (PerceivedActors.Num() == 0) return nullptr;
-	
 	const auto Controller = Cast<AAIController>(GetOwner());
 	if (!Controller) return nullptr;
-	
+
 	AAICharacter* Pawn = Cast<AAICharacter>(Controller->GetPawn());
 	if (!Pawn) return nullptr;
+
+	TArray<AActor*> PerceivedActors;
+	GetCurrentlyPerceivedActors(UAISense_Sight::StaticClass(), PerceivedActors);
+
+	if (PerceivedActors.IsEmpty()) return nullptr;
 
 	float BestDistance = MAX_FLT;
 	AActor* BestPawn = nullptr;

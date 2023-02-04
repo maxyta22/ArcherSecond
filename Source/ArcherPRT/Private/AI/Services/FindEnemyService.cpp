@@ -31,19 +31,14 @@ void UFindEnemyService::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeM
 		if (!PerceptionComponent) return;
 
 
-		if (OwnerAIController->GetEnemy()==nullptr) 
+		if (!OwnerAIController->GetEnemy()) 
 		{
-	
 			OwnerAIController->SetEnemy(PerceptionComponent->GetNearestEnemy());
-
 			if (OwnerAIController->GetEnemy())
 			{
 				OwnerAICharacter->AfterEnemyFound();
-			}
-			
+			}			
 		}
-
-	
 	}
 	
 	
