@@ -30,13 +30,12 @@ void UFindEnemyService::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeM
 		const auto PerceptionComponent = OwnerAIController->FindComponentByClass<UPRTAIPerceptionComponent>();
 		if (!PerceptionComponent) return;
 
-		//if (Blackboard->GetValueAsObject(EnemyActorKey.SelectedKeyName) == nullptr)
+
 		if (OwnerAIController->GetEnemy()==nullptr) 
 		{
-			//Blackboard->SetValueAsObject(EnemyActorKey.SelectedKeyName, PerceptionComponent->GetNearestEnemy());
+	
 			OwnerAIController->SetEnemy(PerceptionComponent->GetNearestEnemy());
 
-			//if (Blackboard->GetValueAsObject(EnemyActorKey.SelectedKeyName))
 			if (OwnerAIController->GetEnemy())
 			{
 				OwnerAICharacter->AfterEnemyFound();

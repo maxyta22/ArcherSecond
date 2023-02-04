@@ -13,6 +13,8 @@ class ARCHERPRT_API UPRTAIPerceptionComponent : public UAIPerceptionComponent
 	GENERATED_BODY()
 
 public:
+
+UFUNCTION(BlueprintCallable)
 	AActor* GetNearestEnemy() const;
 
 UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Perception")
