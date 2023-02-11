@@ -7,6 +7,8 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "Kismet/GameplayStatics.h"
 #include "AI/AICharacter.h"
+#include "AI/PRTAIController.h"
+#include "Components/StatsComponent.h"
 #include "UObject/ConstructorHelpers.h"
 
 AArcherPRTGameMode::AArcherPRTGameMode()
@@ -34,9 +36,29 @@ bool AArcherPRTGameMode::InBattleMode()
 	}
 	
 
-	//for (AActor* overlappedActor : OverlapActors)
-	//{
+	for (AActor* OverlappedActor : OverlapActors)
+	{
+		const auto AICharacter = Cast<AAICharacter>(OverlappedActor);
 
-	//}
-	return true;
+		if (AICharacter && !AICharacter->StatsComponent->IsDead())
+		{
+			const auto AIController = Cast<APRTAIController>(AICharacter->GetController());
+			
+			if (AIController && AIController->GetEnemy())
+			{
+				float ZPlayer = Player->GetActorLocation().Z;
+				float ZEnemy = AICharacter->GetActorLocation().Z;	
+				const auto ZDistance = UKismetMathLibrary::Vector_Distance(FVector(0, 0, ZPlayer), FVector(0, 0, ZEnemy));
+
+				if (ZDistance < Z_ErrorBattleMode)
+				{
+					return true;
+				}
+				
+			}
+			
+		}
+	}
+
+	return false;
 }

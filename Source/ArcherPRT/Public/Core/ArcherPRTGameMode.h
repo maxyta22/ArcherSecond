@@ -21,6 +21,13 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Check")
 		bool InBattleMode();
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Settings|BattleMode")
+		float MaxDistanceBattleMode = 1500;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Settings|BattleMode")
+		float Z_ErrorBattleMode = 500;
+
+
 };
 
 
