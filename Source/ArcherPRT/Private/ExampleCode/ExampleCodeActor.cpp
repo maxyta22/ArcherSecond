@@ -21,6 +21,7 @@ int AExampleCodeActor::ExampleBlueprintPureFunction() const
 
 void AExampleCodeActor::ExampleNativeEventFunction_Implementation()
 {
+	GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Green, TEXT("Call ExampleNativeFunction"));
 	UE_LOG(LogTemp, Warning, TEXT("Call ExampleNativeFunction"));
 }
 

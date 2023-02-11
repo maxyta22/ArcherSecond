@@ -89,7 +89,6 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent, Category = "ExampleUfunctions")
 		void ExampleNativeEventFunction();
-		void ExampleNativeEventFunction_Implementation();
 
 	UFUNCTION(BlueprintCallable, Category = "ExampleUfunctions")
 		void ExampleInputOtputFunction(int InValue, FVector InVector, const FVector& constInVector, int& OutInt, bool& OutBool, FVector& OutVector);

@@ -12,7 +12,15 @@ class AArcherPRTGameMode : public AGameModeBase
 	GENERATED_BODY()
 
 public:
+
 	AArcherPRTGameMode();
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "Sound")
+		void ToggleSoundMode (bool BattleMode);
+
+	UFUNCTION(BlueprintCallable, Category = "Sound")
+		bool InBattleMode();
+
 };
 
 
