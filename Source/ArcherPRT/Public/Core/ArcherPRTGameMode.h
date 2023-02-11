@@ -18,7 +18,7 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "Sound")
 		void ToggleSoundMode (bool BattleMode);
 
-	UFUNCTION(BlueprintCallable, Category = "Sound")
+	UFUNCTION(BlueprintPure, Category = "Check")
 		bool InBattleMode();
 
 };
