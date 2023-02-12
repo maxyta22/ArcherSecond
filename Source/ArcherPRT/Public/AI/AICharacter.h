@@ -90,7 +90,7 @@ public:
 
 	// Drop Settings
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Drop")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Drop")
 		TSubclassOf<APickupResourcesBase> DropCorpse;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Drop")
