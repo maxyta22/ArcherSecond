@@ -90,10 +90,10 @@ public:
 
 	// Drop Settings
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Drop")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Behavior|Drop")
 		TSubclassOf<APickupResourcesBase> DropCorpse;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Drop")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Behavior|Drop")
 		TArray<TSubclassOf<APickupResourcesBase>> DropList;
 
 	UFUNCTION(BlueprintPure)
