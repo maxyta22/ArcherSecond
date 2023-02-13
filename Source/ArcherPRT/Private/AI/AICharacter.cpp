@@ -74,7 +74,7 @@ void AAICharacter::FinishAccumulateToAiming()
 void AAICharacter::RotationOnTarget()
 {
 	if (!GetWorld()) return;
-	if (StatsComponent->IsDead()) return;
+	if (StatsComponent->IsDead() && !GetCurrentMontage()) return;
 	if (!AIControllerRef) return;
 	if (!AIControllerRef->GetBlackboardComponent()) return;
 	if (!AIControllerRef->GetBlackboardComponent()->GetValueAsObject("EnemyActor")) return;
