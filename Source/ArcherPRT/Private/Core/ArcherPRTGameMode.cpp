@@ -26,7 +26,9 @@ bool AArcherPRTGameMode::InBattleMode()
 	TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes;
 	ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_Pawn));
 	UClass* FilterClass = AAICharacter::StaticClass();
-	const auto Player = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
+	ACharacter* Player = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
+
+	if (!Player) return false;
 
 	UKismetSystemLibrary::SphereOverlapActors(GetWorld(), Player->GetActorLocation(), 1000, ObjectTypes, FilterClass, IgnoreActors, OverlapActors);
 
