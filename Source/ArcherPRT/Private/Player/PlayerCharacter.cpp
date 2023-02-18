@@ -269,6 +269,7 @@ void APlayerCharacter::CheckInteractObjects(bool TryInteract)
 
 void APlayerCharacter::TryPerformInteract()
 {
+	OnTryPerformInteract();
 	CheckInteractObjects(true);
 }
 

@@ -100,6 +100,9 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, Category = "Craft")
 		void AfterBeginCraft();
 
+	UFUNCTION(BlueprintImplementableEvent, Category = "Craft")
+		void OnTryPerformInteract();
+
 
 protected:
 
