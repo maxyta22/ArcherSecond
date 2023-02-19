@@ -25,7 +25,8 @@ public:
 
 	float GetMaxHealh() const { return MaxHealth; }
 
-	void AddHealth(float Value) { SetHealth(GetHealth() + 50); }
+	UFUNCTION(BlueprintCallable)
+	void AddHealth(float Value) { SetHealth(GetHealth() + Value); }
 
 	UFUNCTION(BlueprintPure)
 		bool IsDead() { bool Result; return Result = (GetHealth() <= 0) ? true : false; }
