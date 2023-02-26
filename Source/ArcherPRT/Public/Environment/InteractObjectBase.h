@@ -27,7 +27,7 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 		UArrowComponent* PivotArrow;
 
-	UPROPERTY(VisibleAnywhere, Category = "Components")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
 		USphereComponent* SphereCollision;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
