@@ -105,6 +105,9 @@ public:
 	// Blueprint Implementable Events
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Behavior")
+		void MakeShot();
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Behavior")
 		void AfterReactionToAiming();
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Behavior")
