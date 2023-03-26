@@ -175,7 +175,6 @@ void APlayerCharacter::MakeStrike(float StrikeDistance, float MinAngle, float Ma
 
 void APlayerCharacter::MoveForward(float Value)
 {
-	if (WeaponComponent->ChargeAttackInProgress() || WeaponComponent->BlockInProgress()) return;
 	if (Value != 0.0f)
 	{
 		AddMovementInput(GetActorForwardVector(), Value);
@@ -184,7 +183,6 @@ void APlayerCharacter::MoveForward(float Value)
 
 void APlayerCharacter::MoveRight(float Value)
 {
-	if (WeaponComponent->ChargeAttackInProgress() || WeaponComponent->BlockInProgress()) return;
 	if (Value != 0.0f)
 	{
 		AddMovementInput(GetActorRightVector(), Value);
