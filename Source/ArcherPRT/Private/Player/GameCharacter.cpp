@@ -1,7 +1,5 @@
 // Archer Prototype. All rights reserved.
 
-
-
 #include "Player/GameCharacter.h"
 #include "Projectile/ArcherPRTProjectile.h"
 #include "Animation/AnimInstance.h"
@@ -26,7 +24,6 @@
 
 
 DEFINE_LOG_CATEGORY_STATIC(LogGameCharacter, Warning, All);
-
 
 
 AGameCharacter::AGameCharacter()
@@ -92,6 +89,31 @@ void AGameCharacter::GiveAbilities()
 				FGameplayAbilitySpec(StartupAbility, 1, static_cast<int32>(StartupAbility.GetDefaultObject()->AbilityInputID), this));
 		}
 	}
+}
+
+void AGameCharacter::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+
+	AbilitySystemComponent->InitAbilityActorInfo(this, this);
+
+	InitializeAttributes();
+	GiveAbilities();
+}
+
+void AGameCharacter::OnRep_PlayerState()
+{
+	Super::OnRep_PlayerState();
+
+	AbilitySystemComponent->InitAbilityActorInfo(this, this);
+	InitializeAttributes();
+
+	if (AbilitySystemComponent && InputComponent)
+	{
+		const FGameplayAbilityInputBinds Binds("Confirm", "Cancel", "EAbilityInputID", static_cast<int32>(EAbilityInputID::Confirm), static_cast<int32>(EAbilityInputID::Cancel));
+		AbilitySystemComponent->BindAbilityActivationToInputComponent(InputComponent, Binds);
+	}
+
 }
 
 float AGameCharacter::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)

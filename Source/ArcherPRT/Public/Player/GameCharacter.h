@@ -60,6 +60,9 @@ public:
 	virtual void InitializeAttributes();
 	virtual void GiveAbilities();
 
+	virtual void PossessedBy(AController* NewController) override;
+	virtual void OnRep_PlayerState() override;
+
 	//Default Effect for attributes
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "GAS")
 		TSubclassOf<class UGameplayEffect> DefaultAttributeEffect;
