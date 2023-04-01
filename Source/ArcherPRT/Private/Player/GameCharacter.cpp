@@ -101,20 +101,6 @@ void AGameCharacter::PossessedBy(AController* NewController)
 	GiveAbilities();
 }
 
-void AGameCharacter::OnRep_PlayerState()
-{
-	Super::OnRep_PlayerState();
-
-	AbilitySystemComponent->InitAbilityActorInfo(this, this);
-	InitializeAttributes();
-
-	if (AbilitySystemComponent && InputComponent)
-	{
-		const FGameplayAbilityInputBinds Binds("Confirm", "Cancel", "EAbilityInputID", static_cast<int32>(EAbilityInputID::Confirm), static_cast<int32>(EAbilityInputID::Cancel));
-		AbilitySystemComponent->BindAbilityActivationToInputComponent(InputComponent, Binds);
-	}
-
-}
 
 float AGameCharacter::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
