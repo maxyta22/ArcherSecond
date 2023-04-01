@@ -13,7 +13,9 @@
 #include "MotionControllerComponent.h"
 #include "DrawDebugHelpers.h"
 #include "GameFramework/Actor.h"
-#include "XRMotionControllerBase.h" // for FXRMotionControllerBase::RightHandSourceId
+#include "GameplayAbilitySystem/PRTAbilitySystemComponent.h"
+#include "GameplayAbilitySystem/PRTAttributeSet.h"
+#include "GameplayAbilitySystem/PRTGameplayAbility.h"
 #include "Environment/InteractObjectBase.h"
 #include "Components/CraftComponent.h"
 #include "Components/InventoryComponent.h"
@@ -98,6 +100,12 @@ void APlayerCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerIn
 	PlayerInputComponent->BindAxis("TurnRate", this, &APlayerCharacter::TurnAtRate);
 	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
 	PlayerInputComponent->BindAxis("LookUpRate", this, &APlayerCharacter::LookUpAtRate);
+
+	if (AbilitySystemComponent && InputComponent)
+	{
+		const FGameplayAbilityInputBinds Binds("Confirm", "Cancel", "EAbilityInputID", static_cast<int32>(EAbilityInputID::Confirm), static_cast<int32>(EAbilityInputID::Cancel));
+		AbilitySystemComponent->BindAbilityActivationToInputComponent(InputComponent, Binds);
+	}
 	
 }
 
