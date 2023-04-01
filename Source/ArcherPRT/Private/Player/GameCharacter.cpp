@@ -14,6 +14,9 @@
 #include "Components/WeaponComponent.h"
 #include "Components/CustomAction.h"
 #include "GameFramework/InputSettings.h"
+#include "GameplayAbilitySystem/PRTAbilitySystemComponent.h"
+#include "GameplayAbilitySystem/PRTAttributeSet.h"
+#include "GameplayAbilitySystem/PRTGameplayAbility.h"
 #include "Net/UnrealNetwork.h"
 #include "HeadMountedDisplayFunctionLibrary.h"
 #include "Kismet/GameplayStatics.h"
@@ -41,7 +44,11 @@ AGameCharacter::AGameCharacter()
 	CustomAction = CreateDefaultSubobject<UCustomAction>("CustomObjectComponent");
 	CustomAction->SetIsReplicated(true);
 
-	AbilitySystemComponent = CreateDefaultSubobject<UAbilitySystemComponent>("AbilitySystemComponent");
+	AbilitySystemComponent = CreateDefaultSubobject<UPRTAbilitySystemComponent>("AbilitySystemComponent");
+	AbilitySystemComponent->SetIsReplicated(true);
+	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
+
+	Attributes = CreateDefaultSubobject<UPRTAttributeSet>("Attributes");
 
 }
 
@@ -51,6 +58,40 @@ void AGameCharacter::BeginPlay()
 	//Bind Delegate
 	StatsComponent->OnHealthChanged.AddUObject(this, &AGameCharacter::OnHealChanged);
 	StatsComponent->OnDeath.AddUObject(this, &AGameCharacter::OnDeath);
+}
+
+UAbilitySystemComponent* AGameCharacter::GetAbilitySystemComponent() const
+{
+	return AbilitySystemComponent;
+}
+
+void AGameCharacter::InitializeAttributes()
+{
+	if (AbilitySystemComponent && DefaultAttributeEffect)
+	{
+		FGameplayEffectContextHandle EffectContext = AbilitySystemComponent->MakeEffectContext();
+		EffectContext.AddSourceObject(this);
+
+		FGameplayEffectSpecHandle SpecHandle = AbilitySystemComponent->MakeOutgoingSpec(DefaultAttributeEffect, 1, EffectContext);
+
+		if (SpecHandle.IsValid())
+		{
+			FActiveGameplayEffectHandle GEHandle = AbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
+		}
+
+	}
+}
+
+void AGameCharacter::GiveAbilities()
+{
+	if (HasAuthority() && AbilitySystemComponent)
+	{
+		for (TSubclassOf<UPRTGameplayAbility>& StartupAbility : DefaultAbilities)
+		{
+			AbilitySystemComponent->GiveAbility(
+				FGameplayAbilitySpec(StartupAbility, 1, static_cast<int32>(StartupAbility.GetDefaultObject()->AbilityInputID), this));
+		}
+	}
 }
 
 float AGameCharacter::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)

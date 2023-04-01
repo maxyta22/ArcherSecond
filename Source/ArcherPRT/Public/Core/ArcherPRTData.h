@@ -38,7 +38,7 @@ enum class EWeaponType : uint8
 };
 
 UENUM(BlueprintType, Category = "Gameplay Ability System")
-enum class EGASAbilityInputID : uint8
+enum class EAbilityInputID : uint8
 {
 	None,
 	Confirm,

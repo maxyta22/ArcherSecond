@@ -1,8 +1,8 @@
 // Archer Prototype. All rights reserved
 
+#include "Animations/AIMakeShotAN.h"
 #include "AI/AICharacter.h"
 #include "Player/GameCharacter.h"
-#include "Animations/AIMakeShotAN.h"
 
 void UAIMakeShotAN::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, const FAnimNotifyEventReference& EventReference)
 {

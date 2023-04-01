@@ -6,9 +6,7 @@
 #include "AbilitySystemComponent.h"
 #include "PRTAbilitySystemComponent.generated.h"
 
-/**
- * 
- */
+
 UCLASS()
 class ARCHERPRT_API UPRTAbilitySystemComponent : public UAbilitySystemComponent
 {

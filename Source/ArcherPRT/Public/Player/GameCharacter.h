@@ -4,7 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-#include "Net/UnrealNetwork.h"
+#include "AbilitySystemInterface.h"
+#include <GameplayEffectTypes.h>
 #include "AbilitySystemComponent.h"
 #include "Core/ArcherPRTData.h"
 #include "GameCharacter.generated.h"
@@ -19,11 +20,13 @@ class USoundBase;
 class UInventoryComponent;
 class UStatsComponent;
 class UWeaponComponent;
+class UPRTAbilitySystemComponent;
+class UPRTAttributeSet;
 class UCustomAction;
 class UBoxComponent;
 
 UCLASS(config = Game)
-class AGameCharacter : public ACharacter
+class AGameCharacter : public ACharacter, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 
@@ -45,7 +48,26 @@ public:
 		UCustomAction* CustomAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
-		UAbilitySystemComponent* AbilitySystemComponent;
+		UPRTAbilitySystemComponent* AbilitySystemComponent;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
+		UPRTAttributeSet* Attributes;
+
+	// Gameplay Ability System
+	
+	virtual class UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+
+	virtual void InitializeAttributes();
+	virtual void GiveAbilities();
+
+	//Default Effect for attributes
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "GAS")
+		TSubclassOf<class UGameplayEffect> DefaultAttributeEffect;
+
+	//Default Abilities
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "GAS")
+		TArray<TSubclassOf<class UPRTGameplayAbility>> DefaultAbilities;
+
 
 
 	//Take Damage

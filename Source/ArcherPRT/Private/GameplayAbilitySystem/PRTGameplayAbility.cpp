@@ -3,3 +3,6 @@
 
 #include "GameplayAbilitySystem/PRTGameplayAbility.h"
 
+UPRTGameplayAbility::UPRTGameplayAbility()
+{
+}
