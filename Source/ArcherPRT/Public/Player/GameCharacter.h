@@ -7,6 +7,7 @@
 #include "AbilitySystemInterface.h"
 #include <GameplayEffectTypes.h>
 #include "AbilitySystemComponent.h"
+#include "GameplayAbilitySystem/PRTAttributeSet.h"
 #include "Core/ArcherPRTData.h"
 #include "GameCharacter.generated.h"
 
@@ -70,6 +71,20 @@ public:
 	//Default Abilities
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "GAS")
 		TArray<TSubclassOf<class UPRTGameplayAbility>> DefaultAbilities;
+
+	//Attributes
+
+	UFUNCTION(BlueprintPure, Category = "Attributes")
+		float GetHealth() { return Attributes->GetHealth();}
+
+	UFUNCTION(BlueprintPure, Category = "Attributes")
+		float GetMaxHealth() { return Attributes->GetMaxHealth();}
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Attributes")
+		void OnHealthChanged(float DeltaValue, const struct FGameplayTagContainer& EventTags);
+
+	UFUNCTION(BlueprintPure, Category = "Attributes")
+		bool IsAlive() { return Attributes->GetHealth() > 0; }
 
 
 

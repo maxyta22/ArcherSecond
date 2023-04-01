@@ -12,13 +12,20 @@ void UPRTAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME_CONDITION_NOTIFY(UPRTAttributeSet, Health, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UPRTAttributeSet, MaxHealth, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UPRTAttributeSet, Stamina, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UPRTAttributeSet, Power, COND_None, REPNOTIFY_Always);
 }
 
+
 void UPRTAttributeSet::OnRep_Health(const FGameplayAttributeData& OldHealth)
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UPRTAttributeSet, Health, OldHealth)
+}
+
+void UPRTAttributeSet::OnRep_MaxHealth(const FGameplayAttributeData& OldMaxHealth)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UPRTAttributeSet, Health, OldMaxHealth)
 }
 
 void UPRTAttributeSet::OnRep_Stamina(const FGameplayAttributeData& OldStamina)
@@ -30,3 +37,9 @@ void UPRTAttributeSet::OnRep_Power(const FGameplayAttributeData& OldPower)
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UPRTAttributeSet, Power, OldPower)
 }
+
+void UPRTAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
+{
+	Super::PostGameplayEffectExecute(Data);
+}
+
