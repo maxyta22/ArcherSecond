@@ -36,3 +36,12 @@ enum class EWeaponType : uint8
 	PneumaticGlove,
 	PneumaticGun,
 };
+
+UENUM(BlueprintType, Category = "Gameplay Ability System")
+enum class EGASAbilityInputID : uint8
+{
+	None,
+	Confirm,
+	Cancel,
+	Punch,
+};
