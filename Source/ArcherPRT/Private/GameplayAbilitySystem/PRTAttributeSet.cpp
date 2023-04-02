@@ -73,10 +73,8 @@ void UPRTAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbac
 
 	float DeltaValue = 0;
 
-	if (Data.EvaluatedData.ModifierOp = EGameplayModOp::Type::Additive)
-	{
-		DeltaValue = Data.EvaluatedData.Magnitude;
-	}
+	DeltaValue = Data.EvaluatedData.Magnitude;
+	
 
 	AGameCharacter* TargetCharacter = nullptr;
 
@@ -93,7 +91,7 @@ void UPRTAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbac
 
 		if (TargetCharacter)
 		{
-			TargetCharacter->OnHealthChanged(DeltaValue, SourceTags);
+			TargetCharacter->OnHealthChanged();
 		}
 	}
 

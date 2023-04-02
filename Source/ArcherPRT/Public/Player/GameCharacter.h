@@ -81,7 +81,7 @@ public:
 		float GetMaxHealth() { return Attributes->GetMaxHealth();}
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Attributes")
-		void OnHealthChanged(float DeltaValue, const struct FGameplayTagContainer& EventTags);
+		void OnHealthChanged();
 
 	UFUNCTION(BlueprintPure, Category = "Attributes")
 		bool IsAlive() { return Attributes->GetHealth() > 0; }
