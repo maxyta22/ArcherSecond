@@ -27,6 +27,7 @@ public:
 	UPRTAttributeSet();
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
 	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
 
 	UPROPERTY(BlueprintReadOnly, Category =  "Attributes", ReplicatedUsing = OnRep_Health)
@@ -56,6 +57,11 @@ public:
 
 	UFUNCTION()
 		virtual void OnRep_Power(const FGameplayAttributeData& OldPower);
+
+	void AdjustAttributeForMaxChange(const FGameplayAttributeData& AffectedAttribute,
+		const FGameplayAttributeData& MaxAttribute,
+		float NewMaxValue,
+		const FGameplayAttribute& AffectedAttributeProperty) const;
 
 
 	
