@@ -72,6 +72,9 @@ public:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "GAS")
 		TArray<TSubclassOf<class UPRTGameplayAbility>> DefaultAbilities;
 
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "GAS")
+		void ApplyGameplayEffect(TSubclassOf<UGameplayEffect> GameplayEffect);
+
 	//Attributes
 
 	UFUNCTION(BlueprintPure, Category = "Attributes")
@@ -80,11 +83,11 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Attributes")
 		float GetMaxHealth() { return Attributes->GetMaxHealth();}
 
-	UFUNCTION(BlueprintImplementableEvent, Category = "Attributes")
-		void OnHealthChanged();
-
 	UFUNCTION(BlueprintPure, Category = "Attributes")
 		bool IsAlive() { return Attributes->GetHealth() > 0; }
+
+	UFUNCTION()
+		void OnHealthAttributeChanged();
 
 
 
@@ -144,6 +147,8 @@ protected:
 	TArray<AActor*> IgnoreActorsDamage;
 
 private:
+
+	bool CanCheckAttributes;
 
 	void OnHealChanged(float Health);
 

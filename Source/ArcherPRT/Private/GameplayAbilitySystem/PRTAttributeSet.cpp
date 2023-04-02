@@ -91,7 +91,7 @@ void UPRTAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbac
 
 		if (TargetCharacter)
 		{
-			TargetCharacter->OnHealthChanged();
+			TargetCharacter->OnHealthAttributeChanged();
 		}
 	}
 

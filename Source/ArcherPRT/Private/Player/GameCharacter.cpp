@@ -99,12 +99,29 @@ void AGameCharacter::PossessedBy(AController* NewController)
 
 	InitializeAttributes();
 	GiveAbilities();
+	CanCheckAttributes = true;
+}
+
+void AGameCharacter::ApplyGameplayEffect_Implementation(TSubclassOf<UGameplayEffect> GameplayEffect)
+{
 }
 
 float AGameCharacter::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
 	Super::TakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
 	return Damage;
+}
+
+void AGameCharacter::OnHealthAttributeChanged()
+{
+	if (CanCheckAttributes)
+	{
+		if (!IsAlive())
+		{
+			OnDeath();
+		}
+	}
+		
 }
 
 void AGameCharacter::OnHealChanged(float Health)
