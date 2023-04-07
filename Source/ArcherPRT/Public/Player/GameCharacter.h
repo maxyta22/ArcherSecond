@@ -23,7 +23,6 @@ class UStatsComponent;
 class UWeaponComponent;
 class UPRTAbilitySystemComponent;
 class UPRTAttributeSet;
-class UCustomAction;
 class UBoxComponent;
 
 UCLASS(config = Game)
@@ -44,9 +43,6 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
 		UWeaponComponent* WeaponComponent;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
-		UCustomAction* CustomAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
 		UPRTAbilitySystemComponent* AbilitySystemComponent;

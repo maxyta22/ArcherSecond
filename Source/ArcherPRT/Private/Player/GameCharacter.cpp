@@ -10,7 +10,6 @@
 #include "Components/InputComponent.h"
 #include "Components/StatsComponent.h"
 #include "Components/WeaponComponent.h"
-#include "Components/CustomAction.h"
 #include "GameFramework/InputSettings.h"
 #include "GameplayAbilitySystem/PRTAbilitySystemComponent.h"
 #include "GameplayAbilitySystem/PRTAttributeSet.h"
@@ -37,9 +36,6 @@ AGameCharacter::AGameCharacter()
 
 	WeaponComponent = CreateDefaultSubobject<UWeaponComponent>("WeaponComponent");
 	WeaponComponent->SetIsReplicated(true);
-
-	CustomAction = CreateDefaultSubobject<UCustomAction>("CustomObjectComponent");
-	CustomAction->SetIsReplicated(true);
 
 	AbilitySystemComponent = CreateDefaultSubobject<UPRTAbilitySystemComponent>("AbilitySystemComponent");
 	AbilitySystemComponent->SetIsReplicated(true);
