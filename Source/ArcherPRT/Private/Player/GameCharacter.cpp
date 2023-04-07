@@ -102,10 +102,6 @@ void AGameCharacter::PossessedBy(AController* NewController)
 	CanCheckAttributes = true;
 }
 
-void AGameCharacter::ApplyGameplayEffect_Implementation(TSubclassOf<UGameplayEffect> GameplayEffect)
-{
-}
-
 float AGameCharacter::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
 	Super::TakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);

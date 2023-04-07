@@ -72,9 +72,6 @@ public:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "GAS")
 		TArray<TSubclassOf<class UPRTGameplayAbility>> DefaultAbilities;
 
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "GAS")
-		void ApplyGameplayEffect(TSubclassOf<UGameplayEffect> GameplayEffect);
-
 	//Attributes
 
 	UFUNCTION(BlueprintPure, Category = "Attributes")
