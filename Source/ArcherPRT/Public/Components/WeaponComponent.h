@@ -78,6 +78,12 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Aim")
 		FHitResult GetEndPointOnAimTraceHitResult() const { return EndPointAimTraceHitResult; }
 
+	UFUNCTION(BlueprintPure, Category = "Darability")
+		float GetWeaponDurability(EWeaponType WeaponType) const;
+
+	UFUNCTION(BlueprintCallable, Category = "Darability")
+		void AddWeaponDurability(EWeaponType WeaponType, float Value);
+
 	//Fire
 
 	void OnFire();
@@ -138,6 +144,10 @@ private:
 	bool bPendingOnFire;
 
 	bool bReloadWeaponInProgress;
+
+	float GloveDurability = 100;
+
+	float GunDurability = 100;
 
 	FVector EndPointOnAimTrace;
 

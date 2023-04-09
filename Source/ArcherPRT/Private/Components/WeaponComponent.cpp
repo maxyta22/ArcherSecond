@@ -203,6 +203,9 @@ void UWeaponComponent::FinishFire(bool ForceFinishFire)
 
 void UWeaponComponent::OnAltFire()
 {
+
+	if (GetWeaponDurability(EWeaponType::PneumaticGlove) == 0) return;
+
 	bPendingOnAltFire = true;
 
 	if (!GetWorld()) return;
@@ -373,3 +376,37 @@ void UWeaponComponent::FinishReloadWeapon()
 	
 }
 
+float UWeaponComponent::GetWeaponDurability(EWeaponType WeaponType) const
+{
+	switch (WeaponType)
+	{
+	case EWeaponType::None:
+		return 0.0f;
+		break;
+	case EWeaponType::PneumaticGlove:
+		return GloveDurability;
+		break;
+	case EWeaponType::PneumaticGun:
+		return GunDurability;
+		break;
+	}
+	return 0.0f;
+}
+
+void UWeaponComponent::AddWeaponDurability(EWeaponType WeaponType, float Value) 
+{
+	switch (WeaponType)
+	{
+	case EWeaponType::None:
+		return;
+		break;
+	case EWeaponType::PneumaticGlove:
+		GloveDurability = FMath::Clamp(GloveDurability + Value, 0, 100);
+		return;
+		break;
+	case EWeaponType::PneumaticGun:
+		GunDurability = FMath::Clamp(GunDurability + Value, 0, 100);
+		return;
+		break;
+	}
+}
