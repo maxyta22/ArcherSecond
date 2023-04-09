@@ -204,8 +204,6 @@ void UWeaponComponent::FinishFire(bool ForceFinishFire)
 void UWeaponComponent::OnAltFire()
 {
 
-	if (GetWeaponDurability(EWeaponType::PneumaticGlove) == 0) return;
-
 	bPendingOnAltFire = true;
 
 	if (!GetWorld()) return;
@@ -215,6 +213,12 @@ void UWeaponComponent::OnAltFire()
 	if (ChargeAttackInProgress()) return;
 	if (FireInProgress()) return;
 	
+	if (GetWeaponDurability(EWeaponType::PneumaticGlove) == 0)
+	{
+		Owner->FailTryUseBlock();
+		bPendingOnAltFire = false;
+		return;
+	}
 
 	bBlockInProgress = true;
 }

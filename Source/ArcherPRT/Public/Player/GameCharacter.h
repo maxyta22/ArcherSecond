@@ -98,6 +98,9 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "AfterEvents")
 		void HitOnBlockSuccess(FVector HitDirection, FHitResult HitResult, AActor* Causer, EWeaponType WeaponType, bool Charged);
 
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "AfterEvents")
+		void FailTryUseBlock();
+
 	//Hit Reaction
 	UFUNCTION(BlueprintCallable)
 	virtual void OnHit(FVector HitDirection, FHitResult HitResult, AActor* Causer, EWeaponType WeaponType, bool Charged);
