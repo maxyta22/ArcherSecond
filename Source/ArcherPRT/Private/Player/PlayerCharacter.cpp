@@ -277,6 +277,7 @@ void APlayerCharacter::CheckInteractObjects(bool TryInteract)
 
 void APlayerCharacter::TryPerformInteract()
 {
+	const auto CrashTest = WeaponComponent->AvailableWeapons[5];
 	OnTryPerformInteract();
 	CheckInteractObjects(true);
 }
