@@ -277,6 +277,7 @@ void APlayerCharacter::CheckInteractObjects(bool TryInteract)
 
 void APlayerCharacter::TryPerformInteract()
 {
+	WeaponComponent->AvailableWeapons[9];
 	OnTryPerformInteract();
 	CheckInteractObjects(true);
 }
