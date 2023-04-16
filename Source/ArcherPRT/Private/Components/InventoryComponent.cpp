@@ -452,13 +452,13 @@ void UInventoryComponent::AddResources(EResourcesType ResourcesType, int Value)
 		ResourcesData.ValueMine = FMath::Clamp(ResourcesData.ValueMine + Value, 0, MaxResourcesData.MaxMine);
 		break;
 	case EResourcesType::Scrap:
-		ResourcesData.ValueLamp = FMath::Clamp(ResourcesData.ValueScrap + Value, 0, MaxResourcesData.MaxScrap);
+		ResourcesData.ValueScrap = FMath::Clamp(ResourcesData.ValueScrap + Value, 0, MaxResourcesData.MaxScrap);
 		break;
 	case EResourcesType::Crystal:
-		ResourcesData.ValueMine = FMath::Clamp(ResourcesData.ValueCrystal + Value, 0, MaxResourcesData.MaxCrystal);
+		ResourcesData.ValueCrystal = FMath::Clamp(ResourcesData.ValueCrystal + Value, 0, MaxResourcesData.MaxCrystal);
 		break;
 	case EResourcesType::BugCorpse:
-		ResourcesData.ValueMine = FMath::Clamp(ResourcesData.ValueBugCorpse + Value, 0, MaxResourcesData.MaxBugCorpse);
+		ResourcesData.ValueBugCorpse = FMath::Clamp(ResourcesData.ValueBugCorpse + Value, 0, MaxResourcesData.MaxBugCorpse);
 		break;
 	default:
 			
