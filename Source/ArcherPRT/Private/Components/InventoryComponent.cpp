@@ -243,6 +243,25 @@ bool UInventoryComponent::LoopOnResourcesByMap(TMap<EResourcesType, int> Resourc
 			}
 
 			break;
+
+		case EResourcesType::BugCorpse:
+
+			if (Pawn->InventoryComponent->GetValueResources(EResourcesType::BugCorpse) >= ResourcesMap[KeysFromMap[i]])
+			{
+				SuccessPosition++;
+			}
+
+			if (SpendResources)
+			{
+				Pawn->InventoryComponent->AddResources(EResourcesType::BugCorpse, ResourcesMap[KeysFromMap[i]] * -1);
+			}
+
+			if (AddResources)
+			{
+				Pawn->InventoryComponent->AddResources(EResourcesType::BugCorpse, ResourcesMap[KeysFromMap[i]]);
+			}
+
+			break;
 		}
 	}
 
@@ -294,6 +313,9 @@ int UInventoryComponent::GetValueResources(EResourcesType ResourcesType)
 	case EResourcesType::Crystal:
 		return ResourcesData.ValueCrystal;
 		break;
+	case EResourcesType::BugCorpse:
+		return ResourcesData.ValueBugCorpse;
+		break;
 	default:
 			return 0;
 		break;
@@ -340,6 +362,9 @@ int UInventoryComponent::GetMaxResources(EResourcesType ResourcesType)
 	case EResourcesType::Crystal:
 		return MaxResourcesData.MaxCrystal;
 		break;
+	case EResourcesType::BugCorpse:
+		return MaxResourcesData.MaxBugCorpse;
+		break;
 	default:
 		return 0;
 		break;
@@ -385,6 +410,9 @@ void UInventoryComponent::SetMaxResources(EResourcesType ResourcesType, int Valu
 	case EResourcesType::Crystal:
 		MaxResourcesData.MaxCrystal = Value;
 		break;
+	case EResourcesType::BugCorpse:
+		MaxResourcesData.MaxBugCorpse = Value;
+		break;
 	default:
 		break;
 	}
@@ -428,6 +456,9 @@ void UInventoryComponent::AddResources(EResourcesType ResourcesType, int Value)
 		break;
 	case EResourcesType::Crystal:
 		ResourcesData.ValueMine = FMath::Clamp(ResourcesData.ValueCrystal + Value, 0, MaxResourcesData.MaxCrystal);
+		break;
+	case EResourcesType::BugCorpse:
+		ResourcesData.ValueMine = FMath::Clamp(ResourcesData.ValueBugCorpse + Value, 0, MaxResourcesData.MaxBugCorpse);
 		break;
 	default:
 			
@@ -474,6 +505,9 @@ bool UInventoryComponent::CheckCanTakeResources(EResourcesType ResourcesType)
 		break;
 	case EResourcesType::Crystal:
 		return ResourcesData.ValueCrystal < MaxResourcesData.MaxCrystal;
+		break;
+	case EResourcesType::BugCorpse:
+		return ResourcesData.ValueCrystal < MaxResourcesData.MaxBugCorpse;
 		break;
 	default:
 		return false;

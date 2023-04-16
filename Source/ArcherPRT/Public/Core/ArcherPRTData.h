@@ -21,6 +21,7 @@ enum class EResourcesType : uint8
 	Mine,
 	Scrap,
 	Crystal,
+	BugCorpse,
 };
 
 UENUM(BlueprintType, Category = "AIStartCondition")

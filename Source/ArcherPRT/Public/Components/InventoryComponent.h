@@ -40,6 +40,8 @@ struct FResourcesData
 		int ValueScrap;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int ValueCrystal;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int ValueBugCorpse;
 };
 
 USTRUCT(BlueprintType)
@@ -74,6 +76,8 @@ struct FMaxResourcesData
 		int MaxScrap;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int MaxCrystal;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int MaxBugCorpse;	
 };
 
 
