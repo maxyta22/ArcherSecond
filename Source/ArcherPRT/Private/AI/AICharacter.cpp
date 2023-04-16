@@ -57,7 +57,7 @@ void AAICharacter::Tick(float DeltaTime)
 
 void AAICharacter::StartAccumulateToAiming()
 {
-	if (!GetWorld()) return;
+	if (GetWorld() == nullptr) return;
 	if (GetWorld()->GetTimerManager().IsTimerActive(AccumulateToAiminHandleTimer)) return;
 	if (!GetAIControllerRef()) return;
 	if (!GetAIControllerRef()->GetEnemy()) return;
@@ -66,7 +66,7 @@ void AAICharacter::StartAccumulateToAiming()
 
 void AAICharacter::FinishAccumulateToAiming()
 {
-	if (!GetWorld()) return;
+	if (GetWorld() == nullptr) return;
 	GetWorld()->GetTimerManager().ClearTimer(AccumulateToAiminHandleTimer);
 }
 

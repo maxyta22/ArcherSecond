@@ -47,7 +47,7 @@ void UWeaponComponent::TraceAim()
 {
 	if (!GetWorld()) return;
 	if (!GetOwner()) return;
-	if (!CurrentEquipWeapon) return;
+	if (CurrentEquipWeapon == nullptr) return;
 	const auto Owner = Cast<APlayerCharacter>(GetOwner());
 	if (!Owner) return;
 	
@@ -56,7 +56,7 @@ void UWeaponComponent::TraceAim()
 	case EWeaponType::PneumaticGlove:
 		if (!ChargeAttackInProgress())
 		{
-			if (CurrentAimingEnemy)
+			if (CurrentAimingEnemy != nullptr)
 			{
 				CurrentAimingEnemy->FinishAccumulateToAiming();
 			}
@@ -66,7 +66,7 @@ void UWeaponComponent::TraceAim()
 	case EWeaponType::PneumaticGun:
 		if (!HaveAmmo()) 
 		{
-			if (CurrentAimingEnemy)
+			if (CurrentAimingEnemy != nullptr)
 			{
 				CurrentAimingEnemy->FinishAccumulateToAiming();
 			}
@@ -101,7 +101,7 @@ void UWeaponComponent::TraceAim()
 		}
 		else
 		{
-			if (CurrentAimingEnemy)
+			if (CurrentAimingEnemy != nullptr)
 			{
 				CurrentAimingEnemy->FinishAccumulateToAiming();
 			}
@@ -111,7 +111,7 @@ void UWeaponComponent::TraceAim()
 	{
 		EndPointOnAimTrace = EndTraceAim;
 
-		if (CurrentAimingEnemy)
+		if (CurrentAimingEnemy != nullptr)
 		{
 			CurrentAimingEnemy->FinishAccumulateToAiming();
 		}
