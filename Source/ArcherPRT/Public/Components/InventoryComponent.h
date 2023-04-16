@@ -23,9 +23,9 @@ struct FResourcesData
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int ValueWood;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		int ValueRock;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int ValueGrass;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int ValueRock;	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int ValueMetal;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -36,6 +36,10 @@ struct FResourcesData
 		int ValueLamp;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int ValueMine;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int ValueScrap;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int ValueCrystal;
 };
 
 USTRUCT(BlueprintType)
@@ -53,9 +57,9 @@ struct FMaxResourcesData
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int MaxWood;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		int MaxRock;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int MaxGrass;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int MaxRock;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int MaxMetal;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -66,6 +70,10 @@ struct FMaxResourcesData
 		int MaxLamp;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int MaxMine;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int MaxScrap;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int MaxCrystal;
 };
 
 

@@ -205,6 +205,44 @@ bool UInventoryComponent::LoopOnResourcesByMap(TMap<EResourcesType, int> Resourc
 			}
 
 			break;
+
+		case EResourcesType::Scrap:
+
+			if (Pawn->InventoryComponent->GetValueResources(EResourcesType::Scrap) >= ResourcesMap[KeysFromMap[i]])
+			{
+				SuccessPosition++;
+			}
+
+			if (SpendResources)
+			{
+				Pawn->InventoryComponent->AddResources(EResourcesType::Scrap, ResourcesMap[KeysFromMap[i]] * -1);
+			}
+
+			if (AddResources)
+			{
+				Pawn->InventoryComponent->AddResources(EResourcesType::Scrap, ResourcesMap[KeysFromMap[i]]);
+			}
+
+			break;
+
+		case EResourcesType::Crystal:
+
+			if (Pawn->InventoryComponent->GetValueResources(EResourcesType::Crystal) >= ResourcesMap[KeysFromMap[i]])
+			{
+				SuccessPosition++;
+			}
+
+			if (SpendResources)
+			{
+				Pawn->InventoryComponent->AddResources(EResourcesType::Crystal, ResourcesMap[KeysFromMap[i]] * -1);
+			}
+
+			if (AddResources)
+			{
+				Pawn->InventoryComponent->AddResources(EResourcesType::Crystal, ResourcesMap[KeysFromMap[i]]);
+			}
+
+			break;
 		}
 	}
 
@@ -250,6 +288,12 @@ int UInventoryComponent::GetValueResources(EResourcesType ResourcesType)
 	case EResourcesType::Mine:
 		return ResourcesData.ValueMine;
 		break;
+	case EResourcesType::Scrap:
+		return ResourcesData.ValueScrap;
+		break;
+	case EResourcesType::Crystal:
+		return ResourcesData.ValueCrystal;
+		break;
 	default:
 			return 0;
 		break;
@@ -290,6 +334,12 @@ int UInventoryComponent::GetMaxResources(EResourcesType ResourcesType)
 	case EResourcesType::Mine:
 		return MaxResourcesData.MaxMine;
 		break;
+	case EResourcesType::Scrap:
+		return MaxResourcesData.MaxScrap;
+		break;
+	case EResourcesType::Crystal:
+		return MaxResourcesData.MaxCrystal;
+		break;
 	default:
 		return 0;
 		break;
@@ -329,6 +379,12 @@ void UInventoryComponent::SetMaxResources(EResourcesType ResourcesType, int Valu
 	case EResourcesType::Mine:
 		MaxResourcesData.MaxMine = Value;
 		break;
+	case EResourcesType::Scrap:
+		MaxResourcesData.MaxScrap = Value;
+		break;
+	case EResourcesType::Crystal:
+		MaxResourcesData.MaxCrystal = Value;
+		break;
 	default:
 		break;
 	}
@@ -366,6 +422,12 @@ void UInventoryComponent::AddResources(EResourcesType ResourcesType, int Value)
 		break;
 	case EResourcesType::Mine:
 		ResourcesData.ValueMine = FMath::Clamp(ResourcesData.ValueMine + Value, 0, MaxResourcesData.MaxMine);
+		break;
+	case EResourcesType::Scrap:
+		ResourcesData.ValueLamp = FMath::Clamp(ResourcesData.ValueScrap + Value, 0, MaxResourcesData.MaxScrap);
+		break;
+	case EResourcesType::Crystal:
+		ResourcesData.ValueMine = FMath::Clamp(ResourcesData.ValueCrystal + Value, 0, MaxResourcesData.MaxCrystal);
 		break;
 	default:
 			
@@ -406,6 +468,12 @@ bool UInventoryComponent::CheckCanTakeResources(EResourcesType ResourcesType)
 		break;
 	case EResourcesType::Mine:
 		return ResourcesData.ValueMine < MaxResourcesData.MaxMine;
+		break;
+	case EResourcesType::Scrap:
+		return ResourcesData.ValueScrap < MaxResourcesData.MaxScrap;
+		break;
+	case EResourcesType::Crystal:
+		return ResourcesData.ValueCrystal < MaxResourcesData.MaxCrystal;
 		break;
 	default:
 		return false;
