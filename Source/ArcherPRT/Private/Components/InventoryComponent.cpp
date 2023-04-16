@@ -507,7 +507,7 @@ bool UInventoryComponent::CheckCanTakeResources(EResourcesType ResourcesType)
 		return ResourcesData.ValueCrystal < MaxResourcesData.MaxCrystal;
 		break;
 	case EResourcesType::BugCorpse:
-		return ResourcesData.ValueCrystal < MaxResourcesData.MaxBugCorpse;
+		return ResourcesData.ValueBugCorpse < MaxResourcesData.MaxBugCorpse;
 		break;
 	default:
 		return false;
