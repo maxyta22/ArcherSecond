@@ -92,7 +92,7 @@ void APlayerCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerIn
 	PlayerInputComponent->BindAction("AltFire", IE_Released, WeaponComponent, &UWeaponComponent::FinishAltFire);
 	PlayerInputComponent->BindAction("Reloading", IE_Pressed, WeaponComponent, &UWeaponComponent::TryReloadWeapon);
 	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &APlayerCharacter::TryPerformInteract);
-	PlayerInputComponent->BindAction("TryCraftItem", IE_Pressed, CraftComponent, &UCraftComponent::TryCraftItem);
+	//PlayerInputComponent->BindAction("TryCraftItem", IE_Pressed, CraftComponent, &UCraftComponent::TryCraftItem);
 	PlayerInputComponent->BindAction("StartBuilding", IE_Pressed, BuildingComponent, &UBuildingComponent::ToggleBuildingMode);
 	PlayerInputComponent->BindAxis("MoveForward", this, &APlayerCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &APlayerCharacter::MoveRight);

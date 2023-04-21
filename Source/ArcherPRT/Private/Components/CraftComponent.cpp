@@ -20,16 +20,15 @@ void UCraftComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 {
 }
 
-void UCraftComponent::TryCraftItem()
+bool UCraftComponent::TryCraftItem(TSubclassOf<URecipeBase> Recipe)
 {
 	const auto Pawn = Cast<APlayerCharacter>(GetOwner());
 
-	if (!Pawn) return;
-	if (!RecipeDataBase[SelectedIndex]) return;
+	if (Pawn == nullptr) return false;;
+	if (Recipe == nullptr) return false;
 
-	const TSubclassOf<URecipeBase>  CurrentRecipe = RecipeDataBase[SelectedIndex];
-	const EResourcesType Result = CurrentRecipe.GetDefaultObject()->Resources;
-	const TMap<EResourcesType, int> NeededResources = CurrentRecipe.GetDefaultObject()->RecipeMap;
+	const EResourcesType Result = Recipe.GetDefaultObject()->Resources;
+	const TMap<EResourcesType, int> NeededResources = Recipe.GetDefaultObject()->RecipeMap;
 	
 	if (Pawn->InventoryComponent->CheckCanTakeResources(Result)
 		&& Pawn->InventoryComponent->LoopOnResourcesByMap(NeededResources)
@@ -38,8 +37,9 @@ void UCraftComponent::TryCraftItem()
 	{
 
 		// Use this code when craft in pause
-		Pawn->InventoryComponent->LoopOnResourcesByMap(RecipeDataBase[SelectedIndex].GetDefaultObject()->RecipeMap, true, false);
-		GetRecipeResult(RecipeDataBase[SelectedIndex]);
+		Pawn->InventoryComponent->LoopOnResourcesByMap(Recipe.GetDefaultObject()->RecipeMap, true, false);
+		GetRecipeResult(Recipe);
+		return true;
 
 		//Use this when craft in gameplay time
 		/* 
@@ -48,6 +48,7 @@ void UCraftComponent::TryCraftItem()
 		Pawn->AfterBeginCraft();
 		*/
 	}
+	return false;
 }
 
 void UCraftComponent::AbortCraftProcess()
@@ -75,6 +76,8 @@ float UCraftComponent::GetCraftTimeRemaining()
 
 void UCraftComponent::GetRecipeResult(TSubclassOf<URecipeBase> Recipe)
 {
+	if (Recipe == nullptr) return;
+
 	const auto Pawn = Cast<APlayerCharacter>(GetOwner());
 
 	const auto Ammo = Recipe.GetDefaultObject()->Resources;

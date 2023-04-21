@@ -36,7 +36,7 @@ public:
 		float GetCraftTimeRemaining();
 		
 	UFUNCTION(BlueprintCallable)
-		void TryCraftItem();
+		bool TryCraftItem(TSubclassOf<URecipeBase> Recipe);
 
 	void AbortCraftProcess();
 
