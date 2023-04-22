@@ -38,6 +38,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 		bool TryCraftItem(TSubclassOf<URecipeBase> Recipe);
 
+	UFUNCTION(BlueprintCallable)
+		bool CheckCanTryCraftItem(TSubclassOf<URecipeBase> Recipe);
+
 	void AbortCraftProcess();
 
 	void CraftSucceess();
