@@ -25,6 +25,20 @@ AArcherPRTProjectile::AArcherPRTProjectile()
 	CollisionComp->SetCollisionResponseToChannel(ECC_Pawn, ECR_Block);
 	CollisionComp->SetCollisionResponseToChannel(ECC_Destructible, ECR_Block);
 
+	// Set as root component
+	RootComponent = CollisionComp;
+
+	//Set capsule collision
+	CapsuleCollision = CreateDefaultSubobject<UCapsuleComponent>(TEXT("CapsuleCollision"));
+	CapsuleCollision->SetupAttachment(RootComponent);
+	CapsuleCollision->SetCapsuleRadius(20.0f);
+	CapsuleCollision->SetCapsuleHalfHeight(20.f);
+	CollisionComp->BodyInstance.SetCollisionProfileName("Projectile");
+	CapsuleCollision->SetCollisionResponseToAllChannels(ECR_Ignore);
+	CapsuleCollision->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
+	CapsuleCollision->SetCollisionResponseToChannel(ECC_Pawn, ECR_Block);
+	CapsuleCollision->SetCollisionResponseToChannel(ECC_Destructible, ECR_Block);
+
 	// set up a notification for when this component hits something blocking
 	CollisionComp->OnComponentHit.AddDynamic(this, &AArcherPRTProjectile::OnHit);
 
@@ -33,12 +47,6 @@ AArcherPRTProjectile::AArcherPRTProjectile()
 
 	// Can Return PhysMat
 	CollisionComp->bReturnMaterialOnMove = true;
-
-	// Set as root component
-	RootComponent = CollisionComp;
-
-	InteractCollision = CreateDefaultSubobject<UCapsuleComponent>(TEXT("InteractCollision"));
-	InteractCollision->SetupAttachment(RootComponent);
 
 	// Players can't walk on it
 	CollisionComp->SetWalkableSlopeOverride(FWalkableSlopeOverride(WalkableSlope_Unwalkable, 0.f));
