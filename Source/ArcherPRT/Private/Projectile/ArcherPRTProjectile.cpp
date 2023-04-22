@@ -33,7 +33,7 @@ AArcherPRTProjectile::AArcherPRTProjectile()
 	CapsuleCollision->SetupAttachment(RootComponent);
 	CapsuleCollision->SetCapsuleRadius(20.0f);
 	CapsuleCollision->SetCapsuleHalfHeight(20.f);
-	CollisionComp->BodyInstance.SetCollisionProfileName("Projectile");
+	CapsuleCollision->BodyInstance.SetCollisionProfileName("Projectile");
 	CapsuleCollision->SetCollisionResponseToAllChannels(ECR_Ignore);
 	CapsuleCollision->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
 	CapsuleCollision->SetCollisionResponseToChannel(ECC_Pawn, ECR_Block);
