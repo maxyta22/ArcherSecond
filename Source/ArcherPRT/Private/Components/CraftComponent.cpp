@@ -51,6 +51,22 @@ bool UCraftComponent::TryCraftItem(TSubclassOf<URecipeBase> Recipe)
 	return false;
 }
 
+bool UCraftComponent::CheckCanTryCraftItem(TSubclassOf<URecipeBase> Recipe)
+{
+	const auto Pawn = Cast<APlayerCharacter>(GetOwner());
+
+	if (Pawn == nullptr) return false;;
+	if (Recipe == nullptr) return false;
+
+	const EResourcesType Result = Recipe.GetDefaultObject()->Resources;
+	const TMap<EResourcesType, int> NeededResources = Recipe.GetDefaultObject()->RecipeMap;
+
+	return (Pawn->InventoryComponent->CheckCanTakeResources(Result)
+		&& Pawn->InventoryComponent->LoopOnResourcesByMap(NeededResources)
+		&& !Pawn->WeaponComponent->AimingInProgress()
+		&& !CraftInProgress());
+}
+
 void UCraftComponent::AbortCraftProcess()
 {
 	GetWorld()->GetTimerManager().ClearTimer(CraftInProgressTimer);
