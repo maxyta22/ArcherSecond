@@ -55,6 +55,11 @@ void UOverrideMovementANS::NotifyTick(USkeletalMeshComponent* MeshComp, UAnimSeq
 	{
 		AICharacterOwner->AddMovementInput(AICharacterOwner->GetActorForwardVector(), 1);
 	}
+
+	if (MeshComp->GetAnimInstance()->GetCurveValue("ForwardRootMotion") < 0 && !AICharacterOwner->StatsComponent->IsDead())
+	{
+		AICharacterOwner->AddMovementInput(AICharacterOwner->GetActorForwardVector()*-1, 1);
+	}
 	
 }
 
