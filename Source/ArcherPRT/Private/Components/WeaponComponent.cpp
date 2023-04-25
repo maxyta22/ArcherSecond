@@ -45,8 +45,8 @@ void UWeaponComponent::EquipWeapon(TSubclassOf<UWeaponBase> Weapon)
 
 void UWeaponComponent::TraceAim() 
 {
-	if (!GetWorld()) return;
-	if (!GetOwner()) return;
+	if (GetWorld() == nullptr) return;
+	if (GetOwner() == nullptr) return;
 	if (CurrentEquipWeapon == nullptr) return;
 	const auto Owner = Cast<APlayerCharacter>(GetOwner());
 	if (!Owner) return;
@@ -123,8 +123,8 @@ void UWeaponComponent::OnFire()
 {
 	bPendingOnFire = true;
 
-	if (!GetWorld()) return;
-	if (!GetOwner()) return;
+	if (GetWorld() == nullptr) return;
+	if (GetOwner() == nullptr) return;
 	const auto Owner = Cast<APlayerCharacter>(GetOwner());
 	if (!Owner) return;
 	if (!CanFire()) return;
@@ -153,8 +153,8 @@ void UWeaponComponent::TryFire()
 {
 	bPendingOnFire = false;
 
-	if (!GetWorld()) return;
-	if (!GetOwner()) return;
+	if (GetWorld() == nullptr) return;
+	if (GetOwner() == nullptr) return;
 	const auto Owner = Cast<APlayerCharacter>(GetOwner());
 	if (!Owner) return;
 	if (!CanFire()) return;
@@ -171,8 +171,7 @@ void UWeaponComponent::TryFire()
 
 void UWeaponComponent::FinishFire(bool ForceFinishFire)
 {
-	UWorld* const World = GetWorld();
-	if (!World) return;
+	if (GetWorld() == nullptr) return;
 	const auto Owner = Cast<APlayerCharacter>(GetOwner());
 	if (!Owner) return;
 	//GetWorld()->GetTimerManager().ClearTimer(ReloadWeaponInProgressTimer);
@@ -237,8 +236,8 @@ void UWeaponComponent::FinishAltFire()
 
 bool UWeaponComponent::CanFire() const
 {
-	if (!GetWorld()) return false;
-	if (!GetOwner()) return false;
+	if (GetWorld() == nullptr) return false;
+	if (GetOwner() == nullptr) return false;
 	const auto Owner = Cast<APlayerCharacter>(GetOwner());
 	if (!Owner) return false;
 	if (bReloadWeaponInProgress) return false;
@@ -250,10 +249,10 @@ bool UWeaponComponent::CanFire() const
 
 bool UWeaponComponent::CanReloadWeapon() const
 {
-	if (!GetWorld()) return false;
-	if (!GetOwner()) return false;
+	if (GetWorld() == nullptr) return false;
+	if (GetOwner() == nullptr) return false;
 	const auto Owner = Cast<APlayerCharacter>(GetOwner());
-	if (!Owner) return false;
+	if (Owner == nullptr) return false;
 	if (bChargeAttackInProgress) return false;
 	if (bReloadWeaponInProgress) return false;
 	if (!CurrentEquipWeapon) return false;
@@ -266,12 +265,11 @@ bool UWeaponComponent::CanReloadWeapon() const
 
 void UWeaponComponent::MakeShot()
 {
+	if (GetWorld() == nullptr) return;
 	if (!HaveAmmo()) return;
 
-	UWorld* const World = GetWorld();
-	if (!World) return;
 	const auto Owner = Cast<APlayerCharacter>(GetOwner());
-	if (!Owner) return;
+	if (Owner == nullptr) return;
 
 	const FVector SpawnLocation = Owner->GetMesh()->GetSocketLocation(CurrentEquipWeapon.GetDefaultObject()->MuzzleSocketName);
 	FVector AimDirection = UKismetMathLibrary::GetDirectionUnitVector(SpawnLocation, EndPointOnAimTrace);
@@ -280,7 +278,7 @@ void UWeaponComponent::MakeShot()
 			
 	//SpawnProjectile
 	const auto SpawnedProjectile =  bWeaponCharged  ? CurrentEquipWeapon.GetDefaultObject()->ChargedProjectile : CurrentEquipWeapon.GetDefaultObject()->Projectile;
-	AArcherPRTProjectile* CurrentProjectile = World->SpawnActorDeferred<AArcherPRTProjectile>(SpawnedProjectile, FTransform(SpawnRotation, SpawnLocation));
+	AArcherPRTProjectile* CurrentProjectile = GetWorld()->SpawnActorDeferred<AArcherPRTProjectile>(SpawnedProjectile, FTransform(SpawnRotation, SpawnLocation));
 
 	if (CurrentProjectile)
 		{
@@ -338,10 +336,10 @@ void UWeaponComponent::TryReloadWeapon()
 
 void UWeaponComponent::PerformReloadWeapon()
 {
-	if (!GetWorld()) return;
-	if (!GetOwner()) return;
+	if (GetWorld() == nullptr) return;
+	if (GetOwner() == nullptr) return;
 	const auto Owner = Cast<APlayerCharacter>(GetOwner());
-	if (!Owner) return;
+	if (Owner == nullptr) return;
 
 
 	if (CurrentEquipWeapon.GetDefaultObject()->ReloadingAnimation)

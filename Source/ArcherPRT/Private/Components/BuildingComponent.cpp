@@ -46,8 +46,7 @@ void UBuildingComponent::ToggleBuildingMode()
 
 void UBuildingComponent::PreSpawnObject()
 {
-	UWorld* const World = GetWorld();
-	if (!World) return;
+	if (GetWorld() == nullptr) return;
 	const auto Owner = Cast<APlayerCharacter>(GetOwner());
 	if (!Owner) return;
 	if (!AvaliableRecipes[SelectedIndex]) return;
@@ -81,7 +80,7 @@ void UBuildingComponent::PreSpawnObject()
 	}
 	else
 	{
-		CurrentPreSpawnObject = World->SpawnActorDeferred<ACustomInteractObjectBase>(SpawnActor, FTransform(SpawnRotation, SpawnLocation), nullptr, nullptr, ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
+		CurrentPreSpawnObject = GetWorld()->SpawnActorDeferred<ACustomInteractObjectBase>(SpawnActor, FTransform(SpawnRotation, SpawnLocation), nullptr, nullptr, ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
 		
 		CurrentPreSpawnObject->BuildingPlayer = Owner;
 		CurrentPreSpawnObject->FinishSpawning(FTransform(SpawnRotation, SpawnLocation));
@@ -92,11 +91,9 @@ void UBuildingComponent::PreSpawnObject()
 
 void UBuildingComponent::TrySpawnObject()
 {
-
-	UWorld* const World = GetWorld();
-	if (!World) return;
+	if (GetWorld() == nullptr) return;
 	const auto Owner = Cast<APlayerCharacter>(GetOwner());
-	if (!Owner) return;
+	if (Owner == nullptr) return;
 	if (!CurrentPreSpawnObject) return;
 	if (!AvaliableRecipes[SelectedIndex]) return;
 	if (!AvaliableRecipes[SelectedIndex].GetDefaultObject()->Object) return;
@@ -113,7 +110,7 @@ void UBuildingComponent::TrySpawnObject()
 	if (Owner->InventoryComponent->LoopOnResourcesByMap(NeededResources))
 	{
 		Owner->InventoryComponent->LoopOnResourcesByMap(NeededResources, true, false);
-		World->SpawnActorAbsolute(SpawnActor, FTransform(SpawnRotation, SpawnLocation));
+		GetWorld()->SpawnActorAbsolute(SpawnActor, FTransform(SpawnRotation, SpawnLocation));
 	}
 	
 	

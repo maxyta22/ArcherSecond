@@ -31,7 +31,8 @@ void UStatsComponent::BeginPlay()
 
 void UStatsComponent::OnTakeAnyDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatorBy, AActor* DamageCauser)
 {
-	if (Damage <= 0.0 || IsDead() || !GetWorld())return;
+	if (GetWorld() == nullptr) return;
+	if (Damage <= 0.0 || IsDead())return;
 
 	SetHealth(Health - Damage);
 	GetWorld()->GetTimerManager().ClearTimer(HealTimerHandle);
@@ -52,6 +53,7 @@ void UStatsComponent::OnTakeAnyDamage(AActor* DamagedActor, float Damage, const 
 
 void UStatsComponent::RegenHeals()
 {
+	if (GetWorld() == nullptr) return;
 	SetHealth(Health + HealModifire);
 	if (FMath::IsNearlyEqual(Health, MaxHealth) && GetWorld())
 	{

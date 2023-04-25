@@ -72,7 +72,7 @@ void AAICharacter::FinishAccumulateToAiming()
 
 void AAICharacter::RotationOnTarget()
 {
-	if (!GetWorld()) return;
+	if (GetWorld() == nullptr) return;
 	if (StatsComponent->IsDead() && !GetCurrentMontage()) return;
 	if (!AIControllerRef) return;
 	if (!AIControllerRef->GetBlackboardComponent()) return;
@@ -177,7 +177,7 @@ void AAICharacter::OnHit(FVector HitDirection, FHitResult HitResult, AActor* Cau
 
 void AAICharacter::MakeStrike(float StrikeDistance, float MinAngle, float MaxAngle)
 {
-	if (!GetWorld()) return;
+	if (GetWorld() == nullptr) return;
 	if (StatsComponent->IsDead()) return;
 	StrikeInProgress();
 

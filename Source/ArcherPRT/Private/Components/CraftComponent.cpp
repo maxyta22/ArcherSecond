@@ -69,14 +69,17 @@ bool UCraftComponent::CheckCanTryCraftItem(TSubclassOf<URecipeBase> Recipe)
 
 void UCraftComponent::AbortCraftProcess()
 {
+	if (GetWorld() == nullptr) return;
 	GetWorld()->GetTimerManager().ClearTimer(CraftInProgressTimer);
 }
 
 void UCraftComponent::CraftSucceess()
 {
+	if (GetWorld() == nullptr) return;
+
 	const auto Pawn = Cast<APlayerCharacter>(GetOwner());
 
-	if (!Pawn) return;
+	if (Pawn == nullptr) return;
 
 	GetWorld()->GetTimerManager().ClearTimer(CraftInProgressTimer);
 	Pawn->InventoryComponent->LoopOnResourcesByMap(RecipeDataBase[SelectedIndex].GetDefaultObject()->RecipeMap, true, false);
@@ -87,6 +90,7 @@ void UCraftComponent::CraftSucceess()
 
 float UCraftComponent::GetCraftTimeRemaining()
 {
+	if (GetWorld() == nullptr) return 0.0f;
 	return GetWorld()->GetTimerManager().GetTimerRemaining(CraftInProgressTimer);
 }
 

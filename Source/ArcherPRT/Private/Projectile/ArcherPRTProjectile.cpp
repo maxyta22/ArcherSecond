@@ -83,7 +83,7 @@ void AArcherPRTProjectile::OnOverlap(UPrimitiveComponent* OverlappedComp, AActor
 void AArcherPRTProjectile::OnImpact_Implementation(const FHitResult& Result)
 {
 
-	if (!GetWorld())  return;
+	if (GetWorld() == nullptr) return;
 
 	//ProjectileMovement->StopMovementImmediately();
 
@@ -130,6 +130,7 @@ void AArcherPRTProjectile::OnImpact_Implementation(const FHitResult& Result)
 
 void AArcherPRTProjectile::SpawnImpactEffect(FHitResult Hit)
 {
+	if (GetWorld() == nullptr) return;
 	auto ImpactNiagaraEffect = DefaultNiagaraImpactEffect;
 	auto ImpactCascadeEffect = DefaultCascadeImpactEffect;
 	auto ImpactSound = DefaultImpactSound;

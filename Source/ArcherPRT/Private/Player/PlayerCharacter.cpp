@@ -125,7 +125,7 @@ float APlayerCharacter::TakeDamage(float Damage, FDamageEvent const& DamageEvent
 
 void APlayerCharacter::MakeStrike(float StrikeDistance, float MinAngle, float MaxAngle)
 {
-	if (!GetWorld()) return;
+	if (GetWorld() == nullptr) return;
 
 	StrikeInProgress();
 
@@ -199,11 +199,13 @@ void APlayerCharacter::MoveRight(float Value)
 
 void APlayerCharacter::TurnAtRate(float Rate)
 {
+	if (GetWorld() == nullptr) return;
 	AddControllerYawInput(Rate * BaseTurnRate * GetWorld()->GetDeltaSeconds());
 }
 
 void APlayerCharacter::LookUpAtRate(float Rate)
 {
+	if (GetWorld() == nullptr) return;
 	AddControllerPitchInput(Rate * BaseLookUpRate * GetWorld()->GetDeltaSeconds());
 }
 
@@ -239,6 +241,7 @@ void APlayerCharacter::HideInfoObject(AActor* InfoObject)
 
 void APlayerCharacter::CheckInteractObjects(bool TryInteract)
 {
+	if (GetWorld() == nullptr) return;
 	AInteractObjectBase* InteractObject;
 	TArray<AActor*> HitActors;
 	TArray<FHitResult> HitResult;

@@ -19,7 +19,7 @@ AArcherPRTGameMode::AArcherPRTGameMode()
 
 bool AArcherPRTGameMode::InBattleMode()
 {
-	if (!GetWorld()) return false;
+	if (GetWorld() == nullptr) return false;
 
 	TArray<AActor*> OverlapActors;
 	TArray<AActor*> IgnoreActors;
