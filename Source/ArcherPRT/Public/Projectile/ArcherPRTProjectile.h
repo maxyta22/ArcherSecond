@@ -23,7 +23,10 @@ class AArcherPRTProjectile : public AActor
 	USphereComponent* CollisionComp;
 
 	UPROPERTY(VisibleDefaultsOnly, Category = Projectile)
-	UCapsuleComponent* CapsuleCollision;
+	UCapsuleComponent* CapsuleCollisionForPawn;
+
+	UPROPERTY(VisibleDefaultsOnly, Category = Projectile)
+	UCapsuleComponent* CapsuleCollisionForStatic;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
 	UProjectileMovementComponent* ProjectileMovement;

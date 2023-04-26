@@ -29,15 +29,25 @@ AArcherPRTProjectile::AArcherPRTProjectile()
 	RootComponent = CollisionComp;
 
 	//Set capsule collision
-	CapsuleCollision = CreateDefaultSubobject<UCapsuleComponent>(TEXT("CapsuleCollision"));
-	CapsuleCollision->SetupAttachment(RootComponent);
-	CapsuleCollision->SetCapsuleRadius(20.0f);
-	CapsuleCollision->SetCapsuleHalfHeight(20.f);
-	CapsuleCollision->BodyInstance.SetCollisionProfileName("Projectile");
-	CapsuleCollision->SetCollisionResponseToAllChannels(ECR_Ignore);
-	CapsuleCollision->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
-	CapsuleCollision->SetCollisionResponseToChannel(ECC_Pawn, ECR_Block);
-	CapsuleCollision->SetCollisionResponseToChannel(ECC_Destructible, ECR_Block);
+	CapsuleCollisionForPawn = CreateDefaultSubobject<UCapsuleComponent>(TEXT("CapsuleCollisionForPawn"));
+	CapsuleCollisionForPawn->SetupAttachment(RootComponent);
+	CapsuleCollisionForPawn->SetCapsuleRadius(20.0f);
+	CapsuleCollisionForPawn->SetCapsuleHalfHeight(20.f);
+	CapsuleCollisionForPawn->BodyInstance.SetCollisionProfileName("Projectile");
+	CapsuleCollisionForPawn->SetCollisionResponseToAllChannels(ECR_Ignore);
+	CapsuleCollisionForPawn->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Ignore);
+	CapsuleCollisionForPawn->SetCollisionResponseToChannel(ECC_Pawn, ECR_Block);
+	CapsuleCollisionForPawn->SetCollisionResponseToChannel(ECC_Destructible, ECR_Block);
+
+	CapsuleCollisionForStatic = CreateDefaultSubobject<UCapsuleComponent>(TEXT("CapsuleCollisionForStatic"));
+	CapsuleCollisionForStatic->SetupAttachment(RootComponent);
+	CapsuleCollisionForStatic->SetCapsuleRadius(20.0f);
+	CapsuleCollisionForStatic->SetCapsuleHalfHeight(20.f);
+	CapsuleCollisionForStatic->BodyInstance.SetCollisionProfileName("Projectile");
+	CapsuleCollisionForStatic->SetCollisionResponseToAllChannels(ECR_Ignore);
+	CapsuleCollisionForStatic->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
+	CapsuleCollisionForStatic->SetCollisionResponseToChannel(ECC_Pawn, ECR_Ignore);
+	CapsuleCollisionForStatic->SetCollisionResponseToChannel(ECC_Destructible, ECR_Ignore);
 
 	// set up a notification for when this component hits something blocking
 	CollisionComp->OnComponentHit.AddDynamic(this, &AArcherPRTProjectile::OnHit);
@@ -97,9 +107,10 @@ void AArcherPRTProjectile::OnImpact_Implementation(const FHitResult& Result)
 		const auto Pawn = Cast<AGameCharacter>(OtherActor);
 		const auto InteractObject = Cast<AInteractObjectBase>(OtherActor);
 
+		ShouldDestroyed = !FlyThroughPawn;
+
 		if (Pawn)
 		{
-			ShouldDestroyed = !FlyThroughPawn;
 
 			if (Result.GetComponent()->ComponentHasTag("WeakPoint"))
 			{
