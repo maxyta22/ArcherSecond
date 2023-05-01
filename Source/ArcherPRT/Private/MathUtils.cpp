@@ -15,8 +15,6 @@ float UMathUtils::FindAngleBetweenForwardVectorAndTarget(FVector Center, FVector
 	const auto Degrees = FMath::RadiansToDegrees(AngleBetween);
 	const auto Angle = FMath::RadiansToDegrees(AngleBetween) * FMath::Sign(CrossProduct.Z);
 
-	FString AngleStr = "Angle = " + FString::SanitizeFloat(Angle);
-	UE_LOG(LogMathUtils, Display, TEXT("%s"), *AngleStr);
 
 	return Angle;
 }
