@@ -2,6 +2,7 @@
 
 
 #include "Animations/OverrideSpeedRotationANS.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "AI/AICharacter.h"
 
 void UOverrideSpeedRotationANS::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float TotalDuration)
@@ -9,7 +10,7 @@ void UOverrideSpeedRotationANS::NotifyBegin(USkeletalMeshComponent* MeshComp, UA
 	AAICharacter* AICharacterOwner;
 	AICharacterOwner = Cast<AAICharacter>(MeshComp->GetOwner());
 	if (!AICharacterOwner) return;
-
+	AICharacterOwner->GetCharacterMovement()->bOrientRotationToMovement = false;
 	DefaultSpeedRotation = AICharacterOwner->SpeedRotation;
 }
 
@@ -30,6 +31,6 @@ void UOverrideSpeedRotationANS::NotifyEnd(USkeletalMeshComponent* MeshComp, UAni
 	AAICharacter* AICharacterOwner;
 	AICharacterOwner = Cast<AAICharacter>(MeshComp->GetOwner());
 	if (!AICharacterOwner) return;
-
+	AICharacterOwner->GetCharacterMovement()->bOrientRotationToMovement = true;
 	AICharacterOwner->SpeedRotation = DefaultSpeedRotation;
 }
