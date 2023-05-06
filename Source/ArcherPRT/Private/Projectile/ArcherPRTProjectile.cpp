@@ -51,12 +51,18 @@ AArcherPRTProjectile::AArcherPRTProjectile()
 
 	// set up a notification for when this component hits something blocking
 	CollisionComp->OnComponentHit.AddDynamic(this, &AArcherPRTProjectile::OnHit);
+	CapsuleCollisionForPawn->OnComponentHit.AddDynamic(this, &AArcherPRTProjectile::OnHit);
+	CapsuleCollisionForStatic->OnComponentHit.AddDynamic(this, &AArcherPRTProjectile::OnHit);
 
 	// set up a notification for when this component overlap
 	CollisionComp->OnComponentBeginOverlap.AddDynamic(this, &AArcherPRTProjectile::OnOverlap);
+	CapsuleCollisionForPawn->OnComponentBeginOverlap.AddDynamic(this, &AArcherPRTProjectile::OnOverlap);
+	CapsuleCollisionForStatic->OnComponentBeginOverlap.AddDynamic(this, &AArcherPRTProjectile::OnOverlap);
 
 	// Can Return PhysMat
 	CollisionComp->bReturnMaterialOnMove = true;
+	CapsuleCollisionForPawn->bReturnMaterialOnMove = true;
+	CapsuleCollisionForStatic->bReturnMaterialOnMove = true;
 
 	// Players can't walk on it
 	CollisionComp->SetWalkableSlopeOverride(FWalkableSlopeOverride(WalkableSlope_Unwalkable, 0.f));
