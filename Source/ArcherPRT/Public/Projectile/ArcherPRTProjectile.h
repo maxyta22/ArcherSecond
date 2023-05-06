@@ -19,9 +19,6 @@ class AArcherPRTProjectile : public AActor
 {
 	GENERATED_BODY()
 
-	UPROPERTY(VisibleDefaultsOnly, Category=Projectile)
-	USphereComponent* CollisionComp;
-
 	UPROPERTY(VisibleDefaultsOnly, Category = Projectile)
 	UCapsuleComponent* CapsuleCollisionForPawn;
 
@@ -44,11 +41,9 @@ public:
 	UFUNCTION(BlueprintNativeEvent)
 		void OnImpact(const FHitResult& Result);
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable, Category = "Effects")
 		void SpawnImpactEffect(FHitResult Hit);
 	 
-
-	USphereComponent* GetCollisionComp() const { return CollisionComp; }
 
 	UProjectileMovementComponent* GetProjectileMovement() const { return ProjectileMovement; }
 

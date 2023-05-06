@@ -16,17 +16,18 @@
 
 AArcherPRTProjectile::AArcherPRTProjectile() 
 {
-	// Use a sphere as a simple collision representation
-	CollisionComp = CreateDefaultSubobject<USphereComponent>(TEXT("SphereComp"));
-	CollisionComp->InitSphereRadius(5.0f);
-	CollisionComp->BodyInstance.SetCollisionProfileName("Projectile");
-	CollisionComp->SetCollisionResponseToAllChannels(ECR_Ignore);
-	CollisionComp->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
-	CollisionComp->SetCollisionResponseToChannel(ECC_Pawn, ECR_Block);
-	CollisionComp->SetCollisionResponseToChannel(ECC_Destructible, ECR_Block);
+	CapsuleCollisionForStatic = CreateDefaultSubobject<UCapsuleComponent>(TEXT("CapsuleCollisionForStatic"));
+	CapsuleCollisionForStatic->SetupAttachment(RootComponent);
+	CapsuleCollisionForStatic->SetCapsuleRadius(20.0f);
+	CapsuleCollisionForStatic->SetCapsuleHalfHeight(20.f);
+	CapsuleCollisionForStatic->BodyInstance.SetCollisionProfileName("Projectile");
+	CapsuleCollisionForStatic->SetCollisionResponseToAllChannels(ECR_Ignore);
+	CapsuleCollisionForStatic->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
+	CapsuleCollisionForStatic->SetCollisionResponseToChannel(ECC_Pawn, ECR_Ignore);
+	CapsuleCollisionForStatic->SetCollisionResponseToChannel(ECC_Destructible, ECR_Ignore);
 
 	// Set as root component
-	RootComponent = CollisionComp;
+	RootComponent = CapsuleCollisionForStatic;
 
 	//Set capsule collision
 	CapsuleCollisionForPawn = CreateDefaultSubobject<UCapsuleComponent>(TEXT("CapsuleCollisionForPawn"));
@@ -39,38 +40,21 @@ AArcherPRTProjectile::AArcherPRTProjectile()
 	CapsuleCollisionForPawn->SetCollisionResponseToChannel(ECC_Pawn, ECR_Block);
 	CapsuleCollisionForPawn->SetCollisionResponseToChannel(ECC_Destructible, ECR_Block);
 
-	CapsuleCollisionForStatic = CreateDefaultSubobject<UCapsuleComponent>(TEXT("CapsuleCollisionForStatic"));
-	CapsuleCollisionForStatic->SetupAttachment(RootComponent);
-	CapsuleCollisionForStatic->SetCapsuleRadius(20.0f);
-	CapsuleCollisionForStatic->SetCapsuleHalfHeight(20.f);
-	CapsuleCollisionForStatic->BodyInstance.SetCollisionProfileName("Projectile");
-	CapsuleCollisionForStatic->SetCollisionResponseToAllChannels(ECR_Ignore);
-	CapsuleCollisionForStatic->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
-	CapsuleCollisionForStatic->SetCollisionResponseToChannel(ECC_Pawn, ECR_Ignore);
-	CapsuleCollisionForStatic->SetCollisionResponseToChannel(ECC_Destructible, ECR_Ignore);
-
 	// set up a notification for when this component hits something blocking
-	CollisionComp->OnComponentHit.AddDynamic(this, &AArcherPRTProjectile::OnHit);
 	CapsuleCollisionForPawn->OnComponentHit.AddDynamic(this, &AArcherPRTProjectile::OnHit);
 	CapsuleCollisionForStatic->OnComponentHit.AddDynamic(this, &AArcherPRTProjectile::OnHit);
 
 	// set up a notification for when this component overlap
-	CollisionComp->OnComponentBeginOverlap.AddDynamic(this, &AArcherPRTProjectile::OnOverlap);
 	CapsuleCollisionForPawn->OnComponentBeginOverlap.AddDynamic(this, &AArcherPRTProjectile::OnOverlap);
 	CapsuleCollisionForStatic->OnComponentBeginOverlap.AddDynamic(this, &AArcherPRTProjectile::OnOverlap);
 
 	// Can Return PhysMat
-	CollisionComp->bReturnMaterialOnMove = true;
 	CapsuleCollisionForPawn->bReturnMaterialOnMove = true;
 	CapsuleCollisionForStatic->bReturnMaterialOnMove = true;
 
-	// Players can't walk on it
-	CollisionComp->SetWalkableSlopeOverride(FWalkableSlopeOverride(WalkableSlope_Unwalkable, 0.f));
-	CollisionComp->CanCharacterStepUpOn = ECB_No;
-
 	// Use a ProjectileMovementComponent to govern this projectile's movement
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileComp"));
-	ProjectileMovement->UpdatedComponent = CollisionComp;
+	ProjectileMovement->UpdatedComponent = CapsuleCollisionForStatic;
 	ProjectileMovement->InitialSpeed = 3000.f;
 	ProjectileMovement->MaxSpeed = 3000.f;
 	ProjectileMovement->bRotationFollowsVelocity = true;
