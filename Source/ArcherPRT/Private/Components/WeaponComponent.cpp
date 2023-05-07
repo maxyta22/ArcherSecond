@@ -26,10 +26,10 @@ void UWeaponComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	EquipWeapon(DefaultWeapon);
-	if (CurrentEquipWeapon != NULL)
-	{
-		AmountAmmoInMagazine = CurrentEquipWeapon.GetDefaultObject()->Magazine;
-	}
+	//if (CurrentEquipWeapon != NULL)
+	//{
+		//AmountAmmoInMagazine = CurrentEquipWeapon.GetDefaultObject()->Magazine;
+	//}
 }
 
 void UWeaponComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
