@@ -53,10 +53,10 @@ public:
 		void AfterWasSuccessUseInteractObject();
 
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "After Events")
-		void AfterGloveHit(bool Charged);
+		void AfterGloveHit(bool Charged, const FHitResult& HitResult, AActor* Causer);
 
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "After Events")
-		void AfterShotHit();
+		void AfterShotHit(const FHitResult& HitResult, AActor* Causer);
 
 	virtual void TryUseInteractObject(APlayerCharacter* Pawn);
 

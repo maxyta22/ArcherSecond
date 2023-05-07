@@ -25,6 +25,7 @@ AArcherPRTProjectile::AArcherPRTProjectile()
 	CapsuleCollisionForStatic->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
 	CapsuleCollisionForStatic->SetCollisionResponseToChannel(ECC_Pawn, ECR_Ignore);
 	CapsuleCollisionForStatic->SetCollisionResponseToChannel(ECC_Destructible, ECR_Ignore);
+	CapsuleCollisionForStatic->SetCollisionResponseToChannel(ECC_Check, ECR_Overlap);
 
 	// Set as root component
 	RootComponent = CapsuleCollisionForStatic;
@@ -39,6 +40,7 @@ AArcherPRTProjectile::AArcherPRTProjectile()
 	CapsuleCollisionForPawn->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Ignore);
 	CapsuleCollisionForPawn->SetCollisionResponseToChannel(ECC_Pawn, ECR_Block);
 	CapsuleCollisionForPawn->SetCollisionResponseToChannel(ECC_Destructible, ECR_Block);
+	CapsuleCollisionForPawn->SetCollisionResponseToChannel(ECC_Check, ECR_Overlap);
 
 	// set up a notification for when this component hits something blocking
 	CapsuleCollisionForPawn->OnComponentHit.AddDynamic(this, &AArcherPRTProjectile::OnHit);
@@ -116,7 +118,7 @@ void AArcherPRTProjectile::OnImpact_Implementation(const FHitResult& Result)
 		}
 		if (InteractObject)
 		{
-			InteractObject->AfterShotHit();
+			InteractObject->AfterShotHit(Result, this);
 		}
 
 		SpawnImpactEffect(Result);
