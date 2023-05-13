@@ -347,7 +347,7 @@ void UWeaponComponent::PerformReloadWeapon()
 		Owner->OnReloadWeapon();
 		bReloadWeaponInProgress = true;
 		Owner->PlayAnimMontage(CurrentEquipWeapon.GetDefaultObject()->ReloadingAnimation);
-		const auto TimeReload = CurrentEquipWeapon.GetDefaultObject()->ReloadingAnimation->SequenceLength;
+		const auto TimeReload = CurrentEquipWeapon.GetDefaultObject()->ReloadingAnimation->CalculateSequenceLength();
 		GetWorld()->GetTimerManager().SetTimer(ReloadWeaponInProgressTimer, this, &UWeaponComponent::FinishReloadWeapon, TimeReload, false);
 	}
 
