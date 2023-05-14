@@ -108,8 +108,6 @@ void AArcherPRTProjectile::OnImpact_Implementation(const FHitResult& Result)
 			{
 				Pawn->TakeDamage(DamageProjectile, FDamageEvent(), GetInstigatorController(), this);
 				Pawn->OnHit(GetActorForwardVector(), Result, GetInstigator(), EWeaponType::PneumaticGun, false);
-
-				GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Red, TEXT("HEAD SHOT"));
 			}
 			else
 			{
