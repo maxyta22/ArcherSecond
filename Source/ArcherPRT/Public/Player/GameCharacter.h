@@ -9,6 +9,7 @@
 #include "AbilitySystemComponent.h"
 #include "GameplayAbilitySystem/PRTAttributeSet.h"
 #include "Core/ArcherPRTData.h"
+#include "NiagaraComponent.h"
 #include "GameCharacter.generated.h"
 
 class UInputComponent;
@@ -129,6 +130,12 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Strike")
 		USoundBase* HitOnBlockSound;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Strike")
+		UNiagaraSystem* HitOnSuccessVFX;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Strike")
+		UNiagaraSystem* HitOnBlockVFX;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Strike")
 		TSubclassOf<UDamageType> StrikeDamageType;

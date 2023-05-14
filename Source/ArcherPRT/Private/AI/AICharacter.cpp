@@ -14,6 +14,8 @@
 #include "Environment/PickupResourcesBase.h"
 #include "MathUtils.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Particles/ParticleSystemComponent.h"
+#include "NiagaraFunctionLibrary.h"
 #include "Kismet/GameplayStatics.h"
 #include "Components/WeaponComponent.h"
 
@@ -212,6 +214,10 @@ void AAICharacter::MakeStrike(float StrikeDistance, float MinAngle, float MaxAng
 						{
 							UGameplayStatics::PlaySoundAtLocation(GetWorld(), HitOnSuccessSound, GetActorLocation(), 1.0, 1.0, 0.0);
 						}
+						if (HitOnSuccessVFX)
+						{
+							UNiagaraComponent* SpawnNiagaraEffect = UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), HitOnSuccessVFX, GetActorLocation(), GetActorRotation());
+						}
 					}
 					else
 					{
@@ -220,6 +226,10 @@ void AAICharacter::MakeStrike(float StrikeDistance, float MinAngle, float MaxAng
 						if (HitOnBlockSound)
 						{
 							UGameplayStatics::PlaySoundAtLocation(GetWorld(), HitOnBlockSound, GetActorLocation(), 1.0, 1.0, 0.0);
+						}
+						if (HitOnBlockVFX)
+						{
+							UNiagaraComponent* SpawnNiagaraEffect = UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), HitOnBlockVFX, GetActorLocation(), GetActorRotation());
 						}
 					}
 					IgnoreActorsDamage.Add(DamagedActor);
