@@ -117,8 +117,9 @@ FVector AAICharacter::GetNextPatrolTargetPointLocation()
 	
 }
 
-void AAICharacter::ToggleHitColliders(bool Activate)
+void AAICharacter::ToggleActivateHitColliders(bool Activate)
 {
+
 	const auto Components = GetComponents();
 
 	for (UActorComponent* CurrentComponent : Components)
@@ -136,6 +137,12 @@ void AAICharacter::ToggleHitColliders(bool Activate)
 			UPrimitiveComponent* CurrentPrimitiveComponent = Cast<UPrimitiveComponent>(CurrentComponent);
 			CurrentPrimitiveComponent->SetCollisionEnabled(Collision);
 		}	
+
+		if (CurrentComponent->ComponentHasTag("WeakPoint"))
+		{
+			UPrimitiveComponent* CurrentPrimitiveComponent = Cast<UPrimitiveComponent>(CurrentComponent);
+			CurrentPrimitiveComponent->SetCollisionEnabled(Collision);
+		}
 	}
 }
 

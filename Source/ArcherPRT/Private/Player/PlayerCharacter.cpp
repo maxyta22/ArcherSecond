@@ -160,7 +160,8 @@ void APlayerCharacter::MakeStrike(float StrikeDistance, float MinAngle, float Ma
 			{
 				const auto Pawn = Cast<AGameCharacter>(HitResult.GetActor());
 				const auto InteractObject = Cast<AInteractObjectBase>(HitResult.GetActor());
-				if (Pawn)
+
+				if (Pawn !=  nullptr && Pawn->bInvulnerable == false)
 				{
 					if (HitResult.GetComponent()->ComponentHasTag("WeakPoint"))
 					{

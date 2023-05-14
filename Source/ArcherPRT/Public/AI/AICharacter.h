@@ -103,7 +103,7 @@ public:
 		APRTAIController* GetAIControllerRef() { return AIControllerRef;}
 
 	UFUNCTION()
-		void ToggleHitColliders(bool Activate);
+		void ToggleActivateHitColliders(bool Activate);
 
 	// Blueprint Implementable Events
 

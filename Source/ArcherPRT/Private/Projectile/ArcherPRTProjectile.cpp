@@ -101,7 +101,7 @@ void AArcherPRTProjectile::OnImpact_Implementation(const FHitResult& Result)
 
 		ShouldDestroyed = !FlyThroughPawn;
 
-		if (Pawn)
+		if (Pawn != nullptr && Pawn->bInvulnerable == false)
 		{
 
 			if (Result.GetComponent()->ComponentHasTag("WeakPoint"))

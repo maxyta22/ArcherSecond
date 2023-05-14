@@ -117,10 +117,10 @@ public:
 
 	virtual void MakeStrike(float StrikeDistance, float MinAngle, float MaxAngle);
 
+	void ClearIgnoreActorsDamageStrike();
+
 	UFUNCTION(BlueprintImplementableEvent, Category = "Strike")
 	void StrikeInProgress();
-
-	void ClearIgnoreActorsDamageStrike();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Strike")
 		float StrikeDamage = 10;
@@ -139,6 +139,10 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Strike")
 		TSubclassOf<UDamageType> StrikeDamageType;
+
+	// Internal
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Internal")
+		bool bInvulnerable;
 
 	
 protected:
