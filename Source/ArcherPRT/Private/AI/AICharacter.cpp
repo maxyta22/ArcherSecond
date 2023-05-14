@@ -216,7 +216,7 @@ void AAICharacter::MakeStrike(float StrikeDistance, float MinAngle, float MaxAng
 						}
 						if (HitOnSuccessVFX)
 						{
-							UNiagaraComponent* SpawnNiagaraEffect = UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), HitOnSuccessVFX, GetActorLocation(), GetActorRotation());
+							UNiagaraComponent* SpawnNiagaraEffect = UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), HitOnSuccessVFX, GetMesh()->GetSocketLocation("VFXStrikeSocket"), GetMesh()->GetSocketRotation("VFXStrikeSocket"));
 						}
 					}
 					else
@@ -229,7 +229,7 @@ void AAICharacter::MakeStrike(float StrikeDistance, float MinAngle, float MaxAng
 						}
 						if (HitOnBlockVFX)
 						{
-							UNiagaraComponent* SpawnNiagaraEffect = UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), HitOnBlockVFX, GetActorLocation(), GetActorRotation());
+							UNiagaraComponent* SpawnNiagaraEffect = UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), HitOnBlockVFX, GetMesh()->GetSocketLocation("VFXStrikeSocket"), GetMesh()->GetSocketRotation("VFXStrikeSocket"));
 						}
 					}
 					IgnoreActorsDamage.Add(DamagedActor);

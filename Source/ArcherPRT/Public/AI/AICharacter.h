@@ -86,6 +86,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Behavior")
 		float WalkSpeed = 100.0f;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Internal|Behavior")
+		bool bIsUnderground;
+
 		bool CanPerformOnHitReaction = true;
 
 	// Drop Settings
