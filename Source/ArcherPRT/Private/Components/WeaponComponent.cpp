@@ -34,7 +34,7 @@ void UWeaponComponent::BeginPlay()
 
 void UWeaponComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
-	//TraceAim();
+	////TraceAim();
 }
 
 void UWeaponComponent::EquipWeapon(TSubclassOf<UWeaponBase> Weapon) 
