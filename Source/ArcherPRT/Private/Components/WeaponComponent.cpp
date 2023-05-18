@@ -26,10 +26,6 @@ void UWeaponComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	EquipWeapon(DefaultWeapon);
-	//if (CurrentEquipWeapon != NULL)
-	//{
-		//AmountAmmoInMagazine = CurrentEquipWeapon.GetDefaultObject()->Magazine;
-	//}
 }
 
 void UWeaponComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
@@ -259,7 +255,7 @@ bool UWeaponComponent::CanReloadWeapon() const
 	if (Owner->BuildingComponent->BuildingModeActivated()) return false;
 	if (Owner->CraftComponent->CraftInProgress()) return false;
 	if (Owner->InventoryComponent->GetValueResources(EResourcesType::Arrow) <= 0) return false;
-	if (AmountAmmoInMagazine == CurrentEquipWeapon.GetDefaultObject()->Magazine) return false;
+	if (AmmoInMagazine == CurrentEquipWeapon.GetDefaultObject()->Magazine) return false;
 	return true;
 }
 
@@ -286,16 +282,8 @@ void UWeaponComponent::MakeShot()
 			CurrentProjectile->SetInstigator(Owner);
 			CurrentProjectile->FinishSpawning(FTransform(SpawnRotation, SpawnLocation));
 		
-			AmountAmmoInMagazine--;
+			AmmoInMagazine--;
 		}
-
-}
-
-int UWeaponComponent::GetAmountAmmoInMagazine() const
-{
-	if (!GetOwner()) return 0;
-
-	return AmountAmmoInMagazine;
 
 }
 
@@ -363,19 +351,17 @@ void UWeaponComponent::FinishReloadWeapon()
 
 	bReloadWeaponInProgress = false;
 
-	int NeedAmmo = CurrentEquipWeapon.GetDefaultObject()->Magazine - AmountAmmoInMagazine;
+	int NeedAmmo = CurrentEquipWeapon.GetDefaultObject()->Magazine - AmmoInMagazine;
 
-	if (Owner->InventoryComponent->GetValueResources(EResourcesType::Arrow) < CurrentEquipWeapon.GetDefaultObject()->Magazine - AmountAmmoInMagazine)
+	if (Owner->InventoryComponent->GetValueResources(EResourcesType::Arrow) < CurrentEquipWeapon.GetDefaultObject()->Magazine - AmmoInMagazine)
 	{
 		NeedAmmo = Owner->InventoryComponent->GetValueResources(EResourcesType::Arrow);
 	}
 	
-
 	Owner->InventoryComponent->AddResources(EResourcesType::Arrow, -NeedAmmo);
 
-	AmountAmmoInMagazine = AmountAmmoInMagazine+NeedAmmo;
+	SetAmmoInMagazine(GetAmmoInMagazine() + NeedAmmo); 
 
-	
 }
 
 float UWeaponComponent::GetWeaponDurability(EWeaponType WeaponType) const

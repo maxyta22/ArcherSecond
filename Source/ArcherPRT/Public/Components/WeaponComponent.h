@@ -49,7 +49,10 @@ public:
 		float LenghtAimTrace = 1000.0f;
 
 	UFUNCTION(BlueprintCallable)
-		int GetAmountAmmoInMagazine() const;
+		int GetAmmoInMagazine() const { return AmmoInMagazine;}
+
+	UFUNCTION(BlueprintCallable)
+		void SetAmmoInMagazine(int NewValue) { AmmoInMagazine = NewValue; };
 
 	UFUNCTION(BlueprintCallable)
 		int GetAmountAmmo() const;
@@ -100,7 +103,7 @@ public:
 	void FinishFire(bool ForceFinishFire = false);
 
 	UFUNCTION(BlueprintPure)
-	bool HaveAmmo() { return AmountAmmoInMagazine > 0; };
+	bool HaveAmmo()  const{ return AmmoInMagazine > 0; };
 
 	bool CanFire() const;
 
@@ -127,7 +130,7 @@ protected:
 
 private:
 
-	int AmountAmmoInMagazine;
+	int AmmoInMagazine;
 
 	float SpreadShot;
 
