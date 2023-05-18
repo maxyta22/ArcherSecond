@@ -35,7 +35,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
 		TArray<TSubclassOf<UWeaponBase>> AvailableWeapons;
 
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Internal")
 		bool bWeaponCharged;
 
