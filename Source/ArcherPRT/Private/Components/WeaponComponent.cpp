@@ -76,13 +76,6 @@ void UWeaponComponent::TraceAim()
 
 	/////////////////////Check Accumulate To Aiming///////////////////////////////////////
 	/////////////////////Return if cant Aiming////////////////////////////////////////////	
-
-	TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypesArray;
-	ObjectTypesArray.Reserve(1);
-	ObjectTypesArray.Emplace(ECollisionChannel::ECC_Pawn);
-	FHitResult TracePawnResult;
-
-	const EDrawDebugTrace::Type DebugTraceType = bDrawDebug ? EDrawDebugTrace::ForDuration : EDrawDebugTrace::None;
 	
 	switch (CurrentEquipWeapon.GetDefaultObject()->WeaponType)
 	{
@@ -101,6 +94,13 @@ void UWeaponComponent::TraceAim()
 		}
 		break;
 	}
+
+	TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypesArray;
+	ObjectTypesArray.Reserve(1);
+	ObjectTypesArray.Emplace(ECollisionChannel::ECC_Pawn);
+	FHitResult TracePawnResult;
+
+	const EDrawDebugTrace::Type DebugTraceType = bDrawDebug ? EDrawDebugTrace::ForDuration : EDrawDebugTrace::None;
 
 	UKismetSystemLibrary::SphereTraceSingleForObjects(GetWorld(), StartTraceAim, EndTraceAim,
 		10, ObjectTypesArray, true, TArray<AActor*>(),
