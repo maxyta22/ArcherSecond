@@ -90,6 +90,9 @@ public:
 	UFUNCTION()
 	virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 
+	UFUNCTION()
+		bool IsInvulnerable();
+
 	UFUNCTION(BlueprintImplementableEvent, Category = "AfterEvents")
 		void AfterTakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser);
 
@@ -143,6 +146,9 @@ public:
 	// Internal
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Internal")
 		bool bInvulnerable;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Internal")
+		bool bIsUnderground;
 
 	
 protected:
