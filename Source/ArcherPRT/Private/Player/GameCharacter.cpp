@@ -106,7 +106,7 @@ float AGameCharacter::TakeDamage(float Damage, FDamageEvent const& DamageEvent, 
 
 bool AGameCharacter::IsInvulnerable()
 {
-	return bInvulnerable || bIsUnderground;
+	return bInvulnerable;
 }
 
 void AGameCharacter::OnHealthAttributeChanged()
