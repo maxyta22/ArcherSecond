@@ -108,20 +108,19 @@ void UWeaponComponent::TraceAim()
 		FLinearColor::Green, FLinearColor::Red, 0.0);
 
 
-	if (TracePawnResult.bBlockingHit)
+	if (TracePawnResult.bBlockingHit && TracePawnResult.GetComponent() && TracePawnResult.GetComponent()->ComponentHasTag("WeakPoint"))
 	{
-		const auto Result = Cast<AAICharacter>(TracePawnResult.GetActor());
+		const auto AimingCharacter = Cast<AAICharacter>(TracePawnResult.GetActor());
 
-		if (Result != CurrentAimingEnemy)
+		if (AimingCharacter != CurrentAimingEnemy)
 		{
 			FinishAccumulateAimingForCurrentAimingEnemy();
 		}
 
-		CurrentAimingEnemy = Result;
+		CurrentAimingEnemy = AimingCharacter;
 
 		if (CurrentAimingEnemy != nullptr)
 		{
-			FString ActorName = Result->GetName();
 			CurrentAimingEnemy->StartAccumulateToAiming();
 		}
 	}
