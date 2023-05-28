@@ -47,7 +47,43 @@ void UWeaponComponent::TraceAim()
 	const auto Owner = Cast<APlayerCharacter>(GetOwner());
 	if (Owner == nullptr) return;
 	
-	//Finish Accumulate To Aiming
+	FVector StartTraceAim = Owner->GetFirstPersonCameraComponent()->GetComponentLocation() + Owner->GetFirstPersonCameraComponent()->GetForwardVector() * 50;
+	FVector EndTraceAim = StartTraceAim + Owner->GetFirstPersonCameraComponent()->GetForwardVector() * LenghtAimTrace;
+	FHitResult TraceResult;
+	FCollisionObjectQueryParams QueryObjectParams;
+	QueryObjectParams.AddObjectTypesToQuery(ECC_Pawn);
+	QueryObjectParams.AddObjectTypesToQuery(ECC_WorldStatic);
+
+	GetWorld()->LineTraceSingleByObjectType(TraceResult, StartTraceAim, EndTraceAim, QueryObjectParams);
+
+	EndPointAimTraceHitResult = TraceResult;
+
+	if (TraceResult.bBlockingHit)
+	{
+		EndPointOnAimTrace = TraceResult.Location;
+	}
+	else
+	{
+		EndPointOnAimTrace = EndTraceAim;	
+	}
+
+	if (bDrawDebug)
+	{
+		DrawDebugLine(GetWorld(), StartTraceAim, EndTraceAim, FColor::Yellow, false, 0, 0, 0);
+		DrawDebugSphere(GetWorld(), EndPointOnAimTrace, 10, 10, FColor::Green, false, 0, 0, 0);
+	}
+
+
+	/////////////////////Check Accumulate To Aiming///////////////////////////////////////
+	/////////////////////Return if cant Aiming////////////////////////////////////////////	
+
+	TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypesArray;
+	ObjectTypesArray.Reserve(1);
+	ObjectTypesArray.Emplace(ECollisionChannel::ECC_Pawn);
+	FHitResult TracePawnResult;
+
+	const EDrawDebugTrace::Type DebugTraceType = bDrawDebug ? EDrawDebugTrace::ForDuration : EDrawDebugTrace::None;
+	
 	switch (CurrentEquipWeapon.GetDefaultObject()->WeaponType)
 	{
 	case EWeaponType::PneumaticGlove:
@@ -58,60 +94,42 @@ void UWeaponComponent::TraceAim()
 		}
 		break;
 	case EWeaponType::PneumaticGun:
-		if (!HaveAmmo()) 
+		if (!HaveAmmo())
 		{
 			FinishAccumulateAimingForCurrentAimingEnemy();
 			return;
 		}
 		break;
 	}
-	
-	FVector StartTraceAim = Owner->GetFirstPersonCameraComponent()->GetComponentLocation() + Owner->GetFirstPersonCameraComponent()->GetForwardVector() * 50;
-	FVector EndTraceAim = StartTraceAim + Owner->GetFirstPersonCameraComponent()->GetForwardVector() * LenghtAimTrace;
-	FHitResult TraceResult;
-	FCollisionObjectQueryParams QueryObjectParams;
-	QueryObjectParams.AddObjectTypesToQuery(ECC_Pawn);
-	QueryObjectParams.AddObjectTypesToQuery(ECC_WorldStatic);
 
-	GetWorld()->LineTraceSingleByObjectType(TraceResult, StartTraceAim, EndTraceAim, QueryObjectParams);
+	UKismetSystemLibrary::SphereTraceSingleForObjects(GetWorld(), StartTraceAim, EndTraceAim,
+		10, ObjectTypesArray, true, TArray<AActor*>(),
+		DebugTraceType, TracePawnResult, true,
+		FLinearColor::Green, FLinearColor::Red, 0.0);
 
-	if (bDrawDebug)
+
+	if (TracePawnResult.bBlockingHit)
 	{
-		//DrawDebugFromCamera
-		DrawDebugLine(GetWorld(), StartTraceAim, EndTraceAim, FColor::Yellow, false, 0, 0, 0);
-	}
+		const auto Result = Cast<AAICharacter>(TracePawnResult.GetActor());
 
-	EndPointAimTraceHitResult = TraceResult;
-	
-	if (TraceResult.bBlockingHit)
-	{
-		EndPointOnAimTrace = TraceResult.Location;
-
-		const auto Result = Cast<AAICharacter>(TraceResult.GetActor());
+		if (Result != CurrentAimingEnemy)
+		{
+			FinishAccumulateAimingForCurrentAimingEnemy();
+		}
 
 		CurrentAimingEnemy = Result;
 
 		if (CurrentAimingEnemy != nullptr)
 		{
 			CurrentAimingEnemy->StartAccumulateToAiming();
-		}			
-	
-		if (bDrawDebug)
-		{
-			DrawDebugSphere(GetWorld(), EndPointOnAimTrace, 10, 10, FColor::Green, false, 0, 0, 0);
 		}
-
 	}
 	else
 	{
-		EndPointOnAimTrace = EndTraceAim;
 		FinishAccumulateAimingForCurrentAimingEnemy();
-
-		if (bDrawDebug)
-		{
-			DrawDebugSphere(GetWorld(), EndPointOnAimTrace, 10, 10, FColor::Green, false, 0, 0, 0);
-		}
 	}
+
+
 
 }
 
