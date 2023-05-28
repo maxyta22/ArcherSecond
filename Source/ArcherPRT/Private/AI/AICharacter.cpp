@@ -72,6 +72,13 @@ void AAICharacter::FinishAccumulateToAiming()
 	GetWorld()->GetTimerManager().ClearTimer(AccumulateToAiminHandleTimer);
 }
 
+void AAICharacter::ReactionToAiming()
+{
+	AfterReactionToAiming();
+}
+
+//
+
 void AAICharacter::RotationOnTarget()
 {
 	if (GetWorld() == nullptr) return;
@@ -114,7 +121,6 @@ FVector AAICharacter::GetNextPatrolTargetPointLocation()
 		return FVector::ZeroVector;
 	}
 
-	
 }
 
 void AAICharacter::ToggleActivateHitColliders(bool Activate)
@@ -144,11 +150,6 @@ void AAICharacter::ToggleActivateHitColliders(bool Activate)
 			CurrentPrimitiveComponent->SetCollisionEnabled(Collision);
 		}
 	}
-}
-
-void AAICharacter::ReactionToAiming()
-{
-	AfterReactionToAiming();
 }
 
 // Take Damage
