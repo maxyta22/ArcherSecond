@@ -80,6 +80,9 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Aim")
 		FHitResult GetEndPointOnAimTraceHitResult() const { return EndPointAimTraceHitResult; }
 
+	UFUNCTION(Category = "Aim")
+		void FinishAccumulateAimingForCurrentAimingEnemy() const;
+
 	UFUNCTION(BlueprintPure, Category = "Darability")
 		float GetWeaponDurability(EWeaponType WeaponType) const;
 

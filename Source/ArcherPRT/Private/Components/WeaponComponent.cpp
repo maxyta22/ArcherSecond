@@ -45,27 +45,22 @@ void UWeaponComponent::TraceAim()
 	if (GetOwner() == nullptr) return;
 	if (CurrentEquipWeapon == nullptr) return;
 	const auto Owner = Cast<APlayerCharacter>(GetOwner());
-	if (!Owner) return;
+	if (Owner == nullptr) return;
 	
+	//Finish Accumulate To Aiming
 	switch (CurrentEquipWeapon.GetDefaultObject()->WeaponType)
 	{
 	case EWeaponType::PneumaticGlove:
 		if (!ChargeAttackInProgress())
 		{
-			if (CurrentAimingEnemy != nullptr)
-			{
-				CurrentAimingEnemy->FinishAccumulateToAiming();
-			}
+			FinishAccumulateAimingForCurrentAimingEnemy();
 			return;
 		}
 		break;
 	case EWeaponType::PneumaticGun:
 		if (!HaveAmmo()) 
 		{
-			if (CurrentAimingEnemy != nullptr)
-			{
-				CurrentAimingEnemy->FinishAccumulateToAiming();
-			}
+			FinishAccumulateAimingForCurrentAimingEnemy();
 			return;
 		}
 		break;
@@ -74,8 +69,11 @@ void UWeaponComponent::TraceAim()
 	FVector StartTraceAim = Owner->GetFirstPersonCameraComponent()->GetComponentLocation() + Owner->GetFirstPersonCameraComponent()->GetForwardVector() * 50;
 	FVector EndTraceAim = StartTraceAim + Owner->GetFirstPersonCameraComponent()->GetForwardVector() * LenghtAimTrace;
 	FHitResult TraceResult;
+	FCollisionObjectQueryParams QueryObjectParams;
+	QueryObjectParams.AddObjectTypesToQuery(ECC_Pawn);
+	QueryObjectParams.AddObjectTypesToQuery(ECC_WorldStatic);
 
-	GetWorld()->LineTraceSingleByChannel(TraceResult, StartTraceAim, EndTraceAim, ECollisionChannel::ECC_Visibility);
+	GetWorld()->LineTraceSingleByObjectType(TraceResult, StartTraceAim, EndTraceAim, QueryObjectParams);
 
 	if (bDrawDebug)
 	{
@@ -90,29 +88,39 @@ void UWeaponComponent::TraceAim()
 		EndPointOnAimTrace = TraceResult.Location;
 
 		const auto Result = Cast<AAICharacter>(TraceResult.GetActor());
-		if (Result)
+
+		CurrentAimingEnemy = Result;
+
+		if (CurrentAimingEnemy != nullptr)
 		{
-			Result->StartAccumulateToAiming();
-			CurrentAimingEnemy = Result;
-		}
-		else
+			CurrentAimingEnemy->StartAccumulateToAiming();
+		}			
+	
+		if (bDrawDebug)
 		{
-			if (CurrentAimingEnemy != nullptr)
-			{
-				CurrentAimingEnemy->FinishAccumulateToAiming();
-			}
+			DrawDebugSphere(GetWorld(), EndPointOnAimTrace, 10, 10, FColor::Green, false, 0, 0, 0);
 		}
+
 	}
 	else
 	{
 		EndPointOnAimTrace = EndTraceAim;
+		FinishAccumulateAimingForCurrentAimingEnemy();
 
-		if (CurrentAimingEnemy != nullptr)
+		if (bDrawDebug)
 		{
-			CurrentAimingEnemy->FinishAccumulateToAiming();
+			DrawDebugSphere(GetWorld(), EndPointOnAimTrace, 10, 10, FColor::Green, false, 0, 0, 0);
 		}
 	}
 
+}
+
+void UWeaponComponent::FinishAccumulateAimingForCurrentAimingEnemy() const
+{
+	if (CurrentAimingEnemy != nullptr)
+	{
+		CurrentAimingEnemy->FinishAccumulateToAiming();
+	}
 }
 
 void UWeaponComponent::OnFire()
