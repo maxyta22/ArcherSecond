@@ -114,7 +114,6 @@ void UWeaponComponent::TraceAim()
 
 		if (Result != CurrentAimingEnemy)
 		{
-			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "Fuck");
 			FinishAccumulateAimingForCurrentAimingEnemy();
 		}
 
@@ -123,13 +122,11 @@ void UWeaponComponent::TraceAim()
 		if (CurrentAimingEnemy != nullptr)
 		{
 			FString ActorName = Result->GetName();
-			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, ActorName);
 			CurrentAimingEnemy->StartAccumulateToAiming();
 		}
 	}
 	else
 	{
-		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "Fail");
 		FinishAccumulateAimingForCurrentAimingEnemy();
 	}
 
