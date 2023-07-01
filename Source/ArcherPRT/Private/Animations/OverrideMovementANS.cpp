@@ -49,15 +49,17 @@ void UOverrideMovementANS::NotifyTick(USkeletalMeshComponent* MeshComp, UAnimSeq
 
 	if (!MeshComp->GetAnimInstance()->GetCurveValue("ForwardRootMotion")) return;
 
-	if (MeshComp->GetAnimInstance()->GetCurveValue("ForwardRootMotion") > 0 && !AICharacterOwner->StatsComponent->IsDead())
+	float ForwardCurveValue = !MeshComp->GetAnimInstance()->GetCurveValue("ForwardRootMotion");
+
+	if (ForwardCurveValue > 0 && !AICharacterOwner->StatsComponent->IsDead())
 	{
-		MovementComponent->MaxWalkSpeed = MeshComp->GetAnimInstance()->GetCurveValue("ForwardRootMotion");
+		MovementComponent->MaxWalkSpeed = ForwardCurveValue;
 		AICharacterOwner->AddMovementInput(AICharacterOwner->GetActorForwardVector(), 1);
 	}
 
-	if (MeshComp->GetAnimInstance()->GetCurveValue("ForwardRootMotion") < 0 && !AICharacterOwner->StatsComponent->IsDead())
+	if (ForwardCurveValue < 0 && !AICharacterOwner->StatsComponent->IsDead())
 	{
-		MovementComponent->MaxWalkSpeed = MeshComp->GetAnimInstance()->GetCurveValue("ForwardRootMotion") *-1;
+		MovementComponent->MaxWalkSpeed = ForwardCurveValue *-1;
 		AICharacterOwner->AddMovementInput(AICharacterOwner->GetActorForwardVector(), -1);
 	}
 	
