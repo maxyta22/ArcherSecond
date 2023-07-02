@@ -32,6 +32,17 @@ enum class EAIStartCondition : uint8
 	Sleep
 };
 
+UENUM(BlueprintType, Category = "AIBehaviorType")
+enum class EAIBehaviorType : uint8
+{
+	Sleep,
+	Idle,
+	Patrol,
+	Range,
+	Melee
+	
+};
+
 UENUM(BlueprintType, Category = "Weapons")
 enum class EWeaponType : uint8
 {
