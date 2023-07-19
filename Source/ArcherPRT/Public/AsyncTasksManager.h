@@ -7,21 +7,6 @@
 #include "Async/AsyncWork.h"
 #include "AsyncTasksManager.generated.h"
 
-UCLASS()
-class ARCHERPRT_API AAsyncTasksManager : public AActor
-{
-	GENERATED_BODY()
-	
-public:	
-	AAsyncTasksManager();
-
-protected:
-	virtual void BeginPlay() override;
-
-public:	
-	virtual void Tick(float DeltaTime) override;
-
-};
 
 class MyAsyncTask : FNonAbandonableTask {
 
@@ -33,5 +18,25 @@ class MyAsyncTask : FNonAbandonableTask {
 
 	TStatId GetStatId() const;
 
+};
+
+UCLASS()
+class ARCHERPRT_API AAsyncTasksManager : public AActor
+{
+	GENERATED_BODY()
+	
+public:	
+
+	FAsyncTask<MyAsyncTask>* MyTask;
+
+	AAsyncTasksManager();
+
+
+protected:
+	virtual void BeginPlay() override;
+
+public:	
+	virtual void Tick(float DeltaTime) override;
 
 };
+

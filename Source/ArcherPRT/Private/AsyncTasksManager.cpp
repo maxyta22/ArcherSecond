@@ -2,27 +2,37 @@
 
 
 #include "AsyncTasksManager.h"
+#include "Async/AsyncWork.h"
 
 // Sets default values
 AAsyncTasksManager::AAsyncTasksManager()
 {
-
+	bAllowTickBeforeBeginPlay = true;
 	PrimaryActorTick.bCanEverTick = true;
 
 }
 
-
 void AAsyncTasksManager::BeginPlay()
 {
-	Super::BeginPlay();
-	FAsyncTask<MyAsyncTask>* myTask = new FAsyncTask<MyAsyncTask>();
-	myTask->StartBackgroundTask();
+
+	MyTask = new FAsyncTask<MyAsyncTask>();
+	MyTask->StartBackgroundTask();
 }
 
 void AAsyncTasksManager::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	//MyTask->Cancel();
+
+	if (MyTask->IsDone())
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 0.1, FColor::Green, "Complete");
+	}
+	
 }
+
+///////////////////////////// My Async Task
 
 MyAsyncTask::MyAsyncTask()
 {
@@ -30,7 +40,12 @@ MyAsyncTask::MyAsyncTask()
 
 void MyAsyncTask::DoWork()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Green, "I Am do Work");
+	for (int i = 0; i < 100000; i++)
+	{
+		FString message = FString::Printf(TEXT("intVar: %d"), i);
+		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Green, message);
+	
+	}	
 }
 
 TStatId MyAsyncTask::GetStatId() const
