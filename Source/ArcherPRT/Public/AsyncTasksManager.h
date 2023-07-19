@@ -5,15 +5,15 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Async/AsyncWork.h"
-#include "AsyncActor.generated.h"
+#include "AsyncTasksManager.generated.h"
 
 UCLASS()
-class ARCHERPRT_API AAsyncActor : public AActor
+class ARCHERPRT_API AAsyncTasksManager : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
-	AAsyncActor();
+	AAsyncTasksManager();
 
 protected:
 	virtual void BeginPlay() override;
@@ -27,12 +27,11 @@ class MyAsyncTask : FNonAbandonableTask {
 
 	friend class FAsyncTask<MyAsyncTask>;
 
-	
 	MyAsyncTask();
 
 	void DoWork();
 
 	TStatId GetStatId() const;
-	
+
 
 };
