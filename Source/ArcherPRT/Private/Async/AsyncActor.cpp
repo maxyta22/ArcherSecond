@@ -3,7 +3,7 @@
 
 #include "Async/AsyncActor.h"
 
-// Sets default values
+
 AAsyncActor::AAsyncActor()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
@@ -11,17 +11,34 @@ AAsyncActor::AAsyncActor()
 
 }
 
-// Called when the game starts or when spawned
 void AAsyncActor::BeginPlay()
 {
 	Super::BeginPlay();
+
+	FAsyncTask<MyAsyncTask>* myTask = new FAsyncTask<MyAsyncTask>();
+	myTask->StartBackgroundTask();
 	
 }
 
-// Called every frame
 void AAsyncActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
 }
 
+MyAsyncTask::MyAsyncTask()
+{
+}
+
+
+void MyAsyncTask::DoWork()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Green, "I Am do Work");
+}
+
+TStatId MyAsyncTask::GetStatId() const
+{
+	{
+		RETURN_QUICK_DECLARE_CYCLE_STAT(MyAsyncTask, STATGROUP_ThreadPoolAsyncTasks);
+	}
+}
