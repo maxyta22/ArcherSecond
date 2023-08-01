@@ -133,7 +133,7 @@ void UWeaponComponent::TraceAim()
 
 void UWeaponComponent::FinishAccumulateAimingForCurrentAimingEnemy() const
 {
-	if (CurrentAimingEnemy != nullptr)
+	if (CurrentAimingEnemy != nullptr && !CurrentAimingEnemy->IsPendingKill())
 	{
 		CurrentAimingEnemy->FinishAccumulateToAiming();
 	}
