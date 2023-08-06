@@ -162,11 +162,14 @@ void APlayerCharacter::MakeStrike(float StrikeDistance, float MinAngle, float Ma
 				const auto InteractObject = Cast<AInteractObjectBase>(HitResult.GetActor());
 
 				if (Pawn !=  nullptr && Pawn->IsInvulnerable() == false)
-				{
+				{		
+					DamageActors.AddUnique(Pawn);
+
 					if (HitResult.GetComponent()->ComponentHasTag("WeakPoint"))
 					{
 						Pawn->TakeDamage(Damage, FDamageEvent(), GetInstigatorController(), this);
 						Pawn->OnHit(GetActorForwardVector(), HitResult, this, WeaponType, Charged);
+						SuccessDamageCount++;
 						IgnoreActorsDamage.Add(Pawn);
 					}
 					ActorsToIgnore.Add(Pawn);

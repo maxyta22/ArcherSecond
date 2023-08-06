@@ -97,6 +97,9 @@ public:
 		void AfterTakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser);
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "AfterEvents")
+		void MissTakeDamage();
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "AfterEvents")
 		void AfterOnDeath();
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "AfterEvents")
@@ -120,7 +123,11 @@ public:
 
 	virtual void MakeStrike(float StrikeDistance, float MinAngle, float MaxAngle);
 
-	void ClearIgnoreActorsDamageStrike();
+	void ClearTempInrenalActors();
+
+	bool CheckMiss() { return SuccessDamageCount == 0; };
+
+	void MakeMiss();
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Strike")
 	void StrikeInProgress();
@@ -151,13 +158,20 @@ public:
 		bool bIsUnderground;
 
 	
+	
 protected:
 
 	virtual void OnDeath();
 
 	virtual void Landed(const FHitResult& Hit);
 
+	//Make Strike
+
 	TArray<AActor*> IgnoreActorsDamage;
+
+	TArray<AActor*> DamageActors;
+
+	int SuccessDamageCount;
 
 private:
 

@@ -9,7 +9,7 @@ void UMakeStrikeANS::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequence
 	AGameCharacter* CharacterOwner;
 	CharacterOwner = Cast<AGameCharacter>(MeshComp->GetOwner());
 	if (!CharacterOwner) return;
-	CharacterOwner->ClearIgnoreActorsDamageStrike();
+	CharacterOwner->ClearTempInrenalActors();
 }
 
 void UMakeStrikeANS::NotifyTick(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float FrameDeltaTime)
@@ -25,5 +25,12 @@ void UMakeStrikeANS::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequenceBa
 	AGameCharacter* CharacterOwner;
 	CharacterOwner = Cast<AGameCharacter>(MeshComp->GetOwner());
 	if (!CharacterOwner) return;
-	CharacterOwner->ClearIgnoreActorsDamageStrike();
+
+	if (CharacterOwner->CheckMiss())
+	{
+		CharacterOwner->MakeMiss();
+	}
+
+	CharacterOwner->ClearTempInrenalActors();
+
 }

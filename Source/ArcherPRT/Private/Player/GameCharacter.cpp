@@ -150,7 +150,21 @@ void AGameCharacter::MakeStrike(float StrikeDistance, float MinAngle, float MaxA
 {
 }
 
-void AGameCharacter::ClearIgnoreActorsDamageStrike()
+void AGameCharacter::ClearTempInrenalActors()
 {
 	IgnoreActorsDamage.Empty();
+	DamageActors.Empty();
+	SuccessDamageCount = 0;
+}
+
+void AGameCharacter::MakeMiss()
+{
+	for (AActor* & CheckingActor : DamageActors)
+	{
+		const auto CheckPawn = Cast<AGameCharacter>(CheckingActor);
+		if (CheckPawn != nullptr)
+		{
+			CheckPawn->MissTakeDamage();
+		}
+	}
 }
