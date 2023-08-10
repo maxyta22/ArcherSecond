@@ -26,6 +26,8 @@ void UWeaponComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	EquipWeapon(DefaultWeapon);
+	GetWorld()->GetTimerManager().SetTimer(AimTraceTimerHandle, this, &UWeaponComponent::TraceAim, 0.1f, true);
+
 }
 
 void UWeaponComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)

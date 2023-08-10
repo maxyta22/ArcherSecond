@@ -164,4 +164,6 @@ private:
 
 	AAICharacter* CurrentAimingEnemy;
 
+	FTimerHandle AimTraceTimerHandle;
+
 };
