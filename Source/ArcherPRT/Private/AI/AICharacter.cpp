@@ -85,7 +85,6 @@ void AAICharacter::ReactionToAiming()
 	AfterReactionToAiming();
 }
 
-//
 
 void AAICharacter::RotationOnTarget()
 {
