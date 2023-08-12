@@ -60,6 +60,8 @@ void AAICharacter::Tick(float DeltaTime)
 void AAICharacter::StartAccumulateToAiming()
 {
 	if (GetWorld() == nullptr) return;
+	if (StatsComponent->IsDead()) return;
+	if (IsPendingKill()) return;
 	if (GetWorld()->GetTimerManager().IsTimerActive(AccumulateToAiminHandleTimer)) return;
 	if (!GetAIControllerRef()) return;
 	if (!GetAIControllerRef()->GetEnemy()) return;
@@ -69,7 +71,12 @@ void AAICharacter::StartAccumulateToAiming()
 void AAICharacter::FinishAccumulateToAiming()
 {
 	if (GetWorld() == nullptr) return;
-	GetWorld()->GetTimerManager().ClearTimer(AccumulateToAiminHandleTimer);
+	if (StatsComponent->IsDead()) return;
+	if (IsPendingKill()) return;
+	if (GetWorld()->GetTimerManager().IsTimerActive(AccumulateToAiminHandleTimer))
+	{
+		GetWorld()->GetTimerManager().ClearTimer(AccumulateToAiminHandleTimer);
+	}
 }
 
 void AAICharacter::ReactionToAiming()
@@ -170,6 +177,7 @@ float AAICharacter::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AC
 void AAICharacter::OnDeath()
 {
 	Super::OnDeath();
+	GetWorld()->GetTimerManager().IsTimerActive(AccumulateToAiminHandleTimer);
 
 }
 
