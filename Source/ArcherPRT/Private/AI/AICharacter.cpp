@@ -77,6 +77,7 @@ void AAICharacter::FinishAccumulateToAiming()
 	{
 		GetWorld()->GetTimerManager().ClearTimer(AccumulateToAiminHandleTimer);
 	}
+	
 }
 
 void AAICharacter::ReactionToAiming()
@@ -177,7 +178,7 @@ float AAICharacter::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AC
 void AAICharacter::OnDeath()
 {
 	Super::OnDeath();
-	GetWorld()->GetTimerManager().IsTimerActive(AccumulateToAiminHandleTimer);
+	GetWorld()->GetTimerManager().ClearAllTimersForObject(this);
 
 }
 
