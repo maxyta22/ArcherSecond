@@ -21,6 +21,9 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Check")
 		bool InBattleMode();
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Internal")
+		bool BossFightMode;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Settings|BattleMode")
 		float MaxDistanceBattleMode = 1500;
 

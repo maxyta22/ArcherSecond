@@ -30,6 +30,11 @@ bool AArcherPRTGameMode::InBattleMode()
 
 	if (!Player) return false;
 
+	if (BossFightMode)
+	{
+		return true;
+	}
+
 	UKismetSystemLibrary::SphereOverlapActors(GetWorld(), Player->GetActorLocation(), 1000, ObjectTypes, FilterClass, IgnoreActors, OverlapActors);
 
 	if (OverlapActors.IsEmpty())
