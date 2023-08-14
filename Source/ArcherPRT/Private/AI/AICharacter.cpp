@@ -193,7 +193,7 @@ void AAICharacter::OnHit(FVector HitDirection, FHitResult HitResult, AActor* Cau
 
 }
 
-void AAICharacter::MakeStrike(float StrikeDistance, float MinAngle, float MaxAngle)
+void AAICharacter::MakeStrike(float StrikeDistance, float MinAngle, float MaxAngle, bool IgnoreBlock)
 {
 	if (GetWorld() == nullptr) return;
 	if (StatsComponent->IsDead()) return;
@@ -222,7 +222,7 @@ void AAICharacter::MakeStrike(float StrikeDistance, float MinAngle, float MaxAng
 				const auto DamagedPlayerCharacter = Cast<APlayerCharacter>(DamagedActor);
 				if (DamagedPlayerCharacter)
 				{
-					if (!DamagedPlayerCharacter->WeaponComponent->BlockInProgress())
+					if (!DamagedPlayerCharacter->WeaponComponent->BlockInProgress() || IgnoreBlock == true)
 					{
 						DamagedActor->TakeDamage(StrikeDamage, FDamageEvent(), GetInstigatorController(), this);
 						DamagedActor->OnHit(GetActorForwardVector(), FHitResult::FHitResult(), this, EWeaponType::None, false);

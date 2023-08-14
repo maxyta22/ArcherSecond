@@ -116,7 +116,7 @@ protected:
 
 	void TryPerformInteract();
 
-	virtual void MakeStrike(float StrikeDistance, float MinAngle, float MaxAngle) override;
+	virtual void MakeStrike(float StrikeDistance, float MinAngle, float MaxAngle, bool IgnoreBlock) override;
 	
 	virtual void SetupPlayerInputComponent(UInputComponent* InputComponent) override;
 

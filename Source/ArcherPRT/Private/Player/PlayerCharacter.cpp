@@ -123,7 +123,7 @@ float APlayerCharacter::TakeDamage(float Damage, FDamageEvent const& DamageEvent
 	return Damage;
 }
 
-void APlayerCharacter::MakeStrike(float StrikeDistance, float MinAngle, float MaxAngle)
+void APlayerCharacter::MakeStrike(float StrikeDistance, float MinAngle, float MaxAngle, bool IgnoreBlock)
 {
 	if (GetWorld() == nullptr) return;
 

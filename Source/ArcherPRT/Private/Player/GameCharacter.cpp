@@ -146,7 +146,7 @@ void AGameCharacter::OnHit(FVector HitDirection, FHitResult HitResult, AActor* C
 {
 }
 
-void AGameCharacter::MakeStrike(float StrikeDistance, float MinAngle, float MaxAngle)
+void AGameCharacter::MakeStrike(float StrikeDistance, float MinAngle, float MaxAngle, bool IgnoreBlock)
 {
 }
 

@@ -25,5 +25,8 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "StrikeSetting")
 		float MaxAngle = 45.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool IgnoreBlock;
 	
 };

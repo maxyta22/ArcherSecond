@@ -121,7 +121,7 @@ public:
 
 	//Make Strike
 
-	virtual void MakeStrike(float StrikeDistance, float MinAngle, float MaxAngle);
+	virtual void MakeStrike(float StrikeDistance, float MinAngle, float MaxAngle, bool IgnoreBlock = false);
 
 	void ClearTempInrenalActors();
 

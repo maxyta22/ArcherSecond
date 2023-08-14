@@ -141,7 +141,7 @@ protected:
 
 	virtual void OnHit(FVector HitDirection, FHitResult HitResult, AActor* Causer, EWeaponType WeaponType, bool Charged) override;
 
-	virtual void MakeStrike(float StrikeDistance, float MinAngle, float MaxAngle) override;
+	virtual void MakeStrike(float StrikeDistance, float MinAngle, float MaxAngle, bool IgnoreBlock) override;
 
 
 private:
