@@ -6,6 +6,12 @@
 #include "GameFramework/Actor.h"
 #include "DamageZoneBase.generated.h"
 
+
+
+class UBoxComponent;
+class UCapsuleComponent;
+class USphereComponent;
+
 UCLASS()
 class ARCHERPRT_API ADamageZoneBase : public AActor
 {
@@ -16,30 +22,44 @@ public:
 	ADamageZoneBase();
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-		USceneComponent* SceneComponent;
+	USceneComponent* SceneComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	UBoxComponent* BoxCollision;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	USphereComponent* SphereCollision;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	UCapsuleComponent* CapsuleCollision;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		float Radius = 300.0f;
+	float Damage = 2.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		FColor SphereColor = FColor::Red;
+	float DamageFrequency = 1.0f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		float Damage = 0.1f;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		bool DoFullDamage = false;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		TSubclassOf<UDamageType> DamageType;
 
 protected:
 
 	virtual void BeginPlay() override;
 
-public:
 
 	virtual void Tick(float DeltaTime) override;
 
+	UFUNCTION()
+	void OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+	UFUNCTION()
+	void OnOverlapEnd(UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+
+	UFUNCTION()
+	void MakeDamageByTarget();
+
+private:
+
+	AActor* DamageTarget;
+
+	FTimerHandle DamageTimer;
 };
 

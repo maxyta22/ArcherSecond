@@ -60,3 +60,11 @@ enum class EAbilityInputID : uint8
 	Fire,
 	AltFire,
 };
+
+UENUM(BlueprintType, Category = "Collision")
+enum class EShapeType : uint8
+{
+	Box,
+	Sphere,
+	Capsule,
+};
