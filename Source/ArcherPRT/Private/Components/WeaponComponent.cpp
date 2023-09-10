@@ -331,7 +331,7 @@ void UWeaponComponent::MakeShot()
 			{
 			if (!LCharacter->IsInvulnerable() && HitResult.GetComponent()->ComponentHasTag("WeakPoint"))
 				{
-					LCharacter->TakeDamage(100, FDamageEvent(), nullptr, GetOwner());
+					LCharacter->TakeDamage(CurrentEquipWeapon.GetDefaultObject()->Damage, FDamageEvent(), nullptr, GetOwner());
 					LCharacter->OnHit(TraceDirection, HitResult, GetOwner(), EWeaponType::PneumaticGun, false);
 				}
 				else
