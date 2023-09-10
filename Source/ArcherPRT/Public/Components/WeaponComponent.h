@@ -173,8 +173,6 @@ private:
 
 	FTimerHandle FireInProgressTimer;
 
-	FTimerHandle ReloadWeaponInProgressTimer;
-
 	UPROPERTY()
 	AAICharacter* CurrentAimingEnemy;
 

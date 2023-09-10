@@ -194,7 +194,6 @@ void UWeaponComponent::FinishFire(bool ForceFinishFire)
 	if (GetWorld() == nullptr) return;
 	const auto Owner = Cast<APlayerCharacter>(GetOwner());
 	if (!Owner) return;
-	GetWorld()->GetTimerManager().ClearTimer(ReloadWeaponInProgressTimer);
 	bReloadWeaponInProgress = false;
 	bFireInProgress = false;
 	bChargeAttackInProgress = false;
@@ -409,16 +408,7 @@ void UWeaponComponent::PerformReloadWeapon()
 	if (GetOwner() == nullptr) return;
 	const auto Owner = Cast<APlayerCharacter>(GetOwner());
 	if (Owner == nullptr) return;
-
-
-	if (CurrentEquipWeapon.GetDefaultObject()->ReloadingAnimation)
-	{
-		Owner->OnReloadWeapon();
-		bReloadWeaponInProgress = true;
-		Owner->PlayAnimMontage(CurrentEquipWeapon.GetDefaultObject()->ReloadingAnimation);
-		const auto TimeReload = CurrentEquipWeapon.GetDefaultObject()->ReloadingAnimation->CalculateSequenceLength();
-		GetWorld()->GetTimerManager().SetTimer(ReloadWeaponInProgressTimer, this, &UWeaponComponent::FinishReloadWeapon, TimeReload, false);
-	}
+	Owner->OnReloadWeapon();
 
 }
 
@@ -429,8 +419,6 @@ void UWeaponComponent::FinishReloadWeapon()
 
 	const auto Owner = Cast<APlayerCharacter>(GetOwner());
 	if (!Owner) return;
-
-	bReloadWeaponInProgress = false;
 
 	int NeedAmmo = CurrentEquipWeapon.GetDefaultObject()->Magazine - AmmoInMagazine;
 

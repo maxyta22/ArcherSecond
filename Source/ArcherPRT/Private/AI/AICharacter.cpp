@@ -61,7 +61,6 @@ void AAICharacter::StartAccumulateToAiming()
 {
 	if (GetWorld() == nullptr) return;
 	if (StatsComponent->IsDead()) return;
-	if (IsPendingKill()) return;
 	if (GetWorld()->GetTimerManager().IsTimerActive(AccumulateToAiminHandleTimer)) return;
 	if (!GetAIControllerRef()) return;
 	if (!GetAIControllerRef()->GetEnemy()) return;
@@ -72,7 +71,6 @@ void AAICharacter::FinishAccumulateToAiming()
 {
 	if (GetWorld() == nullptr) return;
 	if (StatsComponent->IsDead()) return;
-	if (IsPendingKill()) return;
 	if (GetWorld()->GetTimerManager().IsTimerActive(AccumulateToAiminHandleTimer))
 	{
 		GetWorld()->GetTimerManager().ClearTimer(AccumulateToAiminHandleTimer);
