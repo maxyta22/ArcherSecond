@@ -194,8 +194,8 @@ void UWeaponComponent::FinishFire(bool ForceFinishFire)
 	if (GetWorld() == nullptr) return;
 	const auto Owner = Cast<APlayerCharacter>(GetOwner());
 	if (!Owner) return;
-	//GetWorld()->GetTimerManager().ClearTimer(ReloadWeaponInProgressTimer);
-	//bReloadWeaponInProgress = false;
+	GetWorld()->GetTimerManager().ClearTimer(ReloadWeaponInProgressTimer);
+	bReloadWeaponInProgress = false;
 	bFireInProgress = false;
 	bChargeAttackInProgress = false;
 	bBlockInProgress = false;
@@ -396,6 +396,7 @@ void UWeaponComponent::TryReloadWeapon()
 {
 	if (CanReloadWeapon())
 	{
+		FinishFire(true);
 		PerformReloadWeapon();
 	}
 	
