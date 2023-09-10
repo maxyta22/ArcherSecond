@@ -24,70 +24,82 @@ public:
 	UWeaponComponent();
 
 	UPROPERTY(EditDefaultsOnly, Category = "Debug")
-		bool bDrawDebug;
+	bool bDrawDebug;
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
-		TSubclassOf<UWeaponBase> DefaultWeapon;
+	TSubclassOf<UWeaponBase> DefaultWeapon;
 
 	UPROPERTY(BlueprintReadOnly, Category = "Weapon")
-		TSubclassOf<UWeaponBase> CurrentEquipWeapon;
+	TSubclassOf<UWeaponBase> CurrentEquipWeapon;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
-		TArray<TSubclassOf<UWeaponBase>> AvailableWeapons;
+	TArray<TSubclassOf<UWeaponBase>> AvailableWeapons;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Internal")
-		bool bWeaponCharged;
+	bool bWeaponCharged;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Glove")
-		float GloveAttackDistance;
+	float GloveAttackDistance;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Glove")
-		float GloveAttackRadius;
+	float GloveAttackRadius;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Aim")
-		float LenghtAimTrace = 1000.0f;
+	float LenghtAimTrace = 1000.0f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Shot")
+	float LenghtShotTrace = 10000.0f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Shot")
+	float ShotCapsuleRadius = 50.0f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Shot")
+	float ShotCapsuleHalfHeight = 50.0f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Shot")
+	bool DrawShotDebug;
 
 	UFUNCTION(BlueprintCallable)
-		int GetAmmoInMagazine() const { return AmmoInMagazine;}
+	int GetAmmoInMagazine() const { return AmmoInMagazine;}
 
 	UFUNCTION(BlueprintCallable)
-		void SetAmmoInMagazine(int NewValue) { AmmoInMagazine = NewValue; };
+	void SetAmmoInMagazine(int NewValue) { AmmoInMagazine = NewValue; };
 
 	UFUNCTION(BlueprintCallable)
-		int GetAmountAmmo() const;
+	int GetAmountAmmo() const;
 
 	UFUNCTION(BlueprintCallable)
-		int GetMaxAmmo() const;
+	int GetMaxAmmo() const;
 
 	UFUNCTION(BlueprintPure, Category = "Check")
-		bool AimingInProgress() const { return bAimingInProgress; };
+	bool AimingInProgress() const { return bAimingInProgress; };
 
 	UFUNCTION(BlueprintPure, Category = "Check")
-		bool BlockInProgress() const { return bBlockInProgress; };
+	bool BlockInProgress() const { return bBlockInProgress; };
 
 	UFUNCTION(BlueprintPure, Category = "Check")
-		bool ChargeAttackInProgress() const { return bChargeAttackInProgress; };
+	bool ChargeAttackInProgress() const { return bChargeAttackInProgress; };
 
 	UFUNCTION(BlueprintPure, Category = "Check")
-		bool FireInProgress() const { return bFireInProgress; };
+	bool FireInProgress() const { return bFireInProgress; };
 
 	UFUNCTION(BlueprintPure, Category = "Check")
-		bool ReloadInProgress() const { return bReloadWeaponInProgress; };
+	bool ReloadInProgress() const { return bReloadWeaponInProgress; };
 
 	UFUNCTION(BlueprintPure, Category = "Aim")
-		FVector GetEndPointOnAimTrace() const { return EndPointOnAimTrace; }
+	FVector GetEndPointOnAimTrace() const { return EndPointOnAimTrace; }
 
 	UFUNCTION(BlueprintPure, Category = "Aim")
-		FHitResult GetEndPointOnAimTraceHitResult() const { return EndPointAimTraceHitResult; }
+	FHitResult GetEndPointOnAimTraceHitResult() const { return EndPointAimTraceHitResult; }
 
 	UFUNCTION(Category = "Aim")
-		void FinishAccumulateAimingForCurrentAimingEnemy() const;
+	void FinishAccumulateAimingForCurrentAimingEnemy() const;
 
 	UFUNCTION(BlueprintPure, Category = "Darability")
-		float GetWeaponDurability(EWeaponType WeaponType) const;
+	float GetWeaponDurability(EWeaponType WeaponType) const;
 
 	UFUNCTION(BlueprintCallable, Category = "Darability")
-		void AddWeaponDurability(EWeaponType WeaponType, float Value);
+	void AddWeaponDurability(EWeaponType WeaponType, float Value);
 
 	//Fire
 
@@ -97,6 +109,7 @@ public:
 
 	void FinishAltFire();
 
+	UFUNCTION(BlueprintCallable, Category = "Shot")
 	void MakeShot();
 
 	void TryFire();

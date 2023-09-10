@@ -85,6 +85,8 @@ void AArcherPRTProjectile::OnOverlap(UPrimitiveComponent* OverlappedComp, AActor
 void AArcherPRTProjectile::OnImpact_Implementation(const FHitResult& Result)
 {
 
+	return;
+
 	if (GetWorld() == nullptr) return;
 
 	//ProjectileMovement->StopMovementImmediately();

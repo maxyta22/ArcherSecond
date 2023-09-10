@@ -289,14 +289,72 @@ void UWeaponComponent::MakeShot()
 	if (!HaveAmmo()) return;
 
 	const auto Owner = Cast<APlayerCharacter>(GetOwner());
-	if (Owner == nullptr) return;
+	if (!IsValid(Owner)) 
+		return;
 
+	AmmoInMagazine--;
+	bChargeAttackInProgress = false;
+
+	// Shot Trace
+
+	//For Pawn
+	FVector StartTrace = Owner->GetFirstPersonCameraComponent()->GetComponentLocation() + Owner->GetFirstPersonCameraComponent()->GetForwardVector() * 50;
+	FVector EndTrace = StartTrace + Owner->GetFirstPersonCameraComponent()->GetForwardVector() * LenghtShotTrace;
+	FVector TraceDirection = Owner->GetFirstPersonCameraComponent()->GetForwardVector();
+	TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes;
+	ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_Pawn));
+	ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_WorldStatic));
+	TArray<AActor*> IgnoreActors;
+	IgnoreActors.Add(GetOwner());
+	TArray<FHitResult> OutHits;
+	//For Static
+	FHitResult WorldStaticTraceResult;
+	FCollisionObjectQueryParams QueryObjectParams;
+	QueryObjectParams.AddObjectTypesToQuery(ECC_WorldStatic);
+  
+	const auto LDrawDebug = DrawShotDebug ? EDrawDebugTrace::ForDuration : EDrawDebugTrace::None;
+
+	GetWorld()->LineTraceSingleByObjectType(WorldStaticTraceResult, StartTrace, EndTrace, QueryObjectParams);
+
+	UKismetSystemLibrary::CapsuleTraceMultiForObjects(GetWorld(), StartTrace,
+		EndTrace, ShotCapsuleRadius, ShotCapsuleHalfHeight, ObjectTypes, true, IgnoreActors, LDrawDebug, OutHits, true);
+
+	for (const FHitResult & HitResult : OutHits)
+	{
+		FVector LStaticLocation = WorldStaticTraceResult.bBlockingHit ? WorldStaticTraceResult.Location : WorldStaticTraceResult.TraceEnd;
+
+		if (FVector::Dist(StartTrace, HitResult.Location) > FVector::Dist(StartTrace, LStaticLocation))
+			continue;
+
+		const auto LCharacter = Cast<AGameCharacter>(HitResult.GetActor());
+		if (IsValid(LCharacter))
+			{
+			if (!LCharacter->IsInvulnerable() && HitResult.GetComponent()->ComponentHasTag("WeakPoint"))
+				{
+					LCharacter->TakeDamage(100, FDamageEvent(), nullptr, GetOwner());
+					LCharacter->OnHit(TraceDirection, HitResult, GetOwner(), EWeaponType::PneumaticGun, false);
+				}
+				else
+				{
+					LCharacter->TakeDamage(0, FDamageEvent(), nullptr, GetOwner());
+				}
+			}
+
+		const auto LInteractObject = Cast<AInteractObjectBase>(HitResult.GetActor());
+		if (LInteractObject)
+			{
+				LInteractObject->AfterShotHit(HitResult, GetOwner());
+			}
+		
+	}
+
+	
+	//SpawnProjectile
 	const FVector SpawnLocation = Owner->GetMesh()->GetSocketLocation(CurrentEquipWeapon.GetDefaultObject()->MuzzleSocketName);
 	FVector AimDirection = UKismetMathLibrary::GetDirectionUnitVector(SpawnLocation, EndPointOnAimTrace);
 	const FVector ShootDirection = FMath::VRandCone(AimDirection, SpreadShot);
 	const FRotator SpawnRotation = ShootDirection.Rotation();
-			
-	//SpawnProjectile
+
 	const auto SpawnedProjectile =  bWeaponCharged  ? CurrentEquipWeapon.GetDefaultObject()->ChargedProjectile : CurrentEquipWeapon.GetDefaultObject()->Projectile;
 	AArcherPRTProjectile* CurrentProjectile = GetWorld()->SpawnActorDeferred<AArcherPRTProjectile>(SpawnedProjectile, FTransform(SpawnRotation, SpawnLocation));
 
@@ -306,9 +364,7 @@ void UWeaponComponent::MakeShot()
 			CurrentProjectile->SetInstigator(Owner);
 			CurrentProjectile->FinishSpawning(FTransform(SpawnRotation, SpawnLocation));
 		
-			AmmoInMagazine--;
 		}
-
 }
 
 int UWeaponComponent::GetAmountAmmo() const
