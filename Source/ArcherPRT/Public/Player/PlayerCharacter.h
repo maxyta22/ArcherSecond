@@ -105,7 +105,7 @@ public:
 
 	//Input
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Input")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
 	bool bLockMoveForward;
 
 
