@@ -39,40 +39,40 @@ public:
 	//Components
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-		UCameraComponent* FirstPersonCameraComponent;
+	UCameraComponent* FirstPersonCameraComponent;
 
 	UPROPERTY(VisibleAnywhere, Category = "Interact Trigger")
-		UCapsuleComponent* InteractCapsuleComponent;
+	UCapsuleComponent* InteractCapsuleComponent;
 
 	UPROPERTY(VisibleAnywhere, Category = "Interact")
-		UArrowComponent* InteractTraceDirection;
+	UArrowComponent* InteractTraceDirection;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory")
-		UInventoryComponent* InventoryComponent;
+	UInventoryComponent* InventoryComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Craft")
-		UCraftComponent* CraftComponent;
+	UCraftComponent* CraftComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Building")
-		UBuildingComponent* BuildingComponent;
+	UBuildingComponent* BuildingComponent;
 
 	//Animation
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
-		float BaseTurnRate;
+	float BaseTurnRate;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
-		float BaseLookUpRate;
+	float BaseLookUpRate;
 
 	UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
 
 	//Interact
 
 	UFUNCTION()
-		void OnOverlapBeginInteractCapsule(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	void OnOverlapBeginInteractCapsule(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 	UFUNCTION()
-		void OnOverlapEndInteractCapsule(UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+	void OnOverlapEndInteractCapsule(UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
 	void ShowInfoObject(AActor* InfoObject);
 
@@ -83,25 +83,30 @@ public:
 	//Blueprint Event for BP 
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Attack")
-		void PressedAttackButon();
+	void PressedAttackButon();
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Attack")
-		void ReleasedAttackButton();
+	void ReleasedAttackButton();
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Attack")
-		void OnFire();
+	void OnFire();
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Attack")
-		void TryFire();
+	void TryFire();
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Attack")
-		void OnReloadWeapon();
+	void OnReloadWeapon();
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Craft")
-		void AfterBeginCraft();
+	void AfterBeginCraft();
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Craft")
-		void OnTryPerformInteract();
+	void OnTryPerformInteract();
+
+	//Input
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Input")
+	bool bLockMoveForward;
 
 
 protected:

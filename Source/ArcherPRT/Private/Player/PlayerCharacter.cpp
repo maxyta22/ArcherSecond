@@ -187,6 +187,9 @@ void APlayerCharacter::MakeStrike(float StrikeDistance, float MinAngle, float Ma
 
 void APlayerCharacter::MoveForward(float Value)
 {
+	if (bLockMoveForward)
+		return;
+
 	if (Value != 0.0f)
 	{
 		AddMovementInput(GetActorForwardVector(), Value);
