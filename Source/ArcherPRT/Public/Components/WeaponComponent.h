@@ -123,7 +123,7 @@ public:
 	bool CanFire() const;
 
 	//Reload Weapon
-
+	UFUNCTION(BlueprintCallable)
 	void TryReloadWeapon();
 
 	void PerformReloadWeapon();
