@@ -408,12 +408,14 @@ void UWeaponComponent::PerformReloadWeapon()
 	if (GetOwner() == nullptr) return;
 	const auto Owner = Cast<APlayerCharacter>(GetOwner());
 	if (Owner == nullptr) return;
+	bReloadWeaponInProgress = true;
 	Owner->OnReloadWeapon();
 
 }
 
 void UWeaponComponent::FinishReloadWeapon()
 {
+	bReloadWeaponInProgress = false;
 
 	if (!GetOwner()) return;
 
