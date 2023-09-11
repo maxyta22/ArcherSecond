@@ -101,6 +101,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Darability")
 	void AddWeaponDurability(EWeaponType WeaponType, float Value);
 
+	UFUNCTION(BlueprintCallable, Category = "Reload")
+	void SetReloadInProgress(bool InProgress) { bReloadWeaponInProgress = InProgress; }
+
 	//Fire
 
 	void OnFire();
