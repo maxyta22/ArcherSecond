@@ -187,12 +187,10 @@ void APlayerCharacter::MakeStrike(float StrikeDistance, float MinAngle, float Ma
 
 void APlayerCharacter::MoveForward(float Value)
 {
-	if (bLockMoveForward)
-		return;
-
+	
 	if (Value != 0.0f)
 	{
-		AddMovementInput(GetActorForwardVector(), Value);
+		AddMovementInput(GetActorForwardVector(), Value * InputMult);
 	}
 }
 
@@ -200,7 +198,7 @@ void APlayerCharacter::MoveRight(float Value)
 {
 	if (Value != 0.0f)
 	{
-		AddMovementInput(GetActorRightVector(), Value);
+		AddMovementInput(GetActorRightVector(), Value * InputMult);
 	}
 }
 

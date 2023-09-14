@@ -106,7 +106,7 @@ public:
 	//Input
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
-	bool bLockMoveForward;
+	float InputMult = 1.0f;
 
 
 protected:
