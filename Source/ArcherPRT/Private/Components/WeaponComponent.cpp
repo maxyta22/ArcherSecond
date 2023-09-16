@@ -328,10 +328,11 @@ void UWeaponComponent::MakeShot()
 		const auto LCharacter = Cast<AGameCharacter>(HitResult.GetActor());
 		if (IsValid(LCharacter))
 			{
-			if (!LCharacter->IsInvulnerable() && HitResult.GetComponent()->ComponentHasTag("WeakPoint"))
+			if (!LCharacter->IsInvulnerable() && HitResult.GetComponent()->ComponentHasTag("WeakPoint") && !IgnoreActors.Contains(LCharacter))
 				{
 					LCharacter->TakeDamage(CurrentEquipWeapon.GetDefaultObject()->Damage, FDamageEvent(), nullptr, GetOwner());
 					LCharacter->OnHit(TraceDirection, HitResult, GetOwner(), EWeaponType::PneumaticGun, false);
+					IgnoreActors.Add(LCharacter);
 				}
 				else
 				{
