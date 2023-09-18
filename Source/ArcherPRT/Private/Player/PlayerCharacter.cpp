@@ -213,6 +213,16 @@ void APlayerCharacter::LookUpAtRate(float Rate)
 	AddControllerPitchInput(Rate * BaseLookUpRate * GetWorld()->GetDeltaSeconds());
 }
 
+void APlayerCharacter::AddControllerYawInput(float Val)
+{
+	Super::AddControllerYawInput(Val * SensitivityMouse);
+}
+
+void APlayerCharacter::AddControllerPitchInput(float Val)
+{
+	Super::AddControllerPitchInput(Val * SensitivityMouse);
+}
+
 void APlayerCharacter::OnOverlapBeginInteractCapsule(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 

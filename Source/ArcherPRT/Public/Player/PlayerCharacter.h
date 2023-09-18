@@ -108,16 +108,15 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
 	float InputMult = 1.0f;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
+	float  SensitivityMouse = 1.0f;
+
 
 protected:
 
 	void MoveForward(float Val);
 
 	void MoveRight(float Val);
-
-	void TurnAtRate(float Rate);
-
-	void LookUpAtRate(float Rate);
 
 	void TryPerformInteract();
 
@@ -128,6 +127,16 @@ protected:
 	virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 
 	virtual void OnDeath() override;
+
+	//Gamepad
+	void TurnAtRate(float Rate);
+
+	void LookUpAtRate(float Rate);
+
+	//Mouse
+	virtual void AddControllerYawInput(float Val) override;
+
+	virtual void AddControllerPitchInput(float Val) override;
 
 private:
 
