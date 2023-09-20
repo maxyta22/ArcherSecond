@@ -53,10 +53,29 @@ void AGameCharacter::BeginPlay()
 	StatsComponent->OnDeath.AddUObject(this, &AGameCharacter::OnDeath);
 }
 
-UAbilitySystemComponent* AGameCharacter::GetAbilitySystemComponent() const
+void AGameCharacter::PossessedBy(AController* NewController)
 {
-	return AbilitySystemComponent;
+	Super::PossessedBy(NewController);
+
+	AbilitySystemComponent->InitAbilityActorInfo(this, this);
+
+	InitializeAttributes();
+	GiveAbilities();
+	CanCheckAttributes = true;
 }
+
+void AGameCharacter::Landed(const FHitResult& Hit)
+{
+	Super::Landed(Hit);
+	const auto FallVelocityZ = -GetCharacterMovement()->Velocity.Z;
+	if (FallVelocityZ < LandedDamageVelocity.X) return;
+
+	const auto FinalDamage = FMath::GetMappedRangeValueClamped(LandedDamageVelocity, LandedDamage, FallVelocityZ);
+	TakeDamage(FinalDamage, FDamageEvent{}, nullptr, nullptr);
+
+}
+
+#pragma region Abilitities
 
 void AGameCharacter::InitializeAttributes()
 {
@@ -75,6 +94,11 @@ void AGameCharacter::InitializeAttributes()
 	}
 }
 
+UAbilitySystemComponent* AGameCharacter::GetAbilitySystemComponent() const
+{
+	return AbilitySystemComponent;
+}
+
 void AGameCharacter::GiveAbilities()
 {
 	if (HasAuthority() && AbilitySystemComponent)
@@ -87,28 +111,6 @@ void AGameCharacter::GiveAbilities()
 	}
 }
 
-void AGameCharacter::PossessedBy(AController* NewController)
-{
-	Super::PossessedBy(NewController);
-
-	AbilitySystemComponent->InitAbilityActorInfo(this, this);
-
-	InitializeAttributes();
-	GiveAbilities();
-	CanCheckAttributes = true;
-}
-
-float AGameCharacter::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
-{
-	Super::TakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
-	return Damage;
-}
-
-bool AGameCharacter::IsInvulnerable()
-{
-	return bInvulnerable;
-}
-
 void AGameCharacter::OnHealthAttributeChanged()
 {
 	if (CanCheckAttributes)
@@ -118,27 +120,26 @@ void AGameCharacter::OnHealthAttributeChanged()
 			OnDeath();
 		}
 	}
-		
+
+}
+
+#pragma endregion 
+
+#pragma region HitAndMiss
+
+bool AGameCharacter::IsInvulnerable()
+{
+	return bInvulnerable;
+}
+
+float AGameCharacter::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+	Super::TakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
+	return Damage;
 }
 
 void AGameCharacter::OnHealChanged(float Health)
 {
-	
-}
-
-void AGameCharacter::OnDeath()
-{
-	AfterOnDeath();
-}
-
-void AGameCharacter::Landed(const FHitResult& Hit)
-{
-	Super::Landed(Hit);
-	const auto FallVelocityZ = -GetCharacterMovement()->Velocity.Z;
-	if (FallVelocityZ < LandedDamageVelocity.X) return;
-
-	const auto FinalDamage = FMath::GetMappedRangeValueClamped(LandedDamageVelocity, LandedDamage, FallVelocityZ);
-	TakeDamage(FinalDamage, FDamageEvent{}, nullptr, nullptr);
 
 }
 
@@ -150,7 +151,7 @@ void AGameCharacter::MakeStrike(float StrikeDistance, float MinAngle, float MaxA
 {
 }
 
-void AGameCharacter::ClearTempInrenalActors()
+void AGameCharacter::ClearTempInternalActors()
 {
 	IgnoreActorsDamage.Empty();
 	DamageActors.Empty();
@@ -168,3 +169,10 @@ void AGameCharacter::MakeMiss()
 		}
 	}
 }
+
+void AGameCharacter::OnDeath()
+{
+	AfterOnDeath();
+}
+
+#pragma endregion

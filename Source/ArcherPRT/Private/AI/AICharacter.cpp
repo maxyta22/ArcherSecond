@@ -55,7 +55,7 @@ void AAICharacter::Tick(float DeltaTime)
 	RotationOnTarget();
 }
 
-//Accumulate To Aiming 
+#pragma region ReactionToAiming
 
 void AAICharacter::StartAccumulateToAiming()
 {
@@ -83,6 +83,9 @@ void AAICharacter::ReactionToAiming()
 	AfterReactionToAiming();
 }
 
+#pragma endregion
+
+#pragma region Behavior
 
 void AAICharacter::RotationOnTarget()
 {
@@ -128,13 +131,17 @@ FVector AAICharacter::GetNextPatrolTargetPointLocation()
 
 }
 
+#pragma endregion
+
+#pragma region HitAndMiss
+
 void AAICharacter::ToggleActivateHitColliders(bool Activate)
 {
 
 	const auto Components = GetComponents();
 
 	for (UActorComponent* CurrentComponent : Components)
-	{	
+	{
 		const auto Collision = Activate ? ECollisionEnabled::QueryAndPhysics : ECollisionEnabled::NoCollision;
 
 		if (CurrentComponent->ComponentHasTag("Head"))
@@ -147,7 +154,7 @@ void AAICharacter::ToggleActivateHitColliders(bool Activate)
 		{
 			UPrimitiveComponent* CurrentPrimitiveComponent = Cast<UPrimitiveComponent>(CurrentComponent);
 			CurrentPrimitiveComponent->SetCollisionEnabled(Collision);
-		}	
+		}
 
 		if (CurrentComponent->ComponentHasTag("WeakPoint"))
 		{
@@ -156,8 +163,6 @@ void AAICharacter::ToggleActivateHitColliders(bool Activate)
 		}
 	}
 }
-
-// Take Damage
 
 float AAICharacter::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
@@ -252,3 +257,5 @@ void AAICharacter::MakeStrike(float StrikeDistance, float MinAngle, float MaxAng
 		}
 	}
 }
+
+#pragma endregion 

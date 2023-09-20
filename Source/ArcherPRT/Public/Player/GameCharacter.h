@@ -123,14 +123,18 @@ public:
 
 	virtual void MakeStrike(float StrikeDistance, float MinAngle, float MaxAngle, bool IgnoreBlock = false);
 
-	void ClearTempInrenalActors();
+	void ClearTempInternalActors();
 
 	bool CheckMiss() { return SuccessDamageCount == 0; };
 
 	void MakeMiss();
 
+	void AddSuccessDamageCount() { SuccessDamageCount++; }
+
 	UFUNCTION(BlueprintImplementableEvent, Category = "Strike")
 	void StrikeInProgress();
+
+	TArray<AActor*> DamageActors;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Strike")
 		float StrikeDamage = 10;
@@ -168,8 +172,6 @@ protected:
 	//Make Strike
 
 	TArray<AActor*> IgnoreActorsDamage;
-
-	TArray<AActor*> DamageActors;
 
 	int SuccessDamageCount;
 

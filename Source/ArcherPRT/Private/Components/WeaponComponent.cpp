@@ -325,19 +325,22 @@ void UWeaponComponent::MakeShot()
 		if (FVector::Dist(StartTrace, HitResult.Location) > FVector::Dist(StartTrace, LStaticLocation))
 			continue;
 
-		const auto LCharacter = Cast<AGameCharacter>(HitResult.GetActor());
+		AGameCharacter* LCharacter = Cast<AGameCharacter>(HitResult.GetActor());
+
 		if (IsValid(LCharacter))
 			{
 			if (!LCharacter->IsInvulnerable() && HitResult.GetComponent()->ComponentHasTag("WeakPoint") && !IgnoreActors.Contains(LCharacter))
-				{
-					LCharacter->TakeDamage(CurrentEquipWeapon.GetDefaultObject()->Damage, FDamageEvent(), nullptr, GetOwner());
-					LCharacter->OnHit(TraceDirection, HitResult, GetOwner(), EWeaponType::PneumaticGun, false);
-					IgnoreActors.Add(LCharacter);
-				}
-				else
-				{
-					LCharacter->TakeDamage(0, FDamageEvent(), nullptr, GetOwner());
-				}
+			{
+				LCharacter->TakeDamage(CurrentEquipWeapon.GetDefaultObject()->Damage, FDamageEvent(), nullptr, GetOwner());
+				LCharacter->OnHit(TraceDirection, HitResult, GetOwner(), EWeaponType::PneumaticGun, false);
+				IgnoreActors.Add(LCharacter);
+				Owner->AddSuccessDamageCount();
+			}
+			else
+			{
+				LCharacter->TakeDamage(0, FDamageEvent(), nullptr, GetOwner());
+			}
+			Owner->DamageActors.AddUnique(LCharacter);
 			}
 
 		const auto LInteractObject = Cast<AInteractObjectBase>(HitResult.GetActor());
@@ -347,6 +350,13 @@ void UWeaponComponent::MakeShot()
 			}
 		
 	}
+
+	if (Owner->CheckMiss())
+	{
+		Owner->MakeMiss();
+	}
+
+	Owner->ClearTempInternalActors();
 
 	
 	//SpawnProjectile

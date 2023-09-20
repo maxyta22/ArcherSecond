@@ -76,6 +76,8 @@ void APlayerCharacter::Tick(float DeltaTime)
 	CheckInteractObjects();
 }
 
+#pragma region Input
+
 void APlayerCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
 {
 	
@@ -107,82 +109,6 @@ void APlayerCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerIn
 		AbilitySystemComponent->BindAbilityActivationToInputComponent(InputComponent, Binds);
 	}
 	
-}
-
-void APlayerCharacter::OnDeath()
-{
-	Super::OnDeath();
-	GetCharacterMovement()->DisableMovement();	
-}
-
-float APlayerCharacter::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
-{
-	Super::TakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
-	WeaponComponent->FinishFire(true);
-	AfterTakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
-	return Damage;
-}
-
-void APlayerCharacter::MakeStrike(float StrikeDistance, float MinAngle, float MaxAngle, bool IgnoreBlock)
-{
-	if (GetWorld() == nullptr) return;
-
-	StrikeInProgress();
-
-	FVector StartTrace = GetFirstPersonCameraComponent()->GetComponentLocation() + GetFirstPersonCameraComponent()->GetForwardVector() * 50;
-	FVector EndTrace = StartTrace + GetFirstPersonCameraComponent()->GetForwardVector() * WeaponComponent->GloveAttackDistance;
-
-	TArray < TEnumAsByte < EObjectTypeQuery > >  ObjectTypes;
-	ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECC_Destructible));
-	ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECC_WorldStatic));
-	ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECC_WorldDynamic));
-	ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECC_Pawn));
-
-
-	TArray < AActor* > ActorsToIgnore;
-	ActorsToIgnore.Add(this);
-
-	TArray < FHitResult > OutHits;
-
-	UKismetSystemLibrary::SphereTraceMultiForObjects(GetWorld(), StartTrace, EndTrace, WeaponComponent->GloveAttackRadius, ObjectTypes, true, ActorsToIgnore, EDrawDebugTrace::None, OutHits, true, FLinearColor::Red, FLinearColor::Green, 0.5f);
-
-	const float Damage = WeaponComponent->bWeaponCharged ?
-		WeaponComponent->CurrentEquipWeapon.GetDefaultObject()->ChargeDamage :
-		WeaponComponent->CurrentEquipWeapon.GetDefaultObject()->Damage;
-	const auto WeaponType = WeaponComponent->CurrentEquipWeapon.GetDefaultObject()->WeaponType;
-	const bool Charged = WeaponComponent->bWeaponCharged;
-
-	for (FHitResult& HitResult : OutHits)
-	{
-		if (HitResult.bBlockingHit)
-		{
-			if (HitResult.GetActor() != nullptr && HitResult.GetComponent() != nullptr && !IgnoreActorsDamage.Contains(HitResult.GetActor()))
-			{
-				const auto Pawn = Cast<AGameCharacter>(HitResult.GetActor());
-				const auto InteractObject = Cast<AInteractObjectBase>(HitResult.GetActor());
-
-				if (Pawn !=  nullptr && Pawn->IsInvulnerable() == false)
-				{		
-					DamageActors.AddUnique(Pawn);
-
-					if (HitResult.GetComponent()->ComponentHasTag("WeakPoint"))
-					{
-						Pawn->TakeDamage(Damage, FDamageEvent(), GetInstigatorController(), this);
-						Pawn->OnHit(GetActorForwardVector(), HitResult, this, WeaponType, Charged);
-						SuccessDamageCount++;
-						IgnoreActorsDamage.Add(Pawn);
-					}
-					ActorsToIgnore.Add(Pawn);
-				}
-				if (InteractObject)
-				{
-					InteractObject->AfterGloveHit(WeaponComponent->bWeaponCharged, HitResult, this);
-					IgnoreActorsDamage.Add(InteractObject);
-				}
-			}
-		}
-	}
-
 }
 
 void APlayerCharacter::MoveForward(float Value)
@@ -222,6 +148,10 @@ void APlayerCharacter::AddControllerPitchInput(float Val)
 {
 	Super::AddControllerPitchInput(Val * SensitivityMouse);
 }
+
+#pragma endregion
+
+#pragma region Interact
 
 void APlayerCharacter::OnOverlapBeginInteractCapsule(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
@@ -297,5 +227,87 @@ void APlayerCharacter::TryPerformInteract()
 	OnTryPerformInteract();
 	CheckInteractObjects(true);
 }
+
+#pragma endregion
+
+#pragma region HitAndMiss
+
+float APlayerCharacter::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+	Super::TakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
+	WeaponComponent->FinishFire(true);
+	AfterTakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
+	return Damage;
+}
+
+void APlayerCharacter::MakeStrike(float StrikeDistance, float MinAngle, float MaxAngle, bool IgnoreBlock)
+{
+	if (GetWorld() == nullptr) return;
+
+	StrikeInProgress();
+
+	FVector StartTrace = GetFirstPersonCameraComponent()->GetComponentLocation() + GetFirstPersonCameraComponent()->GetForwardVector() * 50;
+	FVector EndTrace = StartTrace + GetFirstPersonCameraComponent()->GetForwardVector() * WeaponComponent->GloveAttackDistance;
+
+	TArray < TEnumAsByte < EObjectTypeQuery > >  ObjectTypes;
+	ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECC_Destructible));
+	ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECC_WorldStatic));
+	ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECC_WorldDynamic));
+	ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECC_Pawn));
+
+
+	TArray < AActor* > ActorsToIgnore;
+	ActorsToIgnore.Add(this);
+
+	TArray < FHitResult > OutHits;
+
+	UKismetSystemLibrary::SphereTraceMultiForObjects(GetWorld(), StartTrace, EndTrace, WeaponComponent->GloveAttackRadius, ObjectTypes, true, ActorsToIgnore, EDrawDebugTrace::None, OutHits, true, FLinearColor::Red, FLinearColor::Green, 0.5f);
+
+	const float Damage = WeaponComponent->bWeaponCharged ?
+		WeaponComponent->CurrentEquipWeapon.GetDefaultObject()->ChargeDamage :
+		WeaponComponent->CurrentEquipWeapon.GetDefaultObject()->Damage;
+	const auto WeaponType = WeaponComponent->CurrentEquipWeapon.GetDefaultObject()->WeaponType;
+	const bool Charged = WeaponComponent->bWeaponCharged;
+
+	for (FHitResult& HitResult : OutHits)
+	{
+		if (HitResult.bBlockingHit)
+		{
+			if (HitResult.GetActor() != nullptr && HitResult.GetComponent() != nullptr && !IgnoreActorsDamage.Contains(HitResult.GetActor()))
+			{
+				const auto Pawn = Cast<AGameCharacter>(HitResult.GetActor());
+				const auto InteractObject = Cast<AInteractObjectBase>(HitResult.GetActor());
+
+				if (Pawn != nullptr && Pawn->IsInvulnerable() == false)
+				{
+					DamageActors.AddUnique(Pawn);
+
+					if (HitResult.GetComponent()->ComponentHasTag("WeakPoint"))
+					{
+						Pawn->TakeDamage(Damage, FDamageEvent(), GetInstigatorController(), this);
+						Pawn->OnHit(GetActorForwardVector(), HitResult, this, WeaponType, Charged);
+						AddSuccessDamageCount();
+						IgnoreActorsDamage.Add(Pawn);
+					}
+					ActorsToIgnore.Add(Pawn);
+				}
+				if (InteractObject)
+				{
+					InteractObject->AfterGloveHit(WeaponComponent->bWeaponCharged, HitResult, this);
+					IgnoreActorsDamage.Add(InteractObject);
+				}
+			}
+		}
+	}
+
+}
+
+void APlayerCharacter::OnDeath()
+{
+	Super::OnDeath();
+	GetCharacterMovement()->DisableMovement();
+}
+
+#pragma endregion
 
 
