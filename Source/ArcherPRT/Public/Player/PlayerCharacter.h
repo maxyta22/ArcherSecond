@@ -36,7 +36,9 @@ public:
 
 	virtual void Tick(float DeltaTime) override;
 
-	//Components
+#pragma region Components
+
+public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	UCameraComponent* FirstPersonCameraComponent;
@@ -56,7 +58,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Building")
 	UBuildingComponent* BuildingComponent;
 
-	//Animation
+#pragma endregion
+
+#pragma region Animation
+
+public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
 	float BaseTurnRate;
@@ -66,7 +72,11 @@ public:
 
 	UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
 
-	//Interact
+#pragma endregion
+
+#pragma region Interact
+
+public:
 
 	UFUNCTION()
 	void OnOverlapBeginInteractCapsule(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
@@ -80,7 +90,37 @@ public:
 
 	void CheckInteractObjects(bool TryInteract = false);
 
-	//Blueprint Event for BP 
+protected:
+
+	void TryPerformInteract();
+
+private:
+
+	TArray<AActor*> CurrentInteractTarget;
+
+#pragma endregion
+
+#pragma region TakeDamage
+
+protected:
+
+	virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
+
+	virtual void OnDeath() override;
+
+#pragma endregion
+
+#pragma region MakeDamage
+
+protected:
+
+	virtual void MakeStrike(float StrikeDistance, float MinAngle, float MaxAngle, bool IgnoreBlock) override;
+
+#pragma endregion
+
+#pragma region Events For BP
+
+public:
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Attack")
 	void PressedAttackButon();
@@ -103,7 +143,11 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, Category = "Craft")
 	void OnTryPerformInteract();
 
-	//Input
+#pragma endregion
+
+#pragma region Input
+
+public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
 	float InputMult = 1.0f;
@@ -111,22 +155,13 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
 	float  SensitivityMouse = 1.0f;
 
-
 protected:
+
+	virtual void SetupPlayerInputComponent(UInputComponent* InputComponent) override;
 
 	void MoveForward(float Val);
 
 	void MoveRight(float Val);
-
-	void TryPerformInteract();
-
-	virtual void MakeStrike(float StrikeDistance, float MinAngle, float MaxAngle, bool IgnoreBlock) override;
-	
-	virtual void SetupPlayerInputComponent(UInputComponent* InputComponent) override;
-
-	virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
-
-	virtual void OnDeath() override;
 
 	//Gamepad
 	void TurnAtRate(float Rate);
@@ -138,9 +173,6 @@ protected:
 
 	virtual void AddControllerPitchInput(float Val) override;
 
-private:
-
-	TArray<AActor*> CurrentInteractTarget;
-
+#pragma endregion
 
 };

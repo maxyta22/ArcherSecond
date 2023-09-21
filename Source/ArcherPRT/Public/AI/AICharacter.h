@@ -28,100 +28,124 @@ public:
 
 	virtual void BeginPlay() override;
 
-	//Animation
+#pragma region Animations
 
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Animation")
-		TArray<UAnimMontage*> DeathMontages;
+public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Animation")
-		TArray<UAnimMontage*> AttackMontages;
+	TArray<UAnimMontage*> DeathMontages;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Animation")
-		TArray<UAnimMontage*> HitReactionMontages;
+	TArray<UAnimMontage*> AttackMontages;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Animation")
-		TArray<UAnimMontage*> ChargeMontages;
+	TArray<UAnimMontage*> HitReactionMontages;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Animation")
-		TArray<UAnimMontage*> EvadeMontages;
+	TArray<UAnimMontage*> ChargeMontages;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Animation")
-		TArray<UAnimMontage*> WakeUpMontages;
+	TArray<UAnimMontage*> EvadeMontages;
 
-		
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Animation")
+	TArray<UAnimMontage*> WakeUpMontages;
 
-	//AI
+#pragma endregion 
+
+#pragma region Behavior	
+
+public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Behavior")
-		UBehaviorTree* BehaviorTreeAsset;
+	UBehaviorTree* BehaviorTreeAsset;
 
 	UPROPERTY(EditInstanceOnly, BlueprintReadWrite, Category = "Behavior")
-		EAIStartCondition StartCondition;
+	EAIStartCondition StartCondition;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Behavior")
-		float TimeToReactionToAiming = 2;
+	float TimeToReactionToAiming = 2;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Behavior")
-		float ProbabilityEvade = 0.5f;
+	float ProbabilityEvade = 0.5f;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Behavior")
-		float MinDistanceForAttackAfterHitReaction = 300;
+	float MinDistanceForAttackAfterHitReaction = 300;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Behavior")
-		float MaxDistanceDetection = 1500.0f;
+	float MaxDistanceDetection = 1500.0f;
 
 	UPROPERTY(EditInstanceOnly, BlueprintReadWrite, Category = "Behavior")
-		TArray<ATargetPoint*> TargetsForPatrol;
+	TArray<ATargetPoint*> TargetsForPatrol;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Behavior")
-		float SpeedRotation = 0.0f;
+	float SpeedRotation = 0.0f;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Behavior")
-		float DistanceForChase = 700.0f;
+	float DistanceForChase = 700.0f;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Behavior")
-		float ChaseSpeed = 500.0f;
+	float ChaseSpeed = 500.0f;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Behavior")
-		float WalkSpeed = 100.0f;
-
-		bool CanPerformOnHitReaction = true;
-
-	// Drop Settings
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Behavior|Drop")
-		TSubclassOf<APickupResourcesBase> DropCorpse;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Behavior|Drop")
-		TArray<TSubclassOf<APickupResourcesBase>> DropList;
+	float WalkSpeed = 100.0f;
 
 	UFUNCTION(BlueprintPure)
-		APRTAIController* GetAIControllerRef() { return AIControllerRef;}
+	APRTAIController* GetAIControllerRef() { return AIControllerRef; }
 
-	UFUNCTION()
-		void ToggleActivateHitColliders(bool Activate);
+	bool CanPerformOnHitReaction = true;
 
-	// Blueprint Implementable Events
+	void RotationOnTarget();
+
+	FVector GetNextPatrolTargetPointLocation();
+
+private:
+
+	int CurrentPatrolIndex = 0;
+
+	APRTAIController* AIControllerRef;
+
+
+#pragma endregion 
+
+#pragma region Drop Settings
+
+public:
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Behavior|Drop")
+	TSubclassOf<APickupResourcesBase> DropCorpse;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Behavior|Drop")
+	TArray<TSubclassOf<APickupResourcesBase>> DropList;
+
+#pragma endregion 
+
+#pragma region Events For BP
+
+public:
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Behavior")
-		void MakeShot();
+	void MakeShot();
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Behavior")
-		void AfterReactionToAiming();
+	void AfterReactionToAiming();
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Behavior")
-		void PerformOnStaggerReaction();
+	void PerformOnStaggerReaction();
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Behavior")
-		void AfterOnHit(FVector HitDirection, FHitResult HitResult, AActor* Causer, EWeaponType WeaponType, bool Charged);
+	void AfterOnHit(FVector HitDirection, FHitResult HitResult, AActor* Causer, EWeaponType WeaponType, bool Charged);
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "Behavior")
-		void PerformOnHitReaction(FVector HitDirection, FHitResult HitResult, AActor* Causer, EWeaponType WeaponType, bool Charged, bool ForceHeavyHitReactions = false);
+	void PerformOnHitReaction(FVector HitDirection, FHitResult HitResult, AActor* Causer, EWeaponType WeaponType, bool Charged, bool ForceHeavyHitReactions = false);
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Behavior")
-		void AfterEnemyFound();
+	void AfterEnemyFound();
 
+#pragma endregion
+
+#pragma region ReactionToAiming
+
+public:
 
 	void ReactionToAiming();
 
@@ -129,9 +153,18 @@ public:
 
 	void FinishAccumulateToAiming();
 
-	void RotationOnTarget();
+private:
 
-	FVector GetNextPatrolTargetPointLocation();
+	FTimerHandle AccumulateToAiminHandleTimer;
+
+#pragma endregion
+
+#pragma region TakeDamage
+
+public:
+
+	UFUNCTION()
+	void ToggleActivateHitColliders(bool Activate);
 
 	virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 
@@ -141,16 +174,14 @@ protected:
 
 	virtual void OnHit(FVector HitDirection, FHitResult HitResult, AActor* Causer, EWeaponType WeaponType, bool Charged) override;
 
+#pragma endregion
+
+#pragma region MakeDamage
+
+protected:
+
 	virtual void MakeStrike(float StrikeDistance, float MinAngle, float MaxAngle, bool IgnoreBlock) override;
 
-
-private:
-
-	FTimerHandle AccumulateToAiminHandleTimer;
-
-	int CurrentPatrolIndex = 0;
-
-	APRTAIController* AIControllerRef;
-
+#pragma endregion
 	
 };

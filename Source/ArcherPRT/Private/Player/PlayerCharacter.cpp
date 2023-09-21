@@ -230,7 +230,7 @@ void APlayerCharacter::TryPerformInteract()
 
 #pragma endregion
 
-#pragma region HitAndMiss
+#pragma region TakeDamage
 
 float APlayerCharacter::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
@@ -239,6 +239,16 @@ float APlayerCharacter::TakeDamage(float Damage, FDamageEvent const& DamageEvent
 	AfterTakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
 	return Damage;
 }
+
+void APlayerCharacter::OnDeath()
+{
+	Super::OnDeath();
+	GetCharacterMovement()->DisableMovement();
+}
+
+#pragma endregion
+
+#pragma region MakeDamage
 
 void APlayerCharacter::MakeStrike(float StrikeDistance, float MinAngle, float MaxAngle, bool IgnoreBlock)
 {
@@ -300,12 +310,6 @@ void APlayerCharacter::MakeStrike(float StrikeDistance, float MinAngle, float Ma
 		}
 	}
 
-}
-
-void APlayerCharacter::OnDeath()
-{
-	Super::OnDeath();
-	GetCharacterMovement()->DisableMovement();
 }
 
 #pragma endregion

@@ -33,26 +33,32 @@ class AGameCharacter : public ACharacter, public IAbilitySystemInterface
 
 public:
 
-	AGameCharacter();
+AGameCharacter();
 
-	virtual void BeginPlay() override;
+virtual void BeginPlay() override;
 
-	//Components
+#pragma region Components
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
-		UStatsComponent* StatsComponent;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
-		UWeaponComponent* WeaponComponent;
+public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
-		UPRTAbilitySystemComponent* AbilitySystemComponent;
+	UStatsComponent* StatsComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
-		UPRTAttributeSet* Attributes;
+	UWeaponComponent* WeaponComponent;
 
-	// Gameplay Ability System
-	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
+	UPRTAbilitySystemComponent* AbilitySystemComponent;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
+	UPRTAttributeSet* Attributes;
+
+#pragma endregion
+
+#pragma region Abilitities
+
+public:
+
 	virtual class UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 
 	virtual void InitializeAttributes();
@@ -63,63 +69,73 @@ public:
 
 	//Default Effect for attributes
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "GAS")
-		TSubclassOf<class UGameplayEffect> DefaultAttributeEffect;
+	TSubclassOf<class UGameplayEffect> DefaultAttributeEffect;
 
 	//Default Abilities
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "GAS")
-		TArray<TSubclassOf<class UPRTGameplayAbility>> DefaultAbilities;
+	TArray<TSubclassOf<class UPRTGameplayAbility>> DefaultAbilities;
 
 	//Attributes
 
 	UFUNCTION(BlueprintPure, Category = "Attributes")
-		float GetHealth() { return Attributes->GetHealth();}
+	float GetHealth() { return Attributes->GetHealth();}
 
 	UFUNCTION(BlueprintPure, Category = "Attributes")
-		float GetMaxHealth() { return Attributes->GetMaxHealth();}
+	float GetMaxHealth() { return Attributes->GetMaxHealth();}
 
 	UFUNCTION(BlueprintPure, Category = "Attributes")
-		bool IsAlive() { return Attributes->GetHealth() > 0; }
+	bool IsAlive() { return Attributes->GetHealth() > 0; }
 
 	UFUNCTION()
-		void OnHealthAttributeChanged();
+	void OnHealthAttributeChanged();
 
+private:
 
+	bool CanCheckAttributes;
 
-	//Take Damage
-	
+#pragma endregion
+
+#pragma region TakeDamage
+
+public:
+
 	UFUNCTION()
 	virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 
 	UFUNCTION()
-		bool IsInvulnerable();
+	bool IsInvulnerable();
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "AfterEvents")
-		void AfterTakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser);
+	void AfterTakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser);
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "AfterEvents")
-		void MissTakeDamage();
+	void MissTakeDamage();
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "AfterEvents")
-		void AfterOnDeath();
+	void AfterOnDeath();
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "AfterEvents")
-		void HitOnBlockSuccess(FVector HitDirection, FHitResult HitResult, AActor* Causer, EWeaponType WeaponType, bool Charged);
+	void HitOnBlockSuccess(FVector HitDirection, FHitResult HitResult, AActor* Causer, EWeaponType WeaponType, bool Charged);
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "AfterEvents")
-		void FailTryUseBlock();
+	void FailTryUseBlock();
 
 	//Hit Reaction
 	UFUNCTION(BlueprintCallable)
 	virtual void OnHit(FVector HitDirection, FHitResult HitResult, AActor* Causer, EWeaponType WeaponType, bool Charged);
 
-	//Landed
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
-		FVector2D LandedDamageVelocity = FVector2D(900.0f, 1200.0f);
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Internal")
+	bool bInvulnerable;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
-		FVector2D LandedDamage = FVector2D(10.0f, 100.0f);
+private:
 
-	//Make Strike
+	void OnHealChanged(float Health);
+
+#pragma endregion
+
+#pragma region MakeDamage
+
+public:
 
 	virtual void MakeStrike(float StrikeDistance, float MinAngle, float MaxAngle, bool IgnoreBlock = false);
 
@@ -137,49 +153,61 @@ public:
 	TArray<AActor*> DamageActors;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Strike")
-		float StrikeDamage = 10;
+	float StrikeDamage = 10;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Strike")
-		USoundBase* HitOnSuccessSound;
+	USoundBase* HitOnSuccessSound;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Strike")
-		USoundBase* HitOnBlockSound;
+	USoundBase* HitOnBlockSound;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Strike")
-		UNiagaraSystem* HitOnSuccessVFX;
+	UNiagaraSystem* HitOnSuccessVFX;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Strike")
-		UNiagaraSystem* HitOnBlockVFX;
+	UNiagaraSystem* HitOnBlockVFX;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Strike")
-		TSubclassOf<UDamageType> StrikeDamageType;
-
-	// Internal
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Internal")
-		bool bInvulnerable;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Internal")
-		bool bIsUnderground;
-
-	
-	
-protected:
-
-	virtual void OnDeath();
-
-	virtual void Landed(const FHitResult& Hit);
-
-	//Make Strike
+	TSubclassOf<UDamageType> StrikeDamageType;
 
 	TArray<AActor*> IgnoreActorsDamage;
 
 	int SuccessDamageCount;
 
-private:
+protected:
 
-	bool CanCheckAttributes;
+	virtual void OnDeath();
 
-	void OnHealChanged(float Health);
+#pragma endregion
+
+#pragma region Movement
+
+public:
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Internal")
+	bool bIsUnderground;
+
+	//Landed
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+	FVector2D LandedDamageVelocity = FVector2D(900.0f, 1200.0f);
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+	FVector2D LandedDamage = FVector2D(10.0f, 100.0f);
+
+protected:
+
+	virtual void Landed(const FHitResult& Hit);
+
+#pragma endregion
+
+
+
+
+
+
+
+
+
 
 	
 

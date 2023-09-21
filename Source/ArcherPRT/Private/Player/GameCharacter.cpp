@@ -20,10 +20,7 @@
 #include "MathUtils.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
-
-
 DEFINE_LOG_CATEGORY_STATIC(LogGameCharacter, Warning, All);
-
 
 AGameCharacter::AGameCharacter()
 {
@@ -125,7 +122,7 @@ void AGameCharacter::OnHealthAttributeChanged()
 
 #pragma endregion 
 
-#pragma region HitAndMiss
+#pragma region TakeDamage
 
 bool AGameCharacter::IsInvulnerable()
 {
@@ -147,17 +144,6 @@ void AGameCharacter::OnHit(FVector HitDirection, FHitResult HitResult, AActor* C
 {
 }
 
-void AGameCharacter::MakeStrike(float StrikeDistance, float MinAngle, float MaxAngle, bool IgnoreBlock)
-{
-}
-
-void AGameCharacter::ClearTempInternalActors()
-{
-	IgnoreActorsDamage.Empty();
-	DamageActors.Empty();
-	SuccessDamageCount = 0;
-}
-
 void AGameCharacter::MakeMiss()
 {
 	for (AActor* & CheckingActor : DamageActors)
@@ -173,6 +159,21 @@ void AGameCharacter::MakeMiss()
 void AGameCharacter::OnDeath()
 {
 	AfterOnDeath();
+}
+
+#pragma endregion
+
+#pragma region MakeDamage
+
+void AGameCharacter::MakeStrike(float StrikeDistance, float MinAngle, float MaxAngle, bool IgnoreBlock)
+{
+}
+
+void AGameCharacter::ClearTempInternalActors()
+{
+	IgnoreActorsDamage.Empty();
+	DamageActors.Empty();
+	SuccessDamageCount = 0;
 }
 
 #pragma endregion

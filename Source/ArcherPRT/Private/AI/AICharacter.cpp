@@ -133,7 +133,7 @@ FVector AAICharacter::GetNextPatrolTargetPointLocation()
 
 #pragma endregion
 
-#pragma region HitAndMiss
+#pragma region TakeDamage
 
 void AAICharacter::ToggleActivateHitColliders(bool Activate)
 {
@@ -195,6 +195,10 @@ void AAICharacter::OnHit(FVector HitDirection, FHitResult HitResult, AActor* Cau
 	
 
 }
+
+#pragma endregion 
+
+#pragma region MakeDamage
 
 void AAICharacter::MakeStrike(float StrikeDistance, float MinAngle, float MaxAngle, bool IgnoreBlock)
 {
