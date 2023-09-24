@@ -3,8 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "ArcherPRTData.generated.h"
 
-class ARCHERPRT_API ArcherPRTData;
+class UWeaponBase;
 
 UENUM(BlueprintType, Category = "Resources")
 enum class EResourcesType : uint8
@@ -67,4 +68,47 @@ enum class EShapeType : uint8
 	Box,
 	Sphere,
 	Capsule,
+};
+
+USTRUCT(BlueprintType)
+struct FPlayerSaveData
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FVector PlayerLocation;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FRotator PlayerRotation;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TMap<EResourcesType, int> Resources;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TMap<EResourcesType, int> MaxResources;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<TSubclassOf<UWeaponBase>> AvaliableWeapons;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int AmmoInMagazine;
+
+
+};
+
+USTRUCT(BlueprintType)
+struct FSettingsSaveData
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float MouseSensitivity;
+
+};
+
+UCLASS()
+class ARCHERPRT_API UArcherPRTData : public UObject
+{
+	GENERATED_BODY()
+
 };
