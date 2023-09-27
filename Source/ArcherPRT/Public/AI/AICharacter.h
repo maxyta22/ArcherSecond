@@ -168,10 +168,6 @@ public:
 
 	virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 
-protected:
-
-	virtual void OnDeath() override;
-
 	virtual void OnHit(FVector HitDirection, FHitResult HitResult, AActor* Causer, EWeaponType WeaponType, bool Charged) override;
 
 #pragma endregion
@@ -183,5 +179,26 @@ protected:
 	virtual void MakeStrike(float StrikeDistance, float MinAngle, float MaxAngle, bool IgnoreBlock) override;
 
 #pragma endregion
-	
+
+#pragma region Death
+
+public:
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Behavior")
+	float TimeToDestroyCorpse = 60;
+
+
+protected:
+
+	virtual void OnDeath() override;
+
+	void DestroyCorpse();
+
+private:
+
+	FTimerHandle DestroyCorpseTimer;
+
+
+
+#pragma endregion
 };

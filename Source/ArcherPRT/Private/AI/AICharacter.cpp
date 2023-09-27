@@ -177,13 +177,6 @@ float AAICharacter::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AC
 	return Damage;
 }
 
-void AAICharacter::OnDeath()
-{
-	Super::OnDeath();
-	GetWorld()->GetTimerManager().ClearAllTimersForObject(this);
-
-}
-
 void AAICharacter::OnHit(FVector HitDirection, FHitResult HitResult, AActor* Causer, EWeaponType WeaponType, bool Charged)
 {
 	AfterOnHit(HitDirection, HitResult, Causer, WeaponType, Charged);
@@ -263,3 +256,20 @@ void AAICharacter::MakeStrike(float StrikeDistance, float MinAngle, float MaxAng
 }
 
 #pragma endregion 
+
+#pragma region Death
+
+void AAICharacter::OnDeath()
+{
+	Super::OnDeath();
+	GetWorld()->GetTimerManager().ClearAllTimersForObject(this);
+	GetWorld()->GetTimerManager().SetTimer(DestroyCorpseTimer, this, &AAICharacter::DestroyCorpse, TimeToDestroyCorpse);
+}
+
+void AAICharacter::DestroyCorpse()
+{
+	Destroy();	
+}
+
+#pragma endregion 
+
