@@ -129,7 +129,7 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, Category = "Behavior")
 	void AfterReactionToAiming();
 
-	UFUNCTION(BlueprintImplementableEvent, Category = "Behavior")
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "Behavior")
 	void PerformOnStaggerReaction();
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Behavior")
