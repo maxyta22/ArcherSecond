@@ -298,6 +298,7 @@ void APlayerCharacter::MakeStrike(float StrikeDistance, float MinAngle, float Ma
 					{
 						Pawn->PerformOnStaggerReaction();
 						IgnoreActorsDamage.Add(Pawn);
+						AddSuccessDamageCount();
 					}
 					else 
 					{
