@@ -114,7 +114,7 @@ protected:
 
 protected:
 
-	virtual void MakeStrike(float StrikeDistance, float MinAngle, float MaxAngle, bool IgnoreBlock) override;
+	virtual void MakeStrike(float StrikeDistance, float MinAngle, float MaxAngle, bool IgnoreBlock, bool MakeStagger) override;
 
 #pragma endregion
 

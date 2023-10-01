@@ -28,5 +28,8 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool IgnoreBlock;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool MakeStagger;
 	
 };

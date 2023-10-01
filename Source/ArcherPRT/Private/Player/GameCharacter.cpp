@@ -165,7 +165,7 @@ void AGameCharacter::OnDeath()
 
 #pragma region MakeDamage
 
-void AGameCharacter::MakeStrike(float StrikeDistance, float MinAngle, float MaxAngle, bool IgnoreBlock)
+void AGameCharacter::MakeStrike(float StrikeDistance, float MinAngle, float MaxAngle, bool IgnoreBlock, bool MakeStagger)
 {
 }
 

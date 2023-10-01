@@ -17,7 +17,7 @@ void UMakeStrikeANS::NotifyTick(USkeletalMeshComponent* MeshComp, UAnimSequenceB
 	AGameCharacter* CharacterOwner;
 	CharacterOwner = Cast<AGameCharacter>(MeshComp->GetOwner());
 	if (!CharacterOwner) return;
-	CharacterOwner->MakeStrike(Distance, MinAngle, MaxAngle, IgnoreBlock);
+	CharacterOwner->MakeStrike(Distance, MinAngle, MaxAngle, IgnoreBlock, MakeStagger);
 }
 
 void UMakeStrikeANS::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation)

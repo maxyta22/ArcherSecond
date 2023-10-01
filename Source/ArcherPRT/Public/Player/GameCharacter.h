@@ -137,7 +137,7 @@ private:
 
 public:
 
-	virtual void MakeStrike(float StrikeDistance, float MinAngle, float MaxAngle, bool IgnoreBlock = false);
+	virtual void MakeStrike(float StrikeDistance, float MinAngle, float MaxAngle, bool IgnoreBlock = false, bool MakeStagger = false);
 
 	void ClearTempInternalActors();
 

@@ -193,7 +193,7 @@ void AAICharacter::OnHit(FVector HitDirection, FHitResult HitResult, AActor* Cau
 
 #pragma region MakeDamage
 
-void AAICharacter::MakeStrike(float StrikeDistance, float MinAngle, float MaxAngle, bool IgnoreBlock)
+void AAICharacter::MakeStrike(float StrikeDistance, float MinAngle, float MaxAngle, bool IgnoreBlock, bool MakeStagger)
 {
 	if (GetWorld() == nullptr) return;
 	if (StatsComponent->IsDead()) return;

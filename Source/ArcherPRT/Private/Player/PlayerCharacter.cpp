@@ -3,6 +3,7 @@
 
 #include "Player/PlayerCharacter.h"
 #include "Projectile/ArcherPRTProjectile.h"
+#include "AI/AICharacter.h"
 #include "Animation/AnimInstance.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -250,7 +251,7 @@ void APlayerCharacter::OnDeath()
 
 #pragma region MakeDamage
 
-void APlayerCharacter::MakeStrike(float StrikeDistance, float MinAngle, float MaxAngle, bool IgnoreBlock)
+void APlayerCharacter::MakeStrike(float StrikeDistance, float MinAngle, float MaxAngle, bool IgnoreBlock, bool MakeStagger)
 {
 	if (GetWorld() == nullptr) return;
 
@@ -285,20 +286,30 @@ void APlayerCharacter::MakeStrike(float StrikeDistance, float MinAngle, float Ma
 		{
 			if (HitResult.GetActor() != nullptr && HitResult.GetComponent() != nullptr && !IgnoreActorsDamage.Contains(HitResult.GetActor()))
 			{
-				const auto Pawn = Cast<AGameCharacter>(HitResult.GetActor());
+				AAICharacter* Pawn = Cast<AAICharacter>(HitResult.GetActor());
+				
 				const auto InteractObject = Cast<AInteractObjectBase>(HitResult.GetActor());
 
-				if (Pawn != nullptr && Pawn->IsInvulnerable() == false)
+				if (IsValid(Pawn) && Pawn->IsInvulnerable() == false)
 				{
 					DamageActors.AddUnique(Pawn);
 
-					if (HitResult.GetComponent()->ComponentHasTag("WeakPoint"))
+					if (MakeStagger)
 					{
-						Pawn->TakeDamage(Damage, FDamageEvent(), GetInstigatorController(), this);
-						Pawn->OnHit(GetActorForwardVector(), HitResult, this, WeaponType, Charged);
-						AddSuccessDamageCount();
+						Pawn->PerformOnStaggerReaction();
 						IgnoreActorsDamage.Add(Pawn);
 					}
+					else 
+					{
+						if (HitResult.GetComponent()->ComponentHasTag("WeakPoint"))
+						{
+							Pawn->TakeDamage(Damage, FDamageEvent(), GetInstigatorController(), this);
+							Pawn->OnHit(GetActorForwardVector(), HitResult, this, WeaponType, Charged);
+							AddSuccessDamageCount();
+							IgnoreActorsDamage.Add(Pawn);
+						}
+					}
+
 					ActorsToIgnore.Add(Pawn);
 				}
 				if (InteractObject)
