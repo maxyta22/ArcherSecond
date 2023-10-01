@@ -351,7 +351,7 @@ void UWeaponComponent::MakeShot()
 		
 	}
 
-	if (Owner->CheckMiss())
+	if (Owner->CheckMissSuccess())
 	{
 		Owner->MakeMiss();
 	}

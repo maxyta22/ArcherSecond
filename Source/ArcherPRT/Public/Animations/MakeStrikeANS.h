@@ -31,5 +31,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool MakeStagger;
+
+private:
+	
+	bool ChargeSuccess;
 	
 };

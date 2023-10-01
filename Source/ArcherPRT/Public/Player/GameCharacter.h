@@ -141,7 +141,9 @@ public:
 
 	void ClearTempInternalActors();
 
-	bool CheckMiss() { return SuccessDamageCount == 0; };
+	bool CheckHitSuccess() { return SuccessDamageCount > 0; };
+
+	bool CheckMissSuccess() { return SuccessDamageCount == 0; };
 
 	void MakeMiss();
 
@@ -149,6 +151,9 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Strike")
 	void StrikeInProgress();
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Strike")
+	void ChargeSuccess();
 
 	TArray<AActor*> DamageActors;
 

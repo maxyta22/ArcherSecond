@@ -8,7 +8,7 @@ void UMakeStrikeANS::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequence
 {
 	AGameCharacter* CharacterOwner;
 	CharacterOwner = Cast<AGameCharacter>(MeshComp->GetOwner());
-	if (!CharacterOwner) return;
+	if (!IsValid(CharacterOwner)) return;
 	CharacterOwner->ClearTempInternalActors();
 }
 
@@ -16,17 +16,27 @@ void UMakeStrikeANS::NotifyTick(USkeletalMeshComponent* MeshComp, UAnimSequenceB
 {
 	AGameCharacter* CharacterOwner;
 	CharacterOwner = Cast<AGameCharacter>(MeshComp->GetOwner());
-	if (!CharacterOwner) return;
+
+	if (!IsValid(CharacterOwner)) return;
+
 	CharacterOwner->MakeStrike(Distance, MinAngle, MaxAngle, IgnoreBlock, MakeStagger);
+
+	if (MakeStagger && !ChargeSuccess)
+	{
+		CharacterOwner->ChargeSuccess();
+		ChargeSuccess = true;
+	}
+	
+	
 }
 
 void UMakeStrikeANS::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation)
 {
 	AGameCharacter* CharacterOwner;
 	CharacterOwner = Cast<AGameCharacter>(MeshComp->GetOwner());
-	if (!CharacterOwner) return;
+	if (!IsValid(CharacterOwner)) return;
 
-	if (CharacterOwner->CheckMiss())
+	if (CharacterOwner->CheckMissSuccess())
 	{
 		CharacterOwner->MakeMiss();
 	}
