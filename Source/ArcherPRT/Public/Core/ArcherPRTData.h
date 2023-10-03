@@ -106,6 +106,28 @@ struct FSettingsSaveData
 
 };
 
+USTRUCT(BlueprintType)
+struct FDamageData
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)	
+	FHitResult DamagePoint;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	AController* DamageInstigator;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	AActor* DamageCauser;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	EWeaponType DamageWeaponType;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool DamageCharged;
+
+};
+
 UCLASS()
 class ARCHERPRT_API UArcherPRTData : public UObject
 {
