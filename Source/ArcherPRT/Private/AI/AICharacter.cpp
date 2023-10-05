@@ -213,7 +213,7 @@ void AAICharacter::MakeStrike(float StrikeDistance, float MinAngle, float MaxAng
 	{
 		DamagedActor = Cast<AGameCharacter>(OverlapResult[i].GetActor());
 
-		if ((DamagedActor) && (DamagedActor) && (DamagedActor != this) && (!IgnoreActorsDamage.Contains(DamagedActor)))
+		if (IsValid(DamagedActor) && (DamagedActor != this) && (!IgnoreActorsDamage.Contains(DamagedActor)))
 		{
 			const auto Angle = UMathUtils::FindAngleBetweenForwardVectorAndTarget(GetActorLocation(), GetActorForwardVector(), DamagedActor->GetActorLocation());
 
