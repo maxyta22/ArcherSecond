@@ -10,6 +10,7 @@
 #include "GameplayAbilitySystem/PRTAttributeSet.h"
 #include "Core/ArcherPRTData.h"
 #include "NiagaraComponent.h"
+#include "GameplayEffect.h"
 #include "GameCharacter.generated.h"
 
 class UInputComponent;
@@ -98,6 +99,9 @@ private:
 #pragma region TakeDamage
 
 public:
+
+	UFUNCTION(BlueprintCallable)
+	virtual void ImplementTakeDamage(FDamageData DamageData);
 
 	UFUNCTION()
 	virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;

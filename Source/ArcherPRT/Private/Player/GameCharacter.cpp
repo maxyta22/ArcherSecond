@@ -18,6 +18,8 @@
 #include "HeadMountedDisplayFunctionLibrary.h"
 #include "Kismet/GameplayStatics.h"
 #include "MathUtils.h"
+#include "GameplayEffect.h"
+#include "Core/ArcherPRTData.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogGameCharacter, Warning, All);
@@ -127,6 +129,16 @@ void AGameCharacter::OnHealthAttributeChanged()
 bool AGameCharacter::IsInvulnerable()
 {
 	return bInvulnerable;
+}
+
+void AGameCharacter::ImplementTakeDamage(FDamageData DamageData)
+{
+	if (IsInvulnerable()) return;
+
+	if (IsValid(DamageData.GameplayEffect))
+	{
+		AbilitySystemComponent->ApplyGameplayEffectToSelf(DamageData.GameplayEffect.GetDefaultObject(), 1.0, AbilitySystemComponent->MakeEffectContext());
+	}
 }
 
 float AGameCharacter::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)

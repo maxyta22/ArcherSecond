@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayEffect.h"
 #include "ArcherPRTData.generated.h"
 
 class UWeaponBase;
@@ -125,6 +126,9 @@ struct FDamageData
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool DamageCharged;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<UGameplayEffect> GameplayEffect;
 
 };
 
