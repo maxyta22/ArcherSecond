@@ -188,6 +188,8 @@ void AAICharacter::ImplementTakeDamage(FDamageData DamageData)
 	}
 }
 
+
+
 #pragma endregion 
 
 #pragma region MakeDamage
