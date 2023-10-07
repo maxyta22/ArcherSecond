@@ -233,12 +233,10 @@ void APlayerCharacter::TryPerformInteract()
 
 #pragma region TakeDamage
 
-float APlayerCharacter::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+void APlayerCharacter::ImplementTakeDamage(FDamageData DamageData)
 {
-	Super::TakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
+	Super::ImplementTakeDamage(DamageData);
 	WeaponComponent->FinishFire(true);
-	AfterTakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
-	return Damage;
 }
 
 void APlayerCharacter::OnDeath()
@@ -266,7 +264,6 @@ void APlayerCharacter::MakeStrike(float StrikeDistance, float MinAngle, float Ma
 	ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECC_WorldDynamic));
 	ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECC_Pawn));
 
-
 	TArray < AActor* > ActorsToIgnore;
 	ActorsToIgnore.Add(this);
 
@@ -274,14 +271,19 @@ void APlayerCharacter::MakeStrike(float StrikeDistance, float MinAngle, float Ma
 
 	UKismetSystemLibrary::SphereTraceMultiForObjects(GetWorld(), StartTrace, EndTrace, WeaponComponent->GloveAttackRadius, ObjectTypes, true, ActorsToIgnore, EDrawDebugTrace::None, OutHits, true, FLinearColor::Red, FLinearColor::Green, 0.5f);
 
-	const float Damage = WeaponComponent->bWeaponCharged ?
-		WeaponComponent->CurrentEquipWeapon.GetDefaultObject()->ChargeDamage :
-		WeaponComponent->CurrentEquipWeapon.GetDefaultObject()->Damage;
-	const auto WeaponType = WeaponComponent->CurrentEquipWeapon.GetDefaultObject()->WeaponType;
-	const bool Charged = WeaponComponent->bWeaponCharged;
+	FDamageData damageData;
+	damageData.DamageGameplayEffect = WeaponComponent->CurrentEquipWeapon.GetDefaultObject()->WeaponGameplayEffect;
+	damageData.DamageWeaponType = WeaponComponent->CurrentEquipWeapon.GetDefaultObject()->WeaponType;
+	damageData.DamageInstigator = GetInstigatorController();
+	damageData.DamageCauser = this;
+	damageData.DamageCharged = WeaponComponent->bWeaponCharged;
+
 
 	for (FHitResult& HitResult : OutHits)
 	{
+		damageData.DamageDirection = GetActorForwardVector();
+		damageData.DamagePoint = HitResult;
+
 		if (HitResult.bBlockingHit)
 		{
 			if (HitResult.GetActor() != nullptr && HitResult.GetComponent() != nullptr && !IgnoreActorsDamage.Contains(HitResult.GetActor()))
@@ -304,18 +306,16 @@ void APlayerCharacter::MakeStrike(float StrikeDistance, float MinAngle, float Ma
 					{
 						if (HitResult.GetComponent()->ComponentHasTag("WeakPoint"))
 						{
-							Pawn->TakeDamage(Damage, FDamageEvent(), GetInstigatorController(), this);
-							Pawn->OnHit(GetActorForwardVector(), HitResult, this, WeaponType, Charged);
+							Pawn->ImplementTakeDamage(damageData);
 							AddSuccessDamageCount();
 							IgnoreActorsDamage.Add(Pawn);
 						}
 					}
-
 					ActorsToIgnore.Add(Pawn);
 				}
 				if (InteractObject)
 				{
-					InteractObject->AfterGloveHit(WeaponComponent->bWeaponCharged, HitResult, this);
+					InteractObject->AfterGloveHit(damageData.DamageCharged, damageData.DamagePoint, this);
 					IgnoreActorsDamage.Add(InteractObject);
 				}
 			}

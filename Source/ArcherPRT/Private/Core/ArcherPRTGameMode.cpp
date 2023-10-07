@@ -8,7 +8,6 @@
 #include "Kismet/GameplayStatics.h"
 #include "AI/AICharacter.h"
 #include "AI/PRTAIController.h"
-#include "Components/StatsComponent.h"
 #include "UObject/ConstructorHelpers.h"
 
 AArcherPRTGameMode::AArcherPRTGameMode()
@@ -47,7 +46,7 @@ bool AArcherPRTGameMode::InBattleMode()
 	{
 		const auto AICharacter = Cast<AAICharacter>(OverlappedActor);
 
-		if (AICharacter && !AICharacter->StatsComponent->IsDead())
+		if (AICharacter && AICharacter->IsAlive())
 		{
 			const auto AIController = Cast<APRTAIController>(AICharacter->GetController());
 			

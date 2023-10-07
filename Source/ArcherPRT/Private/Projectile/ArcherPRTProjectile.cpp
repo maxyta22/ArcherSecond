@@ -6,7 +6,6 @@
 #include "Components/SphereComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Player/GameCharacter.h"
-#include "Components/StatsComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "NiagaraFunctionLibrary.h"
 #include "Particles/ParticleSystemComponent.h"

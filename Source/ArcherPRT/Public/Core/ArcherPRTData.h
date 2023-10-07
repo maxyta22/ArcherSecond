@@ -112,6 +112,9 @@ struct FDamageData
 {
 	GENERATED_BODY()
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FVector DamageDirection;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)	
 	FHitResult DamagePoint;
 
@@ -128,7 +131,7 @@ struct FDamageData
 	bool DamageCharged;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TSubclassOf<UGameplayEffect> GameplayEffect;
+	TSubclassOf<UGameplayEffect> DamageGameplayEffect;
 
 };
 

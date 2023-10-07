@@ -6,7 +6,6 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "BrainComponent.h"
 #include "Components/CapsuleComponent.h"
-#include "Components/StatsComponent.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "BehaviorTree/BehaviorTree.h"
 #include "Engine/TargetPoint.h"
@@ -60,7 +59,7 @@ void AAICharacter::Tick(float DeltaTime)
 void AAICharacter::StartAccumulateToAiming()
 {
 	if (GetWorld() == nullptr) return;
-	if (StatsComponent->IsDead()) return;
+	if (!IsAlive()) return;
 	if (GetWorld()->GetTimerManager().IsTimerActive(AccumulateToAiminHandleTimer)) return;
 	if (!GetAIControllerRef()) return;
 	if (!GetAIControllerRef()->GetEnemy()) return;
@@ -70,7 +69,7 @@ void AAICharacter::StartAccumulateToAiming()
 void AAICharacter::FinishAccumulateToAiming()
 {
 	if (GetWorld() == nullptr) return;
-	if (StatsComponent->IsDead()) return;
+	if (!IsAlive()) return;
 	if (GetWorld()->GetTimerManager().IsTimerActive(AccumulateToAiminHandleTimer))
 	{
 		GetWorld()->GetTimerManager().ClearTimer(AccumulateToAiminHandleTimer);
@@ -90,7 +89,7 @@ void AAICharacter::ReactionToAiming()
 void AAICharacter::RotationOnTarget()
 {
 	if (GetWorld() == nullptr) return;
-	if (StatsComponent->IsDead() && !GetCurrentMontage()) return;
+	if (!IsAlive() && !GetCurrentMontage()) return;
 	if (!AIControllerRef) return;
 	if (!AIControllerRef->GetBlackboardComponent()) return;
 	if (!AIControllerRef->GetBlackboardComponent()->GetValueAsObject("EnemyActor")) return;
@@ -164,17 +163,24 @@ void AAICharacter::ToggleActivateHitColliders(bool Activate)
 	}
 }
 
-float AAICharacter::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+void AAICharacter::ImplementTakeDamage(FDamageData DamageData)
 {
-	Super::TakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
-	AfterTakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
+	Super::ImplementTakeDamage(DamageData);
+	const auto hitDirection = DamageData.DamageDirection;
+	const auto hitResult = DamageData.DamagePoint;
+	const auto weaponType = DamageData.DamageWeaponType;
+	const auto damageCauser = DamageData.DamageCauser;
+	const auto damageInstigator = DamageData.DamageInstigator;
+	bool charged = DamageData.DamageCharged;
+
 	const auto AIController = Cast<APRTAIController>(Controller);
-	if (AIController && EventInstigator)
+
+	if (AIController && damageInstigator)
 	{
-		AIController->SetEnemy(EventInstigator->GetPawn());
+		AIController->SetEnemy(damageInstigator->GetPawn());
 	}
-		
-	return Damage;
+	
+	OnHit(hitDirection, hitResult, damageCauser, weaponType, charged);
 }
 
 void AAICharacter::OnHit(FVector HitDirection, FHitResult HitResult, AActor* Causer, EWeaponType WeaponType, bool Charged)
@@ -196,10 +202,10 @@ void AAICharacter::OnHit(FVector HitDirection, FHitResult HitResult, AActor* Cau
 void AAICharacter::MakeStrike(float StrikeDistance, float MinAngle, float MaxAngle, bool IgnoreBlock, bool MakeStagger)
 {
 	if (GetWorld() == nullptr) return;
-	if (StatsComponent->IsDead()) return;
+	if (!IsAlive()) return;
 	StrikeInProgress();
 
-	TArray<FOverlapResult> OverlapResult;
+	TArray<FOverlapResult> OverlapResults;
 	FCollisionObjectQueryParams ObjectQueryParam;
 	ObjectQueryParam.AllObjects;
 	FQuat Rot;
@@ -207,11 +213,17 @@ void AAICharacter::MakeStrike(float StrikeDistance, float MinAngle, float MaxAng
 	CollisionShape.SetSphere(StrikeDistance);
 	AGameCharacter* DamagedActor;
 
-	GetWorld()->OverlapMultiByObjectType(OverlapResult, GetActorLocation(), Rot, ObjectQueryParam, CollisionShape);
+	FDamageData damageData;
+	damageData.DamageDirection = GetActorForwardVector();
+	damageData.DamageInstigator = GetInstigatorController();
+	damageData.DamageCauser = this;
+	damageData.DamageGameplayEffect = StrikeGameplayEffect;
+	
+	GetWorld()->OverlapMultiByObjectType(OverlapResults, GetActorLocation(), Rot, ObjectQueryParam, CollisionShape);
 
-	for (int32 i = 0; i < OverlapResult.Num(); i++)
+	for (FOverlapResult& OverlapResult : OverlapResults)
 	{
-		DamagedActor = Cast<AGameCharacter>(OverlapResult[i].GetActor());
+		DamagedActor = Cast<AGameCharacter>(OverlapResult.GetActor());
 
 		if (IsValid(DamagedActor) && (DamagedActor != this) && (!IgnoreActorsDamage.Contains(DamagedActor)))
 		{
@@ -224,8 +236,7 @@ void AAICharacter::MakeStrike(float StrikeDistance, float MinAngle, float MaxAng
 				{
 					if (!DamagedPlayerCharacter->WeaponComponent->BlockInProgress() || IgnoreBlock == true)
 					{
-						DamagedActor->TakeDamage(StrikeDamage, FDamageEvent(), GetInstigatorController(), this);
-						DamagedActor->OnHit(GetActorForwardVector(), FHitResult::FHitResult(), this, EWeaponType::None, false);
+						DamagedActor->ImplementTakeDamage(damageData);
 						if (HitOnSuccessSound)
 						{
 							UGameplayStatics::PlaySoundAtLocation(GetWorld(), HitOnSuccessSound, GetActorLocation(), 1.0, 1.0, 0.0);

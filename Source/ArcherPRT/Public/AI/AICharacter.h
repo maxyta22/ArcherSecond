@@ -163,10 +163,10 @@ private:
 
 public:
 
+	virtual void ImplementTakeDamage(FDamageData DamageData) override;
+
 	UFUNCTION()
 	void ToggleActivateHitColliders(bool Activate);
-
-	virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 
 	virtual void OnHit(FVector HitDirection, FHitResult HitResult, AActor* Causer, EWeaponType WeaponType, bool Charged) override;
 

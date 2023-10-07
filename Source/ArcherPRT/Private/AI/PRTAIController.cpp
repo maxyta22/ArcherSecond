@@ -8,7 +8,6 @@
 #include "Core/ArcherPRTData.h"
 #include "Components/PRTAIPerceptionComponent.h"
 #include "BehaviorTree/BlackboardComponent.h"
-#include "Components/StatsComponent.h"
 #include "BrainComponent.h"
 
 APRTAIController::APRTAIController() 

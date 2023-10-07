@@ -8,7 +8,6 @@
 #include "Player/PlayerCharacter.h"
 #include "AI/AICharacter.h"
 #include "Components/InputComponent.h"
-#include "Components/StatsComponent.h"
 #include "Components/WeaponComponent.h"
 #include "GameFramework/InputSettings.h"
 #include "GameplayAbilitySystem/PRTAbilitySystemComponent.h"
@@ -30,9 +29,6 @@ AGameCharacter::AGameCharacter()
 
 	//Init Components
 
-	StatsComponent = CreateDefaultSubobject<UStatsComponent>("StatsComponent");
-	StatsComponent->SetIsReplicated(true);
-
 	WeaponComponent = CreateDefaultSubobject<UWeaponComponent>("WeaponComponent");
 	WeaponComponent->SetIsReplicated(true);
 
@@ -47,9 +43,7 @@ AGameCharacter::AGameCharacter()
 void AGameCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	//Bind Delegate
-	StatsComponent->OnHealthChanged.AddUObject(this, &AGameCharacter::OnHealChanged);
-	StatsComponent->OnDeath.AddUObject(this, &AGameCharacter::OnDeath);
+	
 }
 
 void AGameCharacter::PossessedBy(AController* NewController)
@@ -57,10 +51,10 @@ void AGameCharacter::PossessedBy(AController* NewController)
 	Super::PossessedBy(NewController);
 
 	AbilitySystemComponent->InitAbilityActorInfo(this, this);
-
 	InitializeAttributes();
 	GiveAbilities();
-	CanCheckAttributes = true;
+	WasInitiatedAttributes = true;
+
 }
 
 void AGameCharacter::Landed(const FHitResult& Hit)
@@ -110,18 +104,15 @@ void AGameCharacter::GiveAbilities()
 	}
 }
 
-void AGameCharacter::OnHealthAttributeChanged()
+bool AGameCharacter::IsAlive()
 {
-	if (CanCheckAttributes)
+	if (IsValid(Attributes) && WasInitiatedAttributes)
 	{
-		if (!IsAlive())
-		{
-			OnDeath();
-		}
+		return Attributes->GetHealth() > 0;
 	}
-
+	return true;
+	
 }
-
 #pragma endregion 
 
 #pragma region TakeDamage
@@ -135,21 +126,11 @@ void AGameCharacter::ImplementTakeDamage(FDamageData DamageData)
 {
 	if (IsInvulnerable()) return;
 
-	if (IsValid(DamageData.GameplayEffect))
+	if (IsValid(DamageData.DamageGameplayEffect))
 	{
-		AbilitySystemComponent->ApplyGameplayEffectToSelf(DamageData.GameplayEffect.GetDefaultObject(), 1.0, AbilitySystemComponent->MakeEffectContext());
+		AbilitySystemComponent->ApplyGameplayEffectToSelf(DamageData.DamageGameplayEffect.GetDefaultObject(), 1.0, AbilitySystemComponent->MakeEffectContext());
 	}
-}
-
-float AGameCharacter::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
-{
-	Super::TakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
-	return Damage;
-}
-
-void AGameCharacter::OnHealChanged(float Health)
-{
-
+	AfterTakeDamage(DamageData);
 }
 
 void AGameCharacter::OnHit(FVector HitDirection, FHitResult HitResult, AActor* Causer, EWeaponType WeaponType, bool Charged)
@@ -172,7 +153,6 @@ void AGameCharacter::OnDeath()
 {
 	AfterOnDeath();
 }
-
 #pragma endregion
 
 #pragma region MakeDamage

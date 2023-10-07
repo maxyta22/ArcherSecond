@@ -21,7 +21,6 @@ class UMotionControllerComponent;
 class UAnimMontage;
 class USoundBase;
 class UInventoryComponent;
-class UStatsComponent;
 class UWeaponComponent;
 class UPRTAbilitySystemComponent;
 class UPRTAttributeSet;
@@ -43,9 +42,6 @@ virtual void BeginPlay() override;
 public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
-	UStatsComponent* StatsComponent;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
 	UWeaponComponent* WeaponComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
@@ -54,7 +50,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
 	UPRTAttributeSet* Attributes;
 
-#pragma endregion
+#pragma endregion 
 
 #pragma region Abilitities
 
@@ -85,14 +81,10 @@ public:
 	float GetMaxHealth() { return Attributes->GetMaxHealth();}
 
 	UFUNCTION(BlueprintPure, Category = "Attributes")
-	bool IsAlive() { return Attributes->GetHealth() > 0; }
+	bool IsAlive();
 
-	UFUNCTION()
-	void OnHealthAttributeChanged();
-
-private:
-
-	bool CanCheckAttributes;
+	UPROPERTY()
+	bool WasInitiatedAttributes;
 
 #pragma endregion
 
@@ -104,13 +96,10 @@ public:
 	virtual void ImplementTakeDamage(FDamageData DamageData);
 
 	UFUNCTION()
-	virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
-
-	UFUNCTION()
 	bool IsInvulnerable();
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "AfterEvents")
-	void AfterTakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser);
+	void AfterTakeDamage(FDamageData DamageData);
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "AfterEvents")
 	void MissTakeDamage();
@@ -130,10 +119,6 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Internal")
 	bool bInvulnerable;
-
-private:
-
-	void OnHealChanged(float Health);
 
 #pragma endregion
 
@@ -162,7 +147,7 @@ public:
 	TArray<AActor*> DamageActors;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Strike")
-	float StrikeDamage = 10;
+	TSubclassOf<UGameplayEffect> StrikeGameplayEffect;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Strike")
 	USoundBase* HitOnSuccessSound;
@@ -176,14 +161,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Strike")
 	UNiagaraSystem* HitOnBlockVFX;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Strike")
-	TSubclassOf<UDamageType> StrikeDamageType;
-
 	TArray<AActor*> IgnoreActorsDamage;
 
 	int SuccessDamageCount;
-
-protected:
 
 	virtual void OnDeath();
 

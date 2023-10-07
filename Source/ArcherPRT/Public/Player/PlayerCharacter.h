@@ -104,7 +104,7 @@ private:
 
 protected:
 
-	virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
+	virtual void ImplementTakeDamage(FDamageData DamageData) override;
 
 	virtual void OnDeath() override;
 

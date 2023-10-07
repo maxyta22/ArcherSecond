@@ -294,7 +294,6 @@ void UWeaponComponent::MakeShot()
 	AmmoInMagazine--;
 	bChargeAttackInProgress = false;
 
-	// Shot Trace
 
 	//For Pawn
 	FVector StartTrace = Owner->GetFirstPersonCameraComponent()->GetComponentLocation() + Owner->GetFirstPersonCameraComponent()->GetForwardVector() * 50;
@@ -318,8 +317,18 @@ void UWeaponComponent::MakeShot()
 	UKismetSystemLibrary::CapsuleTraceMultiForObjects(GetWorld(), StartTrace,
 		EndTrace, ShotCapsuleRadius, ShotCapsuleHalfHeight, ObjectTypes, true, IgnoreActors, LDrawDebug, OutHits, true);
 
+	FDamageData damageData;
+	damageData.DamageDirection = TraceDirection;
+	damageData.DamageGameplayEffect = CurrentEquipWeapon.GetDefaultObject()->WeaponGameplayEffect;
+	damageData.DamageWeaponType = CurrentEquipWeapon.GetDefaultObject()->WeaponType;
+	damageData.DamageInstigator = GetOwner()->GetInstigatorController();
+	damageData.DamageCauser = GetOwner();
+	damageData.DamageCharged = bWeaponCharged;
+
 	for (const FHitResult & HitResult : OutHits)
 	{
+		damageData.DamagePoint = HitResult;
+
 		FVector LStaticLocation = WorldStaticTraceResult.bBlockingHit ? WorldStaticTraceResult.Location : WorldStaticTraceResult.TraceEnd;
 
 		if (FVector::Dist(StartTrace, HitResult.Location) > FVector::Dist(StartTrace, LStaticLocation))
@@ -331,8 +340,7 @@ void UWeaponComponent::MakeShot()
 			{
 			if (!LCharacter->IsInvulnerable() && HitResult.GetComponent()->ComponentHasTag("WeakPoint") && !IgnoreActors.Contains(LCharacter))
 			{
-				LCharacter->TakeDamage(CurrentEquipWeapon.GetDefaultObject()->Damage, FDamageEvent(), nullptr, GetOwner());
-				LCharacter->OnHit(TraceDirection, HitResult, GetOwner(), EWeaponType::PneumaticGun, false);
+				LCharacter->ImplementTakeDamage(damageData);
 				IgnoreActors.Add(LCharacter);
 				Owner->AddSuccessDamageCount();
 			}
@@ -347,8 +355,7 @@ void UWeaponComponent::MakeShot()
 		if (LInteractObject)
 			{
 				LInteractObject->AfterShotHit(HitResult, GetOwner());
-			}
-		
+			}		
 	}
 
 	if (Owner->CheckMissSuccess())

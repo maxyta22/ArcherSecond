@@ -27,6 +27,9 @@ public:
 		EWeaponType WeaponType;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Gameplay)
+	TSubclassOf<UGameplayEffect> WeaponGameplayEffect;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Gameplay)
 		bool bMeleeWeapon;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (EditCondition = "!bMeleeWeapon"), Category = Gameplay)

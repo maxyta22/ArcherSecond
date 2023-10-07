@@ -89,9 +89,9 @@ void UPRTAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbac
 	{
 		SetHealth(FMath::Clamp(GetHealth(), 0, GetMaxHealth()));
 
-		if (TargetCharacter)
+		if (TargetCharacter && TargetCharacter->WasInitiatedAttributes && GetHealth()==0 )
 		{
-			TargetCharacter->OnHealthAttributeChanged();
+			TargetCharacter->OnDeath();
 		}
 	}
 

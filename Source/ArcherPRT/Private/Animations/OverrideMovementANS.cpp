@@ -6,7 +6,6 @@
 #include "AI/AICharacter.h"
 #include "AI/PRTAIController.h"
 #include "GameFramework/CharacterMovementComponent.h"
-#include "Components/StatsComponent.h"
 
 void UOverrideMovementANS::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float TotalDuration)
 {
@@ -49,13 +48,13 @@ void UOverrideMovementANS::NotifyTick(USkeletalMeshComponent* MeshComp, UAnimSeq
 
 	if (!MeshComp->GetAnimInstance()->GetCurveValue("ForwardRootMotion")) return;
 
-	if (MeshComp->GetAnimInstance()->GetCurveValue("ForwardRootMotion") > 0 && (!AICharacterOwner->StatsComponent->IsDead() || CanUseDeath))
+	if (MeshComp->GetAnimInstance()->GetCurveValue("ForwardRootMotion") > 0 && (AICharacterOwner->IsAlive() || CanUseDeath))
 	{
 		MovementComponent->MaxWalkSpeed = MeshComp->GetAnimInstance()->GetCurveValue("ForwardRootMotion");
 		AICharacterOwner->AddMovementInput(AICharacterOwner->GetActorForwardVector(), 1);
 	}
 
-	if (MeshComp->GetAnimInstance()->GetCurveValue("ForwardRootMotion") < 0 && (!AICharacterOwner->StatsComponent->IsDead() || CanUseDeath))
+	if (MeshComp->GetAnimInstance()->GetCurveValue("ForwardRootMotion") < 0 && (AICharacterOwner->IsAlive() || CanUseDeath))
 	{
 		MovementComponent->MaxWalkSpeed = MeshComp->GetAnimInstance()->GetCurveValue("ForwardRootMotion") *-1;
 		AICharacterOwner->AddMovementInput(AICharacterOwner->GetActorForwardVector(), -1);
