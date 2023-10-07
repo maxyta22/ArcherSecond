@@ -108,7 +108,6 @@ void AArcherPRTProjectile::OnImpact_Implementation(const FHitResult& Result)
 			if (Result.GetComponent()->ComponentHasTag("WeakPoint"))
 			{
 				Pawn->TakeDamage(DamageProjectile, FDamageEvent(), GetInstigatorController(), this);
-				Pawn->OnHit(GetActorForwardVector(), Result, GetInstigator(), EWeaponType::PneumaticGun, false);
 			}
 			else
 			{

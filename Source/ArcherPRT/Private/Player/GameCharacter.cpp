@@ -68,7 +68,7 @@ void AGameCharacter::Landed(const FHitResult& Hit)
 
 }
 
-#pragma region Abilitities
+#pragma region GAS
 
 void AGameCharacter::InitializeAttributes()
 {
@@ -131,10 +131,6 @@ void AGameCharacter::ImplementTakeDamage(FDamageData DamageData)
 		AbilitySystemComponent->ApplyGameplayEffectToSelf(DamageData.DamageGameplayEffect.GetDefaultObject(), 1.0, AbilitySystemComponent->MakeEffectContext());
 	}
 	AfterTakeDamage(DamageData);
-}
-
-void AGameCharacter::OnHit(FVector HitDirection, FHitResult HitResult, AActor* Causer, EWeaponType WeaponType, bool Charged)
-{
 }
 
 void AGameCharacter::MakeMiss()

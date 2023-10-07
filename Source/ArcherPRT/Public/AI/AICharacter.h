@@ -133,10 +133,10 @@ public:
 	void PerformOnStaggerReaction();
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Behavior")
-	void AfterOnHit(FVector HitDirection, FHitResult HitResult, AActor* Causer, EWeaponType WeaponType, bool Charged);
+	void AfterOnHit(FDamageData DamageData);
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "Behavior")
-	void PerformOnHitReaction(FVector HitDirection, FHitResult HitResult, AActor* Causer, EWeaponType WeaponType, bool Charged, bool ForceHeavyHitReactions = false);
+	void PerformOnHitReaction(FDamageData DamageData);
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Behavior")
 	void AfterEnemyFound();
@@ -167,8 +167,6 @@ public:
 
 	UFUNCTION()
 	void ToggleActivateHitColliders(bool Activate);
-
-	virtual void OnHit(FVector HitDirection, FHitResult HitResult, AActor* Causer, EWeaponType WeaponType, bool Charged) override;
 
 #pragma endregion
 

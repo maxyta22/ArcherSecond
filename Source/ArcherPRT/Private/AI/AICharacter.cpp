@@ -180,19 +180,12 @@ void AAICharacter::ImplementTakeDamage(FDamageData DamageData)
 		AIController->SetEnemy(damageInstigator->GetPawn());
 	}
 	
-	OnHit(hitDirection, hitResult, damageCauser, weaponType, charged);
-}
-
-void AAICharacter::OnHit(FVector HitDirection, FHitResult HitResult, AActor* Causer, EWeaponType WeaponType, bool Charged)
-{
-	AfterOnHit(HitDirection, HitResult, Causer, WeaponType, Charged);
+	AfterOnHit(DamageData);
 
 	if (CanPerformOnHitReaction)
 	{
-	 PerformOnHitReaction(HitDirection, HitResult, Causer, WeaponType, Charged);
+		PerformOnHitReaction(DamageData);
 	}
-	
-
 }
 
 #pragma endregion 
