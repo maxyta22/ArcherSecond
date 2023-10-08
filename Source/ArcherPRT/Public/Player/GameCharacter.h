@@ -44,10 +44,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
 	UWeaponComponent* WeaponComponent;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GAS")
 	UPRTAbilitySystemComponent* AbilitySystemComponent;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GAS")
 	UPRTAttributeSet* Attributes;
 
 #pragma endregion 
@@ -69,13 +69,13 @@ public:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "GAS")
 	TArray<TSubclassOf<class UPRTGameplayAbility>> DefaultAbilities;
 
-	UFUNCTION(BlueprintPure, Category = "Attributes")
+	UFUNCTION(BlueprintPure, Category = "GAS")
 	float GetHealth() { return Attributes->GetHealth();}
 
-	UFUNCTION(BlueprintPure, Category = "Attributes")
+	UFUNCTION(BlueprintPure, Category = "GAS")
 	float GetMaxHealth() { return Attributes->GetMaxHealth();}
 
-	UFUNCTION(BlueprintPure, Category = "Attributes")
+	UFUNCTION(BlueprintPure, Category = "GAS")
 	bool IsAlive();
 
 	UPROPERTY()
