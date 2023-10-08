@@ -8,13 +8,14 @@
 #include "Components/CapsuleComponent.h"
 #include "Components/SphereComponent.h"
 #include "Player/GameCharacter.h"
+#include "GameplayEffect.h"
 
 
 
 ADamageZoneBase::ADamageZoneBase()
 {
 
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 	SceneComponent = CreateDefaultSubobject<USceneComponent>("SceneComponent");
 	SetRootComponent(SceneComponent);
@@ -37,17 +38,6 @@ ADamageZoneBase::ADamageZoneBase()
 	CapsuleCollision->OnComponentEndOverlap.AddDynamic(this, &ADamageZoneBase::OnOverlapEnd);
 
 
-}
-
-void ADamageZoneBase::BeginPlay()
-{
-	Super::BeginPlay();
-}
-
-// Called every frame
-void ADamageZoneBase::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
 }
 
 void ADamageZoneBase::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
@@ -77,6 +67,17 @@ void ADamageZoneBase::MakeDamageByTarget()
 {
 	if (IsValid(DamageTarget))
 	{
-		DamageTarget->TakeDamage(Damage, FDamageEvent(), GetInstigatorController(), this);
+		AGameCharacter* gameChar = Cast<AGameCharacter>(DamageTarget);
+		if (IsValid(gameChar))
+		{
+			FDamageData  damageData;
+			damageData.DamageDirection = GetActorForwardVector();
+			damageData.DamageInstigator = GetInstigatorController();
+			damageData.DamageCauser = this;
+			damageData.DamageGameplayEffect = DamageGameplayEffect;
+
+			gameChar->ImplementTakeDamage(damageData);
+		}
+		
 	}
 }

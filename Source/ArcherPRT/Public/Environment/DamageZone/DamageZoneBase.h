@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "GameplayEffect.h"
 #include "DamageZoneBase.generated.h"
 
 
@@ -34,7 +35,7 @@ public:
 	UCapsuleComponent* CapsuleCollision;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float Damage = 2.0f;
+	TSubclassOf<UGameplayEffect> DamageGameplayEffect;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float DamageFrequency = 1.0f;
@@ -42,10 +43,6 @@ public:
 
 protected:
 
-	virtual void BeginPlay() override;
-
-
-	virtual void Tick(float DeltaTime) override;
 
 	UFUNCTION()
 	void OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
