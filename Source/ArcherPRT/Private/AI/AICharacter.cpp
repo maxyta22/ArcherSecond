@@ -243,7 +243,7 @@ void AAICharacter::MakeStrike(float StrikeDistance, float MinAngle, float MaxAng
 					}
 					else
 					{
-						DamagedActor->HitOnBlockSuccess(GetActorForwardVector(), FHitResult::FHitResult(), this, EWeaponType::None, false);
+						DamagedActor->HitOnBlockSuccess(damageData);
 						PerformOnStaggerReaction();
 						if (HitOnBlockSound)
 						{

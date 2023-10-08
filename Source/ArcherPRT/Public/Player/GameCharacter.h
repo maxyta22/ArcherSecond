@@ -63,16 +63,11 @@ public:
 
 	virtual void PossessedBy(AController* NewController) override;
 
-
-	//Default Effect for attributes
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "GAS")
 	TSubclassOf<class UGameplayEffect> DefaultAttributeEffect;
 
-	//Default Abilities
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "GAS")
 	TArray<TSubclassOf<class UPRTGameplayAbility>> DefaultAbilities;
-
-	//Attributes
 
 	UFUNCTION(BlueprintPure, Category = "Attributes")
 	float GetHealth() { return Attributes->GetHealth();}
@@ -108,7 +103,7 @@ public:
 	void AfterOnDeath();
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "AfterEvents")
-	void HitOnBlockSuccess(FVector HitDirection, FHitResult HitResult, AActor* Causer, EWeaponType WeaponType, bool Charged);
+	void HitOnBlockSuccess(FDamageData DamageData);
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "AfterEvents")
 	void FailTryUseBlock();
@@ -140,8 +135,6 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, Category = "Strike")
 	void ChargeSuccess();
 
-	TArray<AActor*> DamageActors;
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Strike")
 	TSubclassOf<UGameplayEffect> StrikeGameplayEffect;
 
@@ -157,6 +150,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Strike")
 	UNiagaraSystem* HitOnBlockVFX;
 
+	UPROPERTY()
+	TArray<AActor*> DamageActors;
+
+	UPROPERTY()
 	TArray<AActor*> IgnoreActorsDamage;
 
 	int SuccessDamageCount;
