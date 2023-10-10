@@ -236,7 +236,6 @@ void APlayerCharacter::TryPerformInteract()
 void APlayerCharacter::ImplementTakeDamage(FDamageData DamageData)
 {
 	Super::ImplementTakeDamage(DamageData);
-	WeaponComponent->FinishFire(true);
 }
 
 void APlayerCharacter::OnDeath()

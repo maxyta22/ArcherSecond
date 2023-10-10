@@ -166,26 +166,21 @@ void AAICharacter::ToggleActivateHitColliders(bool Activate)
 void AAICharacter::ImplementTakeDamage(FDamageData DamageData)
 {
 	Super::ImplementTakeDamage(DamageData);
-	const auto hitDirection = DamageData.DamageDirection;
-	const auto hitResult = DamageData.DamagePoint;
-	const auto weaponType = DamageData.DamageWeaponType;
-	const auto damageCauser = DamageData.DamageCauser;
 	const auto damageInstigator = DamageData.DamageInstigator;
-	bool charged = DamageData.DamageCharged;
-
 	const auto AIController = Cast<APRTAIController>(Controller);
 
 	if (AIController && damageInstigator)
 	{
 		AIController->SetEnemy(damageInstigator->GetPawn());
 	}
-	
-	AfterOnHit(DamageData);
 
 	if (CanPerformOnHitReaction)
 	{
 		PerformOnHitReaction(DamageData);
 	}
+
+	AfterOnHit(DamageData);
+	AfterTakeDamage(DamageData);
 }
 
 
