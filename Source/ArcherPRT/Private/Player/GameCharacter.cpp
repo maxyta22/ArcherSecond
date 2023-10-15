@@ -63,8 +63,8 @@ void AGameCharacter::Landed(const FHitResult& Hit)
 	const auto FallVelocityZ = -GetCharacterMovement()->Velocity.Z;
 	if (FallVelocityZ < LandedDamageVelocity.X) return;
 
-	const auto FinalDamage = FMath::GetMappedRangeValueClamped(LandedDamageVelocity, LandedDamage, FallVelocityZ);
-	TakeDamage(FinalDamage, FDamageEvent{}, nullptr, nullptr);
+	LastDamageFromLanded = FMath::GetMappedRangeValueClamped(LandedDamageVelocity, LandedDamage, FallVelocityZ);
+	ImplementTakeDamage(LandedDamageData);
 
 }
 

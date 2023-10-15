@@ -169,12 +169,19 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Internal")
 	bool bIsUnderground;
 
+	UPROPERTY()
+	float LastDamageFromLanded;
+
 	//Landed
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 	FVector2D LandedDamageVelocity = FVector2D(900.0f, 1200.0f);
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
-	FVector2D LandedDamage = FVector2D(10.0f, 100.0f);
+	FDamageData LandedDamageData;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+	FVector2D LandedDamage = FVector2D(10.0f, 100.0f);		
+
 
 protected:
 
