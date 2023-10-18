@@ -165,7 +165,7 @@ public:
 
 	virtual void ImplementTakeDamage(FDamageData DamageData) override;
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void ToggleActivateHitColliders(bool Activate);
 
 #pragma endregion
