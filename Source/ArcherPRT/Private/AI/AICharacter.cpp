@@ -178,8 +178,6 @@ void AAICharacter::ImplementTakeDamage(FDamageData DamageData)
 	{
 		PerformOnHitReaction(DamageData);
 	}
-
-	AfterOnHit(DamageData);
 	AfterTakeDamage(DamageData);
 }
 

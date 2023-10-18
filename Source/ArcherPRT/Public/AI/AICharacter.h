@@ -132,9 +132,6 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "Behavior")
 	void PerformOnStaggerReaction();
 
-	UFUNCTION(BlueprintImplementableEvent, Category = "Behavior")
-	void AfterOnHit(FDamageData DamageData);
-
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "Behavior")
 	void PerformOnHitReaction(FDamageData DamageData);
 
