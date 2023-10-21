@@ -10,8 +10,11 @@ void UDeactivateHitCollidersANS::NotifyBegin(USkeletalMeshComponent* MeshComp, U
 	AAICharacter* AICharacterOwner;
 	AICharacterOwner = Cast<AAICharacter>(MeshComp->GetOwner());
 	if (!AICharacterOwner) return;
-
-	AICharacterOwner->ToggleActivateHitColliders(false);
+	AICharacterOwner->DeactivateHitCollidersCount++;
+	if (AICharacterOwner->DeactivateHitCollidersCount > 0)
+	{
+		AICharacterOwner->ToggleActivateHitColliders(false);
+	}
 }
 
 void UDeactivateHitCollidersANS::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation)
@@ -19,6 +22,10 @@ void UDeactivateHitCollidersANS::NotifyEnd(USkeletalMeshComponent* MeshComp, UAn
 	AAICharacter* AICharacterOwner;
 	AICharacterOwner = Cast<AAICharacter>(MeshComp->GetOwner());
 	if (!AICharacterOwner) return;
-
-	AICharacterOwner->ToggleActivateHitColliders(true);
+	AICharacterOwner->DeactivateHitCollidersCount--;
+	if (AICharacterOwner->DeactivateHitCollidersCount == 0)
+	{
+		AICharacterOwner->ToggleActivateHitColliders(true);
+	}
+	
 }

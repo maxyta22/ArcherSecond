@@ -165,6 +165,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void ToggleActivateHitColliders(bool Activate);
 
+	UPROPERTY()
+	int32 DeactivateHitCollidersCount = 0;
+
 #pragma endregion
 
 #pragma region MakeDamage
