@@ -10,7 +10,7 @@ ULandedDamageCalculation::ULandedDamageCalculation()
 {	
 	AttStruct Attributes;
 	RelevantAttributesToCapture.Add(Attributes.HealthDef);
-	InvalidScopedModifierAttributes.Add(Attributes.HealthDef);
+	//InvalidScopedModifierAttributes.Add(Attributes.HealthDef);
 
 }
 
