@@ -71,7 +71,7 @@ enum class EShapeType : uint8
 	Capsule,
 };
 
-USTRUCT(BlueprintType)
+USTRUCT(BlueprintType, Category = "Save Data")
 struct FPlayerSaveData
 {
 	GENERATED_BODY()
@@ -97,7 +97,7 @@ struct FPlayerSaveData
 
 };
 
-USTRUCT(BlueprintType)
+USTRUCT(BlueprintType, Category = " Setting Save Data")
 struct FSettingsSaveData
 {
 	GENERATED_BODY()
@@ -107,7 +107,7 @@ struct FSettingsSaveData
 
 };
 
-USTRUCT(BlueprintType)
+USTRUCT(BlueprintType, Category = "Damage Data")
 struct FDamageData
 {
 	GENERATED_BODY()
