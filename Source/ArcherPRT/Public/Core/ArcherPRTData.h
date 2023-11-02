@@ -83,6 +83,9 @@ struct FPlayerSaveData
 	FRotator PlayerRotation;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FRotator ControlRotation;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TMap<EResourcesType, int> Resources;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
