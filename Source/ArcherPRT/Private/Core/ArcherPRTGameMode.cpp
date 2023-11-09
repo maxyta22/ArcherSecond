@@ -34,7 +34,7 @@ bool AArcherPRTGameMode::InBattleMode()
 		return true;
 	}
 
-	UKismetSystemLibrary::SphereOverlapActors(GetWorld(), Player->GetActorLocation(), 1500, ObjectTypes, FilterClass, IgnoreActors, OverlapActors);
+	UKismetSystemLibrary::SphereOverlapActors(GetWorld(), Player->GetActorLocation(), MaxDistanceBattleMode, ObjectTypes, FilterClass, IgnoreActors, OverlapActors);
 
 	if (OverlapActors.IsEmpty())
 	{
