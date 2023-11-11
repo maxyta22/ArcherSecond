@@ -24,6 +24,7 @@
 #include "Components/WeaponComponent.h"
 #include "Weapon/WeaponBase.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Interfaces/TakeDamageInterface.h"
 #include "Components/ArrowComponent.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogPlayerCharacter, Warning, All);
@@ -289,8 +290,6 @@ void APlayerCharacter::MakeStrike(float StrikeDistance, float MinAngle, float Ma
 			{
 				AAICharacter* Pawn = Cast<AAICharacter>(HitResult.GetActor());
 				
-				const auto InteractObject = Cast<AInteractObjectBase>(HitResult.GetActor());
-
 				if (IsValid(Pawn) && Pawn->IsInvulnerable() == false)
 				{
 					DamageActors.AddUnique(Pawn);
@@ -312,10 +311,20 @@ void APlayerCharacter::MakeStrike(float StrikeDistance, float MinAngle, float Ma
 					}
 					ActorsToIgnore.Add(Pawn);
 				}
+
+				const auto InteractObject = Cast<AInteractObjectBase>(HitResult.GetActor());
+
 				if (InteractObject)
 				{
 					InteractObject->AfterGloveHit(damageData.DamageCharged, damageData.DamagePoint, this);
 					IgnoreActorsDamage.Add(InteractObject);
+				}
+
+				if (HitResult.GetActor()->GetClass()->ImplementsInterface(UTakeDamageInterface::StaticClass()))
+				{
+					ITakeDamageInterface::Execute_TakeDamageInteface(HitResult.GetActor(), damageData);
+					ActorsToIgnore.Add(HitResult.GetActor());
+					IgnoreActorsDamage.Add(HitResult.GetActor());
 				}
 			}
 		}

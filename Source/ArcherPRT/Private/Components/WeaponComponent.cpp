@@ -13,6 +13,7 @@
 #include "DrawDebugHelpers.h"
 #include "Components/BuildingComponent.h"
 #include "Camera/CameraComponent.h"
+#include "Interfaces/TakeDamageInterface.h"
 #include "Player/PlayerCharacter.h"
 
 UWeaponComponent::UWeaponComponent()
@@ -352,10 +353,17 @@ void UWeaponComponent::MakeShot()
 			}
 
 		const auto LInteractObject = Cast<AInteractObjectBase>(HitResult.GetActor());
+
 		if (LInteractObject)
 			{
 				LInteractObject->AfterShotHit(HitResult, GetOwner());
 			}		
+
+		if (HitResult.GetActor()->GetClass()->ImplementsInterface(UTakeDamageInterface::StaticClass()))
+		{
+			ITakeDamageInterface::Execute_TakeDamageInteface(HitResult.GetActor(), damageData);
+		}
+
 	}
 
 	if (Owner->CheckMissSuccess())
