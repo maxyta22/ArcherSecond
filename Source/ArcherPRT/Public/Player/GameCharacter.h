@@ -63,7 +63,7 @@ public:
 
 	virtual void PossessedBy(AController* NewController) override;
 
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "GAS")
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "GAS")
 	TSubclassOf<class UGameplayEffect> DefaultAttributeEffect;
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "GAS")
