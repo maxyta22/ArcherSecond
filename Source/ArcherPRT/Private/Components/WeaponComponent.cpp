@@ -200,6 +200,7 @@ void UWeaponComponent::FinishFire(bool ForceFinishFire)
 	bChargeAttackInProgress = false;
 	bBlockInProgress = false;
 	bWeaponCharged = false;
+	bPerfectWindow = false;
 	bPerfectDamage = false;
 	SpreadShot = 0.0f;
 
