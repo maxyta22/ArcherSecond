@@ -183,7 +183,7 @@ void UWeaponComponent::TryFire()
 	if (FireInProgress()) return;
 	if (CurrentEquipWeapon.GetDefaultObject()->WeaponType == EWeaponType::PneumaticGun && !HaveAmmo()) return;
 
-	
+	bPerfectDamage = bPerfectWindow;	
 	bFireInProgress = true;
 	Owner->TryFire();
 
@@ -200,6 +200,7 @@ void UWeaponComponent::FinishFire(bool ForceFinishFire)
 	bChargeAttackInProgress = false;
 	bBlockInProgress = false;
 	bWeaponCharged = false;
+	bPerfectDamage = false;
 	SpreadShot = 0.0f;
 
 	if (ForceFinishFire)
@@ -325,6 +326,7 @@ void UWeaponComponent::MakeShot()
 	damageData.DamageInstigator = GetOwner()->GetInstigatorController();
 	damageData.DamageCauser = GetOwner();
 	damageData.DamageCharged = bWeaponCharged;
+	damageData.PerfectDamage = bPerfectDamage;
 
 	for (const FHitResult & HitResult : OutHits)
 	{

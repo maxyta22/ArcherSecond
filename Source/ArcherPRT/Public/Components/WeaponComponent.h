@@ -38,6 +38,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Internal")
 	bool bWeaponCharged;
 
+	UPROPERTY()
+	bool bPerfectWindow;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Internal")
+	bool bPerfectDamage;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Glove")
 	float GloveAttackDistance;
 

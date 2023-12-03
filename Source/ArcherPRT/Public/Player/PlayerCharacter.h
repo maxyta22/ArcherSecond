@@ -137,6 +137,9 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, Category = "Attack")
 	void OnReloadWeapon();
 
+	UFUNCTION(BlueprintImplementableEvent, Category = "Attack")
+	void OnStartPerfectWindow();
+
 	UFUNCTION(BlueprintImplementableEvent, Category = "Craft")
 	void AfterBeginCraft();
 

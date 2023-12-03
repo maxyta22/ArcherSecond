@@ -126,10 +126,21 @@ void AGameCharacter::ImplementTakeDamage(FDamageData DamageData)
 {
 	if (IsInvulnerable()) return;
 
-	if (IsValid(DamageData.DamageGameplayEffect))
+	if (DamageData.PerfectDamage && IsValid(DamageData.PerfectDamageGameplayEffect))
 	{
-		AbilitySystemComponent->ApplyGameplayEffectToSelf(DamageData.DamageGameplayEffect.GetDefaultObject(), 1.0, AbilitySystemComponent->MakeEffectContext());
+		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Green, TEXT("Perfect"));
+		AbilitySystemComponent->ApplyGameplayEffectToSelf(DamageData.PerfectDamageGameplayEffect.GetDefaultObject(), 1.0, AbilitySystemComponent->MakeEffectContext());
 	}
+	else
+	{
+		if (IsValid(DamageData.DamageGameplayEffect))
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("Regular"));
+			AbilitySystemComponent->ApplyGameplayEffectToSelf(DamageData.DamageGameplayEffect.GetDefaultObject(), 1.0, AbilitySystemComponent->MakeEffectContext());
+		}
+	}
+
+
 	AfterTakeDamage(DamageData);
 }
 

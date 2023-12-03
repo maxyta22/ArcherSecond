@@ -137,7 +137,13 @@ struct FDamageData
 	bool InterruptChargeProgress = true;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool PerfectDamage = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<UGameplayEffect> DamageGameplayEffect;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<UGameplayEffect> PerfectDamageGameplayEffect;
 
 };
 

@@ -273,11 +273,12 @@ void APlayerCharacter::MakeStrike(float StrikeDistance, float MinAngle, float Ma
 
 	FDamageData damageData;
 	damageData.DamageGameplayEffect = WeaponComponent->CurrentEquipWeapon.GetDefaultObject()->WeaponGameplayEffect;
+	damageData.PerfectDamageGameplayEffect = WeaponComponent->CurrentEquipWeapon.GetDefaultObject()->PerfectDamageGE;
 	damageData.DamageWeaponType = WeaponComponent->CurrentEquipWeapon.GetDefaultObject()->WeaponType;
 	damageData.DamageInstigator = GetInstigatorController();
 	damageData.DamageCauser = this;
 	damageData.DamageCharged = WeaponComponent->bWeaponCharged;
-
+	damageData.PerfectDamage = WeaponComponent->bPerfectDamage;
 
 	for (FHitResult& HitResult : OutHits)
 	{
