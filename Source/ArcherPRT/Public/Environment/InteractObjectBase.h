@@ -5,9 +5,8 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Net/UnrealNetwork.h"
+#include "Interfaces/InteractInterface.h"
 #include "InteractObjectBase.generated.h"
-
-
 
 class APlayerCharacter;
 class USphereComponent;
@@ -16,7 +15,7 @@ class USkeletalMeshComponent;
 class UArrowComponent;
 
 UCLASS()
-class ARCHERPRT_API AInteractObjectBase : public AActor
+class ARCHERPRT_API AInteractObjectBase : public AActor, public IInteractInterface
 {
 	GENERATED_BODY()
 	
@@ -59,6 +58,14 @@ public:
 		void AfterShotHit(const FHitResult& HitResult, AActor* Causer);
 
 	virtual void TryUseInteractObject(APlayerCharacter* Pawn);
+
+	//Interface
+
+	void I_Interact_Implementation(APlayerCharacter* Pawn) override;
+
+	void I_ShowInfo_Implementation() override;
+
+	void I_HideInfo_Implementation() override;
 
 protected:
 

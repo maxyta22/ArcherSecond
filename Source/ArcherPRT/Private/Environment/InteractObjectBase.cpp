@@ -36,6 +36,21 @@ void AInteractObjectBase::TryUseInteractObject(APlayerCharacter* Pawn)
 	AfterWasTryUseInteractObject();
 }
 
+void AInteractObjectBase::I_Interact_Implementation(APlayerCharacter* Pawn)
+{
+	TryUseInteractObject(Pawn);
+}
+
+void AInteractObjectBase::I_ShowInfo_Implementation()
+{
+	ShowInfo();
+}
+
+void AInteractObjectBase::I_HideInfo_Implementation()
+{
+	HideInfo();
+}
+
 
 
 

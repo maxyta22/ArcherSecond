@@ -84,10 +84,6 @@ public:
 	UFUNCTION()
 	void OnOverlapEndInteractCapsule(UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
-	void ShowInfoObject(AActor* InfoObject);
-
-	void HideInfoObject(AActor* InfoObject);
-
 	void CheckInteractObjects(bool TryInteract = false);
 
 protected:

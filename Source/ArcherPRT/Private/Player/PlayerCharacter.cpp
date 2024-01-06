@@ -25,6 +25,7 @@
 #include "Weapon/WeaponBase.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Interfaces/TakeDamageInterface.h"
+#include "Interfaces/InteractInterface.h"
 #include "Components/ArrowComponent.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogPlayerCharacter, Warning, All);
@@ -158,9 +159,8 @@ void APlayerCharacter::AddControllerPitchInput(float Val)
 void APlayerCharacter::OnOverlapBeginInteractCapsule(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 
-	if (OtherActor && (OtherActor != this) && OtherComp)
+	if (IsValid(OtherActor) && (OtherActor != this))
 	{
-		ShowInfoObject(OtherActor);
 		CurrentInteractTarget.Add(OtherActor);
 	}
 }
@@ -168,27 +168,15 @@ void APlayerCharacter::OnOverlapBeginInteractCapsule(UPrimitiveComponent* Overla
 void APlayerCharacter::OnOverlapEndInteractCapsule(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
 
-	if (GEngine)
+	if (IsValid(OtherActor))
 	{
-		HideInfoObject(OtherActor);
 		CurrentInteractTarget.Remove(OtherActor);
 	}
-}
-
-void APlayerCharacter::ShowInfoObject(AActor* InfoObject)
-{
-	return;
-}
-
-void APlayerCharacter::HideInfoObject(AActor* InfoObject)
-{
-	return;
 }
 
 void APlayerCharacter::CheckInteractObjects(bool TryInteract)
 {
 	if (GetWorld() == nullptr) return;
-	AInteractObjectBase* InteractObject;
 	TArray<AActor*> HitActors;
 	TArray<FHitResult> HitResult;
 	TArray<TEnumAsByte<EObjectTypeQuery>> ObjectsTypeQuery;
@@ -202,25 +190,22 @@ void APlayerCharacter::CheckInteractObjects(bool TryInteract)
 
 	if (HitResult.Num() == 0) return;
 
-	for (size_t i = 0; i < HitResult.Num(); i++)
+	for (FHitResult CheckResult : HitResult)
 	{
-		HitActors.AddUnique(HitResult[i].GetActor());
+		HitActors.AddUnique(CheckResult.GetActor());
 	}
 
-	for (size_t i = 0; i < HitActors.Num(); i++)
+	for (AActor* CheckActor : HitActors)
 	{
-		InteractObject = Cast<AInteractObjectBase>(HitActors[i]);
-		if (InteractObject)
+
+		if (CheckActor->GetClass()->ImplementsInterface(UInteractInterface::StaticClass()))
 		{
 			if (TryInteract)
 			{
-				InteractObject->TryUseInteractObject(this);
+				IInteractInterface::Execute_I_Interact(CheckActor, this);
 			}
-
-			InteractObject->ShowInfo();
-			
+			IInteractInterface::Execute_I_ShowInfo(CheckActor);
 		}
-
 	}
 }
 
