@@ -44,8 +44,6 @@ public:
 	void SetBuildingMaterial ();
 
 
-	
-
 protected:
 
 	virtual void TryUseInteractObject(APlayerCharacter* Pawn) override;
@@ -53,8 +51,6 @@ protected:
 private:
 
 	bool Activate;
-
-	
 
 	
 };
