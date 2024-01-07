@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "Net/UnrealNetwork.h"
 #include "Interfaces/InteractInterface.h"
+#include "Interfaces/TakeDamageInterface.h"
 #include "InteractObjectBase.generated.h"
 
 class APlayerCharacter;
@@ -15,7 +16,7 @@ class USkeletalMeshComponent;
 class UArrowComponent;
 
 UCLASS()
-class ARCHERPRT_API AInteractObjectBase : public AActor, public IInteractInterface
+class ARCHERPRT_API AInteractObjectBase : public AActor, public IInteractInterface, public ITakeDamageInterface
 {
 	GENERATED_BODY()
 	
@@ -51,12 +52,6 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "After Events")
 		void AfterWasSuccessUseInteractObject();
 
-	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "After Events")
-		void AfterGloveHit(bool Charged, const FHitResult& HitResult, AActor* Causer);
-
-	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "After Events")
-		void AfterShotHit(const FHitResult& HitResult, AActor* Causer);
-
 	virtual void TryUseInteractObject(APlayerCharacter* Pawn);
 
 	//Interface
@@ -66,6 +61,8 @@ public:
 	void I_ShowInfo_Implementation() override;
 
 	void I_HideInfo_Implementation() override;
+
+	void I_TakeDamage_Implementation(FDamageData DamageData) override;
 
 protected:
 

@@ -114,10 +114,7 @@ void AArcherPRTProjectile::OnImpact_Implementation(const FHitResult& Result)
 				Pawn->TakeDamage(0, FDamageEvent(), GetInstigatorController(), this);
 			}
 		}
-		if (InteractObject)
-		{
-			InteractObject->AfterShotHit(Result, this);
-		}
+
 
 		SpawnImpactEffect(Result);
 

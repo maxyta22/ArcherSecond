@@ -355,13 +355,6 @@ void UWeaponComponent::MakeShot()
 			Owner->DamageActors.AddUnique(LCharacter);
 			}
 
-		const auto LInteractObject = Cast<AInteractObjectBase>(HitResult.GetActor());
-
-		if (LInteractObject)
-			{
-				LInteractObject->AfterShotHit(HitResult, GetOwner());
-			}		
-
 		if (HitResult.GetActor()->GetClass()->ImplementsInterface(UTakeDamageInterface::StaticClass()))
 		{
 			ITakeDamageInterface::Execute_I_TakeDamage(HitResult.GetActor(), damageData);

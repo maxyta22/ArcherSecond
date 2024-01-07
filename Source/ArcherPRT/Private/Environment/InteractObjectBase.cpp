@@ -57,6 +57,10 @@ void AInteractObjectBase::I_HideInfo_Implementation()
 	HideInfo();
 }
 
+void AInteractObjectBase::I_TakeDamage_Implementation(FDamageData DamageData)
+{
+}
+
 
 
 

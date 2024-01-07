@@ -298,14 +298,6 @@ void APlayerCharacter::MakeStrike(float StrikeDistance, float MinAngle, float Ma
 					ActorsToIgnore.Add(Pawn);
 				}
 
-				const auto InteractObject = Cast<AInteractObjectBase>(HitResult.GetActor());
-
-				if (InteractObject)
-				{
-					InteractObject->AfterGloveHit(damageData.DamageCharged, damageData.DamagePoint, this);
-					IgnoreActorsDamage.Add(InteractObject);
-				}
-
 				if (HitResult.GetActor()->GetClass()->ImplementsInterface(UTakeDamageInterface::StaticClass()))
 				{
 					ITakeDamageInterface::Execute_I_TakeDamage(HitResult.GetActor(), damageData);
