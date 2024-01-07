@@ -24,6 +24,12 @@ AInteractObjectBase::AInteractObjectBase()
 
 	StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>("StaticMesh");
 	StaticMeshComponent->SetupAttachment(PivotArrow);
+
+	
+	PrimaryActorTick.bStartWithTickEnabled = false;
+	PrimaryActorTick.bCanEverTick = false;
+	PrimaryActorTick.SetTickFunctionEnable(false);
+
 }
 
 void AInteractObjectBase::BeginPlay()
