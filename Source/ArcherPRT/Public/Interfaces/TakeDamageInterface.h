@@ -21,6 +21,6 @@ class ARCHERPRT_API ITakeDamageInterface
 public:
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Damage")
-	void TakeDamageInteface(FDamageData DamageData);
+	void I_TakeDamage(FDamageData DamageData);
 
 };

@@ -308,7 +308,7 @@ void APlayerCharacter::MakeStrike(float StrikeDistance, float MinAngle, float Ma
 
 				if (HitResult.GetActor()->GetClass()->ImplementsInterface(UTakeDamageInterface::StaticClass()))
 				{
-					ITakeDamageInterface::Execute_TakeDamageInteface(HitResult.GetActor(), damageData);
+					ITakeDamageInterface::Execute_I_TakeDamage(HitResult.GetActor(), damageData);
 					ActorsToIgnore.Add(HitResult.GetActor());
 					IgnoreActorsDamage.Add(HitResult.GetActor());
 				}
