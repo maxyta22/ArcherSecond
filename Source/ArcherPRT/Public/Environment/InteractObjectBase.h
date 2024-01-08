@@ -7,6 +7,7 @@
 #include "Net/UnrealNetwork.h"
 #include "Interfaces/InteractInterface.h"
 #include "Interfaces/TakeDamageInterface.h"
+#include "Interfaces/ToggleActivateAssetInterface.h"
 #include "InteractObjectBase.generated.h"
 
 class APlayerCharacter;
@@ -16,7 +17,7 @@ class USkeletalMeshComponent;
 class UArrowComponent;
 
 UCLASS()
-class ARCHERPRT_API AInteractObjectBase : public AActor, public IInteractInterface, public ITakeDamageInterface
+class ARCHERPRT_API AInteractObjectBase : public AActor, public IInteractInterface, public ITakeDamageInterface, public IToggleActivateAssetInterface
 {
 	GENERATED_BODY()
 	
@@ -54,6 +55,11 @@ public:
 
 	virtual void TryUseInteractObject(APlayerCharacter* Pawn);
 
+	//Optimization
+
+	UPROPERTY(EditDefaultsOnly, Category = "Optimization")
+	bool AllowTickIfActivated;
+
 	//Interface
 
 	void I_Interact_Implementation(APlayerCharacter* Pawn) override;
@@ -64,9 +70,15 @@ public:
 
 	void I_TakeDamage_Implementation(FDamageData DamageData) override;
 
+	void I_ToggleActivate_Implementation(bool Activate);
+
 protected:
 
 	virtual void BeginPlay() override;	
+
+private:
+
+	bool Activated = true;
 
 	
 

@@ -25,10 +25,9 @@ AInteractObjectBase::AInteractObjectBase()
 	StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>("StaticMesh");
 	StaticMeshComponent->SetupAttachment(PivotArrow);
 
-	
+	bAllowTickBeforeBeginPlay = false;
 	PrimaryActorTick.bStartWithTickEnabled = false;
 	PrimaryActorTick.bCanEverTick = false;
-	PrimaryActorTick.SetTickFunctionEnable(false);
 
 }
 
@@ -39,31 +38,45 @@ void AInteractObjectBase::BeginPlay()
 
 void AInteractObjectBase::TryUseInteractObject(APlayerCharacter* Pawn)
 {
+	if (!Activated) return;
+
 	AfterWasTryUseInteractObject();
 }
 
 void AInteractObjectBase::I_Interact_Implementation(APlayerCharacter* Pawn)
 {
+	if (!Activated) return;
+
 	TryUseInteractObject(Pawn);
 }
 
 void AInteractObjectBase::I_ShowInfo_Implementation()
 {
+	if (!Activated) return;
+
 	ShowInfo();
 }
 
 void AInteractObjectBase::I_HideInfo_Implementation()
 {
+	if (!Activated) return;
+
 	HideInfo();
 }
 
 void AInteractObjectBase::I_TakeDamage_Implementation(FDamageData DamageData)
 {
+	if (!Activated) return;
 }
 
+void AInteractObjectBase::I_ToggleActivate_Implementation(bool Activate)
+{
+	Activated = Activate;
+	SetActorHiddenInGame(!Activate);	
+	bool LCanTick = Activate ? AllowTickIfActivated ? true : false : false;
+	PrimaryActorTick.SetTickFunctionEnable(LCanTick);
 
-
-
+}
 
 
 
