@@ -237,7 +237,7 @@ void UWeaponComponent::OnAltFire()
 	if (GetWeaponDurability(EWeaponType::PneumaticGlove) == 0)
 	{
 		Owner->FailTryUseBlock();
-		bPendingOnAltFire = false;
+		FinishFire(true);
 		return;
 	}
 
