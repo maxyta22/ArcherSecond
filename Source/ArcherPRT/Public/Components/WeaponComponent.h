@@ -39,7 +39,7 @@ public:
 	bool bWeaponCharged;
 
 	UPROPERTY()
-	bool bPerfectWindow;
+	bool bPerfectHitWindow;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Internal")
 	bool bPerfectDamage;
