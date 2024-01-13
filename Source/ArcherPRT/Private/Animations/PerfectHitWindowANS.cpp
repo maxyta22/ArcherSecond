@@ -8,7 +8,7 @@
 
 
 
-void UPerfectHitWindowANS::NotifyTick(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float FrameDeltaTime)
+void UPerfectHitWindowANS::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float TotalDuration)
 {
 	const auto LPlayerCharacter = Cast<APlayerCharacter>(MeshComp->GetOwner());
 
@@ -16,8 +16,20 @@ void UPerfectHitWindowANS::NotifyTick(USkeletalMeshComponent* MeshComp, UAnimSeq
 		return;
 
 	LPlayerCharacter->WeaponComponent->bPerfectHitWindow = true;
-	LPlayerCharacter->WeaponComponent->bPerfectDamage = true;
 }
+
+void UPerfectHitWindowANS::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation)
+{
+	const auto LPlayerCharacter = Cast<APlayerCharacter>(MeshComp->GetOwner());
+
+	if (!IsValid(LPlayerCharacter))
+		return;
+
+
+	LPlayerCharacter->WeaponComponent->bPerfectHitWindow = false;
+}
+
+
 
 
 
