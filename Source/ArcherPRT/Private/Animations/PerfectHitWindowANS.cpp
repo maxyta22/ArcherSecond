@@ -6,7 +6,9 @@
 #include "Player/GameCharacter.h"
 #include "Components/WeaponComponent.h"
 
-void UPerfectHitWindowANS::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float TotalDuration)
+
+
+void UPerfectHitWindowANS::NotifyTick(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float FrameDeltaTime)
 {
 	const auto LPlayerCharacter = Cast<APlayerCharacter>(MeshComp->GetOwner());
 
@@ -14,14 +16,8 @@ void UPerfectHitWindowANS::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSe
 		return;
 
 	LPlayerCharacter->WeaponComponent->bPerfectHitWindow = true;
+	LPlayerCharacter->WeaponComponent->bPerfectDamage = true;
 }
 
-void UPerfectHitWindowANS::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation)
-{
-	const auto LPlayerCharacter = Cast<APlayerCharacter>(MeshComp->GetOwner());
 
-	if (!IsValid(LPlayerCharacter))
-		return;
 
-	LPlayerCharacter->WeaponComponent->bPerfectHitWindow = false;
-}
