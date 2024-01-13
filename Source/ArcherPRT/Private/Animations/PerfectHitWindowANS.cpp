@@ -15,6 +15,7 @@ void UPerfectHitWindowANS::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSe
 	if (!IsValid(LPlayerCharacter))
 		return;
 
+	LPlayerCharacter->OnStartPerfectWindow();
 	LPlayerCharacter->WeaponComponent->bPerfectHitWindow = true;
 }
 
