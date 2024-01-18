@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "Player/GameCharacter.h"
 #include "Components/InventoryComponent.h"
-
+#include "Net/UnrealNetwork.h"
 #include "PlayerCharacter.generated.h"
 
 
@@ -21,7 +21,6 @@ class UInventoryComponent;
 class UBuildingComponent;
 class UCraftComponent;
 class UArrowComponent;
-class USpringArmComponent;
 
 
 UCLASS(config = Game)
@@ -58,11 +57,6 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Building")
 	UBuildingComponent* BuildingComponent;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SpringArm")
-	USpringArmComponent* CameraSpringArm;
-
-
 
 #pragma endregion
 
