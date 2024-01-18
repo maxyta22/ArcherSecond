@@ -27,6 +27,7 @@
 #include "Interfaces/TakeDamageInterface.h"
 #include "Interfaces/InteractInterface.h"
 #include "Components/ArrowComponent.h"
+#include "GameFramework/SpringArmComponent.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogPlayerCharacter, Warning, All);
 
@@ -39,12 +40,6 @@ APlayerCharacter::APlayerCharacter()
 	BaseTurnRate = 45.f;
 	BaseLookUpRate = 45.f;
 
-	// Create a CameraComponent	
-	FirstPersonCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("FirstPersonCamera"));
-	//FirstPersonCameraComponent->SetupAttachment(GetCapsuleComponent());
-	FirstPersonCameraComponent->SetupAttachment(GetMesh(), "camera_socket");
-	FirstPersonCameraComponent->SetRelativeLocation(FVector(-39.56f, 1.75f, 64.f)); // Position the camera
-	FirstPersonCameraComponent->bUsePawnControlRotation = true; // Set false If Use Camera Animation
 
 	//Create InteractCapsule
 	InteractCapsuleComponent = CreateDefaultSubobject<UCapsuleComponent>(TEXT("InteractCapsule"));
@@ -52,6 +47,18 @@ APlayerCharacter::APlayerCharacter()
 
 	InteractCapsuleComponent->OnComponentBeginOverlap.AddDynamic(this, &APlayerCharacter::OnOverlapBeginInteractCapsule);
 	InteractCapsuleComponent->OnComponentEndOverlap.AddDynamic(this, &APlayerCharacter::OnOverlapEndInteractCapsule);
+
+	//Create Camera SpringArm
+	CameraSpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraSpringArm"));
+	CameraSpringArm->SetupAttachment(GetMesh(), "camera_socket");
+
+	// Create a CameraComponent	
+	FirstPersonCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("FirstPersonCamera"));
+	FirstPersonCameraComponent->SetupAttachment(CameraSpringArm);
+	//FirstPersonCameraComponent->SetupAttachment(GetMesh(), "camera_socket");
+	FirstPersonCameraComponent->SetRelativeLocation(FVector(-39.56f, 1.75f, 64.f)); // Position the camera
+	FirstPersonCameraComponent->bUsePawnControlRotation = true; // Set false If Use Camera Animation
+
 
 	//Create InteractTraceDirection
 	InteractTraceDirection = CreateDefaultSubobject<UArrowComponent>(TEXT("InteractTraceDirection"));
