@@ -100,7 +100,7 @@ private:
 
 protected:
 
-	virtual void ImplementTakeDamage(FDamageData DamageData) override;
+	void ImplementTakeDamage(FDamageData DamageData);
 
 	virtual void OnDeath() override;
 

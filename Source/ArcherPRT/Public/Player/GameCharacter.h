@@ -87,8 +87,8 @@ public:
 
 public:
 
-	UFUNCTION(BlueprintCallable)
-	virtual void ImplementTakeDamage(FDamageData DamageData);
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void ImplementTakeDamage(FDamageData DamageData);
 
 	UFUNCTION()
 	bool IsInvulnerable();

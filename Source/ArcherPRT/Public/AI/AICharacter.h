@@ -160,7 +160,7 @@ private:
 
 public:
 
-	virtual void ImplementTakeDamage(FDamageData DamageData) override;
+	void ImplementTakeDamage(FDamageData DamageData);
 
 	UFUNCTION(BlueprintCallable)
 	void ToggleActivateHitColliders(bool Activate);
