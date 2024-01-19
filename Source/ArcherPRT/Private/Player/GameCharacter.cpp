@@ -122,7 +122,7 @@ bool AGameCharacter::IsInvulnerable()
 	return bInvulnerable;
 }
 
-void AGameCharacter::ImplementTakeDamage_Implementation(FDamageData DamageData)
+void AGameCharacter::ImplementTakeDamage(FDamageData DamageData)
 {
 	if (IsInvulnerable()) return;
 
