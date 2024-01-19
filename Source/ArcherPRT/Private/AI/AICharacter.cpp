@@ -163,9 +163,9 @@ void AAICharacter::ToggleActivateHitColliders(bool Activate)
 	}
 }
 
-void AAICharacter::ImplementTakeDamage(FDamageData DamageData)
+void AAICharacter::ImplementTakeDamage_Implementation(FDamageData DamageData)
 {
-	Super::ImplementTakeDamage(DamageData);
+	Super::ImplementTakeDamage_Implementation(DamageData);
 	const auto damageInstigator = DamageData.DamageInstigator;
 	const auto AIController = Cast<APRTAIController>(Controller);
 
@@ -180,8 +180,6 @@ void AAICharacter::ImplementTakeDamage(FDamageData DamageData)
 	}
 	AfterTakeDamage(DamageData);
 }
-
-
 
 #pragma endregion 
 

@@ -219,9 +219,9 @@ void APlayerCharacter::TryPerformInteract()
 
 #pragma region TakeDamage
 
-void APlayerCharacter::ImplementTakeDamage(FDamageData DamageData)
+void APlayerCharacter::ImplementTakeDamage_Implementation(FDamageData DamageData)
 {
-	Super::ImplementTakeDamage(DamageData);
+	Super::ImplementTakeDamage_Implementation(DamageData);
 }
 
 void APlayerCharacter::OnDeath()
