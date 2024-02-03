@@ -128,14 +128,14 @@ void AGameCharacter::ImplementTakeDamage_Implementation(FDamageData DamageData)
 
 	if (DamageData.PerfectDamage && IsValid(DamageData.PerfectDamageGameplayEffect))
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Green, TEXT("Perfect"));
+		//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Green, TEXT("Perfect"));
 		AbilitySystemComponent->ApplyGameplayEffectToSelf(DamageData.PerfectDamageGameplayEffect.GetDefaultObject(), 1.0, AbilitySystemComponent->MakeEffectContext());
 	}
 	else
 	{
 		if (IsValid(DamageData.DamageGameplayEffect))
 		{
-			GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("Regular"));
+			//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("Regular"));
 			AbilitySystemComponent->ApplyGameplayEffectToSelf(DamageData.DamageGameplayEffect.GetDefaultObject(), 1.0, AbilitySystemComponent->MakeEffectContext());
 		}
 	}
