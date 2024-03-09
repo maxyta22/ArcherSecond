@@ -37,6 +37,10 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
 		UBoxComponent* BoxGabaritCollision;
 
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+	void BuildSuccess();
+
+
 	APlayerCharacter* BuildingPlayer;
 
 	bool CheckCanSpawnThisObject();

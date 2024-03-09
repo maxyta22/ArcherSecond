@@ -31,19 +31,23 @@ public:
 
 	void TrySpawnObject();
 
+	UFUNCTION(BlueprintCallable)
+	void SetSelectedIndex(int Index) { SelectedIndex = Index; }
+
 	UFUNCTION(BlueprintPure)
-		bool BuildingModeActivated() const {return bBuildingMode;}
+	bool BuildingModeActivated() const {return bBuildingMode;}
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AvaliableObjects")
-		TArray<TSubclassOf<URecipeBase>> AvaliableRecipes;
+	TArray<TSubclassOf<URecipeBase>> AvaliableRecipes;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Settings")
-		float SpawnOffset = 200;
+	float SpawnOffset = 200;
 
 private:
 
 	bool bBuildingMode;
 	ACustomInteractObjectBase* CurrentPreSpawnObject;
+	UPROPERTY()
 	int SelectedIndex = 0;
 	
 

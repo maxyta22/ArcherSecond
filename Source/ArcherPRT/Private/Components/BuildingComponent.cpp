@@ -28,7 +28,6 @@ void UBuildingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAc
 {
 	if (bBuildingMode)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Green, TEXT("BuildingMode"));
 		PreSpawnObject();
 	}
 }
@@ -110,7 +109,15 @@ void UBuildingComponent::TrySpawnObject()
 	if (Owner->InventoryComponent->LoopOnResourcesByMap(NeededResources))
 	{
 		Owner->InventoryComponent->LoopOnResourcesByMap(NeededResources, true, false);
-		GetWorld()->SpawnActorAbsolute(SpawnActor, FTransform(SpawnRotation, SpawnLocation));
+		AActor* LSpawnActor = GetWorld()->SpawnActorAbsolute(SpawnActor, FTransform(SpawnRotation, SpawnLocation));
+		if (IsValid(LSpawnActor))
+		{
+			const auto LBuild = Cast<ACustomInteractObjectBase>(LSpawnActor);
+			if (IsValid(LBuild))
+			{
+				LBuild->BuildSuccess();
+			}
+		}
 	}
 	
 	
